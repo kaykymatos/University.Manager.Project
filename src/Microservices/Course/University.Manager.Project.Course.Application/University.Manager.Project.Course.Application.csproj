@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+	  <GlobalizationInvariantMode>false</GlobalizationInvariantMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\University.Manager.Project.Course.Domain\University.Manager.Project.Course.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>
