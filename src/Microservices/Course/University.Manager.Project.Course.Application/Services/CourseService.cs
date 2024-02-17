@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using University.Manager.Project.Course.Application.DTOs;
+using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Course.Application.Interfaces;
 using University.Manager.Project.Course.Domain.Entities;
 using University.Manager.Project.Course.Domain.Interfaces;
@@ -17,7 +18,7 @@ namespace University.Manager.Project.Course.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateModelAsync(CourseEntityDTO entity)
+        public async Task CreateModelAsync(CourseEntityRequestDTO entity)
         {
             var model = _mapper.Map<CourseEntity>(entity);
 
@@ -55,7 +56,7 @@ namespace University.Manager.Project.Course.Application.Services
             return _mapper.Map<IEnumerable<CourseEntityDTO>>(model);
         }
 
-        public async Task UpdateModelAsync(CourseEntityDTO entity)
+        public async Task UpdateModelAsync(CourseEntityRequestDTO entity)
         {
             var model = _mapper.Map<CourseEntity>(entity);
             var createModel = await _courseRepository.UpdateModelAsync(model);

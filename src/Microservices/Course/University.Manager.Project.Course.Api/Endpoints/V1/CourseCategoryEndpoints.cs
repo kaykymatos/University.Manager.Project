@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using University.Manager.Project.Course.Application.DTOs;
+using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Course.Application.Interfaces;
 
 namespace University.Manager.Project.Course.Api.Endpoints.V1
@@ -26,7 +26,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 return Results.NotFound();
             }).WithName("courseCategory");
 
-            app.MapPost("api/v1/courseCategory", async ([FromBody] CourseCategoryDTO model, [FromServices] ICourseCategoryService _service) =>
+            app.MapPost("api/v1/courseCategory", async ([FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service) =>
             {
                 if (model == null)
                     return Results.BadRequest("Invalid Data!");
@@ -34,7 +34,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 return Results.CreatedAtRoute("courseCategory", new { id = model.Id }, model);
             });
 
-            app.MapPut("api/v1/courseCategory/{id:long}", async ([FromRoute] long id, [FromBody] CourseCategoryDTO model, [FromServices] ICourseCategoryService _service) =>
+            app.MapPut("api/v1/courseCategory/{id:long}", async ([FromRoute] long id, [FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service) =>
             {
                 if (id != model.Id)
                     return Results.BadRequest("Id not found!");
@@ -43,7 +43,6 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (modelFound == null)
                     return Results.NotFound("Category not found!");
 
-                model.CreationData = modelFound.CreationData;
                 await _service.UpdateModelAsync(model);
                 return Results.NoContent();
             });

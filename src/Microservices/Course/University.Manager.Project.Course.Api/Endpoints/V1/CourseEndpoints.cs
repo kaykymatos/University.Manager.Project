@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using University.Manager.Project.Course.Application.DTOs;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using University.Manager.Project.Course.Api.Models.Error;
+using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Course.Application.Interfaces;
 
 namespace University.Manager.Project.Course.Api.Endpoints.V1
@@ -36,14 +38,19 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                     return Results.Ok(modelFound);
                 return Results.NoContent();
             });
-            app.MapPost("api/v1/course", async ([FromBody] CourseEntityDTO model, [FromServices] ICourseService _service) =>
+            app.MapPost("api/v1/course", async ([FromBody] CourseEntityRequestDTO model, [FromServices] ICourseService _service, [FromServices] IValidator<CourseEntityRequestDTO> _validator) =>
             {
                 if (model == null)
                     return Results.BadRequest("Invalid Data!");
+
+                var validationModel = _validator.Validate(model);
+                if (!validationModel.IsValid)
+                    return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
+
                 await _service.CreateModelAsync(model);
                 return Results.CreatedAtRoute("course", new { id = model.Id }, model);
             });
-            app.MapPut("api/v1/course/{id:long}", async ([FromRoute] long id, [FromBody] CourseEntityDTO model, [FromServices] ICourseService _service) =>
+            app.MapPut("api/v1/course/{id:long}", async ([FromRoute] long id, [FromBody] CourseEntityRequestDTO model, [FromServices] ICourseService _service, [FromServices] IValidator<CourseEntityRequestDTO> _validator) =>
             {
                 if (id != model.Id)
                     return Results.BadRequest("Id not found!");
@@ -52,7 +59,9 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (modelFound == null)
                     return Results.NotFound("Course not found!");
 
-                model.CreationData = modelFound.CreationData;
+                var validationModel = _validator.Validate(model);
+                if (!validationModel.IsValid)
+                    return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
 
                 await _service.UpdateModelAsync(model);
                 return Results.NoContent();

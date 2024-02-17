@@ -82,8 +82,8 @@ namespace University.Manager.Project.Course.Infra.Data.Migrations
                     b.Property<DateTime>("UpdatedData")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Workload")
-                        .HasColumnType("datetime2");
+                    b.Property<float>("Workload")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

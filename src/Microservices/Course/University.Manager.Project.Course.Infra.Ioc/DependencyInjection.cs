@@ -17,6 +17,7 @@ public static class DependencyInjection
     {
 
         services.AddSwaggerGen();
+        services.AddControllers();
 
         services.AddDbContext<ApplicationContext>(options =>
            options.UseSqlServer(
@@ -25,8 +26,7 @@ public static class DependencyInjection
            .Assembly.FullName)));
 
 
-        services.ConfigureApplicationCookie(x =>
-        x.AccessDeniedPath = "/Account/Login");
+
 
         services.AddScoped<ICourseCategoryRepository, CourseCategoryRepository>();
         services.AddScoped<ICourseRepository, CourseRepository>();

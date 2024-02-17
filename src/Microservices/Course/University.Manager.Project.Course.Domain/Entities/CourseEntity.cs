@@ -6,7 +6,7 @@ namespace University.Manager.Project.Course.Domain.Entities
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public DateTime Workload { get; private set; }
+        public float Workload { get; private set; }
         public decimal TotalValue { get; private set; }
         public CourseCategory CourseCategory { get; private set; }
         public long CourseCategoryId { get; private set; }
@@ -14,18 +14,18 @@ namespace University.Manager.Project.Course.Domain.Entities
         {
 
         }
-        public CourseEntity(long id, string name, string description, DateTime workload, decimal totalValue)
+        public CourseEntity(long id, string name, string description, float workload, decimal totalValue)
         {
             DomainExceptionValidation.When(id < 0, "Invalid Id value.");
             Id = id;
             ValidationDomain(name, description, workload, totalValue);
         }
-        public void UpdateDomain(string name, string description, DateTime workload, decimal totalValue)
+        public void UpdateDomain(string name, string description, float workload, decimal totalValue)
         {
             ValidationDomain(name, description, workload, totalValue);
             UpdatedData = DateTime.Now;
         }
-        private void ValidationDomain(string name, string description, DateTime workLoad, decimal totalValue)
+        private void ValidationDomain(string name, string description, float workLoad, decimal totalValue)
         {
             DomainExceptionValidation.When(string.IsNullOrWhiteSpace(name),
                 "Invalid Name, Name is required!");
@@ -43,9 +43,7 @@ namespace University.Manager.Project.Course.Domain.Entities
                 "Invalid Description, Description is too large, maximum 200 characters!");
             Description = description;
 
-            DomainExceptionValidation.When(workLoad == DateTime.MinValue,
-               "Invalid Workload, Workload is required!");
-            DomainExceptionValidation.When(workLoad.Hour <= 0,
+            DomainExceptionValidation.When(workLoad < 1,
                 "Invalid Workload, Workload is too short, minimum 1 hour!");
             Workload = workLoad;
 

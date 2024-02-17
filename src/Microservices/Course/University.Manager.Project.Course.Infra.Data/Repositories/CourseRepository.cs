@@ -49,8 +49,9 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
 
         public async Task<CourseEntity> UpdateModelAsync(CourseEntity entity)
         {
-            entity.CreationData = entity.CreationData;
             entity.UpdateDomain(entity.Name, entity.Description, entity.Workload, entity.TotalValue);
+            entity.CreationData = _context.Courses.FirstAsync(x => x.Id == entity.Id).Result.CreationData;
+
             _context.ChangeTracker.Clear();
             _context.Courses.Update(entity);
             await _context.SaveChangesAsync();

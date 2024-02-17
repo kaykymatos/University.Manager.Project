@@ -5,7 +5,7 @@
 namespace University.Manager.Project.Course.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrationCourse : Migration
+    public partial class NewMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,7 @@ namespace University.Manager.Project.Course.Infra.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Workload = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Workload = table.Column<float>(type: "real", nullable: false),
                     TotalValue = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     CourseCategoryId = table.Column<long>(type: "bigint", nullable: false),
                     CreationData = table.Column<DateTime>(type: "datetime2", nullable: false),

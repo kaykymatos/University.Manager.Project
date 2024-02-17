@@ -12,8 +12,8 @@ using University.Manager.Project.Course.Infra.Data.Context;
 namespace University.Manager.Project.Course.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240217145347_InitialMigrationCourse")]
-    partial class InitialMigrationCourse
+    [Migration("20240217193630_NewMigrations")]
+    partial class NewMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,8 +85,8 @@ namespace University.Manager.Project.Course.Infra.Data.Migrations
                     b.Property<DateTime>("UpdatedData")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Workload")
-                        .HasColumnType("datetime2");
+                    b.Property<float>("Workload")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
