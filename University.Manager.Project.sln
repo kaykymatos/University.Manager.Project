@@ -55,9 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.Student.Infra.Ioc", "src\Microservices\Student\University.Manager.Project.Student.Infra.Ioc\University.Manager.Project.Student.Infra.Ioc.csproj", "{9C5FD1B4-231F-4D7E-91E7-D4C6F4D994DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Manager.Project.Course.Domain.Test", "src\Microservices\Course\University.Manager.Project.Course.Domain.Test\University.Manager.Project.Course.Domain.Test.csproj", "{8DBE7DFF-81C9-45FF-B12C-569AF1C0F345}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.Course.Domain.Test", "src\Microservices\Course\University.Manager.Project.Course.Domain.Test\University.Manager.Project.Course.Domain.Test.csproj", "{8DBE7DFF-81C9-45FF-B12C-569AF1C0F345}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Manager.Project.Course.Api.Tests", "src\Microservices\Course\University.Manager.Project.Course.Api.Tests\University.Manager.Project.Course.Api.Tests.csproj", "{799E7E1D-623C-4D1D-B7AB-3F15CDAA52E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.Course.Api.Tests", "src\Microservices\Course\University.Manager.Project.Course.Api.Tests\University.Manager.Project.Course.Api.Tests.csproj", "{799E7E1D-623C-4D1D-B7AB-3F15CDAA52E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

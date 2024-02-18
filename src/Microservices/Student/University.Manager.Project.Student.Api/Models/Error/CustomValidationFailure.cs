@@ -1,9 +1,9 @@
-﻿namespace University.Manager.Project.Course.Api.Models.Error
+﻿namespace University.Manager.Project.Student.Api.Models.Error
 {
     public class CustomValidationFailure
     {
-        public string PropertyName { get; set; } = string.Empty;
-        public string ErrorMessage { get; set; } = string.Empty;
+        public string PropertyName { get; set; }
+        public string ErrorMessage { get; set; }
         public CustomValidationFailure(string propertyName, string errorMessage)
         {
             PropertyName = propertyName;

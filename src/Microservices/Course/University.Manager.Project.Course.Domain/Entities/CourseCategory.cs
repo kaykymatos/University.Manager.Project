@@ -4,8 +4,8 @@ namespace University.Manager.Project.Course.Domain.Entities
 {
     public class CourseCategory : Entity
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string Name { get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
         public IEnumerable<CourseEntity> Courses { get; set; }
         public CourseCategory()
         {
