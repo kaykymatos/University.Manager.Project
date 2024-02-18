@@ -16,7 +16,7 @@ namespace University.Manager.Project.Course.Domain.Entities
         }
         public CourseEntity(long id, string name, string description, float workload, decimal totalValue)
         {
-            DomainExceptionValidation.When(id < 0, "Invalid Id value.");
+            DomainExceptionValidation.When(id < 0, "Invalid Id value!");
             Id = id;
             ValidationDomain(name, description, workload, totalValue);
         }
@@ -32,7 +32,7 @@ namespace University.Manager.Project.Course.Domain.Entities
             DomainExceptionValidation.When(name.Length < 3,
                 "Invalid Name, Name is too short, minimum 3 characters!");
             DomainExceptionValidation.When(name.Length > 200,
-                "Invalid Name, Name is too large, maximum 200 characters!");
+                "Invalid Name, Name is too long, maximum 200 characters!");
             Name = name;
 
             DomainExceptionValidation.When(string.IsNullOrWhiteSpace(description),
@@ -40,7 +40,7 @@ namespace University.Manager.Project.Course.Domain.Entities
             DomainExceptionValidation.When(description.Length < 3,
                 "Invalid Description, Description is too short, minimum 3 characters!");
             DomainExceptionValidation.When(name.Length > 200,
-                "Invalid Description, Description is too large, maximum 200 characters!");
+                "Invalid Description, Description is too long, maximum 200 characters!");
             Description = description;
 
             DomainExceptionValidation.When(workLoad < 1,
@@ -49,8 +49,10 @@ namespace University.Manager.Project.Course.Domain.Entities
 
             DomainExceptionValidation.When(totalValue <= 0,
                "Invalid Total Value, Total Value is required!");
+            DomainExceptionValidation.When(totalValue <= 999 && totalValue > 0,
+               "Invalid Total Value, Total Value must be greater than $999.00!");
             DomainExceptionValidation.When(totalValue >= 9999999,
-                "Invalid Total Value, Total Value is too large, maximum $9999998.00!");
+                "Invalid Total Value, Total Value is too long, maximum $9999998.00!");
             TotalValue = totalValue;
         }
     }

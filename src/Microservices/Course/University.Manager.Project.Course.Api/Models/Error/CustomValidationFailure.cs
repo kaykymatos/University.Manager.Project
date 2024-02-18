@@ -9,5 +9,12 @@
             PropertyName = propertyName;
             ErrorMessage = errorMessage;
         }
+        public IList<CustomValidationFailure> ToList()
+        {
+            return new List<CustomValidationFailure>()
+            {
+                new CustomValidationFailure(PropertyName, ErrorMessage),
+            };
+        }
     }
 }

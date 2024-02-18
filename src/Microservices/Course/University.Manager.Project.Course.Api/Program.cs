@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddTransient<IValidator<CourseEntityRequestDTO>, CourseEntityDTOValidation>();
+builder.Services.AddTransient<IValidator<CourseEntityRequestDTO>, CourseEntityRequestDTOValidation>();
+builder.Services.AddTransient<IValidator<CourseCategoryRequestDTO>, CourseCategoryRequestDTOValidation>();
 
 var app = builder.Build();
 

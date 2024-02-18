@@ -1,23 +1,22 @@
 ﻿using FluentValidation;
 using University.Manager.Project.Course.Api.Validation.ErrorMessages;
 using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
-using University.Manager.Project.Course.Application.Interfaces;
 
 namespace University.Manager.Project.Course.Api.Validation
 {
-    public class CourseEntityDTOValidation : AbstractValidator<CourseEntityRequestDTO>
+    public class CourseEntityRequestDTOValidation : AbstractValidator<CourseEntityRequestDTO>
     {
-        private readonly ICourseCategoryService _service;
-        public CourseEntityDTOValidation(ICourseCategoryService service)
+        public CourseEntityRequestDTOValidation()
         {
-            _service = service;
             RuleFor(x => x.Name)
+                .NotEmpty().WithMessage(BaseValidationErrorMessages.FieldNull)
                 .MinimumLength(3).WithMessage(BaseValidationErrorMessages.FieldMinLenght)
                 .MaximumLength(200).WithMessage(BaseValidationErrorMessages.FieldMaxLenght)
                 .Matches("^[a-zA-Z0-9 ]*$").WithMessage(BaseValidationErrorMessages.FieldWithSpecialCharacters)
                 .WithName("Name");
 
             RuleFor(x => x.Description)
+                .NotEmpty().WithMessage(BaseValidationErrorMessages.FieldNull)
                 .MinimumLength(3).WithMessage(BaseValidationErrorMessages.FieldMinLenght)
                 .MaximumLength(200).WithMessage(BaseValidationErrorMessages.FieldMaxLenght)
                 .Matches("^[a-zA-Z0-9 ]*$").WithMessage(BaseValidationErrorMessages.FieldWithSpecialCharacters)
@@ -31,11 +30,6 @@ namespace University.Manager.Project.Course.Api.Validation
                 .GreaterThan(999).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan)
                 .LessThan(9999999).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeLessThan)
                 .WithName("Total Value");
-
-            RuleFor(x => x.CourseCategoryId)
-                .Must(VerifyCategoryId).WithMessage("Category Id not found!")
-                .WithName("Category Id");
         }
-        private bool VerifyCategoryId(long categoryId) => _service.GetByIdAsync(categoryId).Result != null;
     }
 }

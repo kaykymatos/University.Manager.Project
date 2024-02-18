@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using University.Manager.Project.Course.Application.Interfaces;
 using University.Manager.Project.Course.Application.Mapping;
 using University.Manager.Project.Course.Application.Services;
@@ -16,7 +17,12 @@ public static class DependencyInjection
                 IConfiguration configuration)
     {
 
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(x =>
+        {
+            x.SwaggerDoc("v1", new OpenApiInfo { Title = "University.Manager.Project.Course.Api", Version = "v1" });
+            x.EnableAnnotations();
+        });
+
         services.AddControllers();
 
         services.AddDbContext<ApplicationContext>(options =>
@@ -24,9 +30,6 @@ public static class DependencyInjection
                configuration.GetConnectionString("DefaultConnection"),
         x => x.MigrationsAssembly(typeof(ApplicationContext)
            .Assembly.FullName)));
-
-
-
 
         services.AddScoped<ICourseCategoryRepository, CourseCategoryRepository>();
         services.AddScoped<ICourseRepository, CourseRepository>();

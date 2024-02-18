@@ -2,6 +2,19 @@
 {
     public class CourseEntityRequestDTO
     {
+        public CourseEntityRequestDTO(long id, string name, string description, float workload, decimal totalValue, long categoryId)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Workload = workload;
+            TotalValue = totalValue;
+            CourseCategoryId = categoryId;
+        }
+        public CourseEntityRequestDTO()
+        {
+
+        }
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
