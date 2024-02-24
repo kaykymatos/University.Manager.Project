@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using University.Manager.Project.Course.Api.Models.Error;
 using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Course.Application.Interfaces;
+using University.Manager.Project.Course.Application.Models.Error;
 
 namespace University.Manager.Project.Course.Api.Endpoints.V1
 {
