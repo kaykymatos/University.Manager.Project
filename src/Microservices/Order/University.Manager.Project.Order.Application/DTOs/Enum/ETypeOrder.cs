@@ -1,4 +1,4 @@
-﻿namespace University.Manager.Project.Order.Domain.Entities.Enum
+﻿namespace University.Manager.Project.Order.Application.DTOs.Enum
 {
     public enum ETypeOrder
     {

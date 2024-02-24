@@ -16,7 +16,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (listModel.Any())
                     return Results.Ok(listModel);
                 return Results.NoContent();
-            }); ;
+            });
             app.MapGet("api/v1/course/{id:long}", async ([FromRoute] long id, [FromServices] ICourseService _service) =>
             {
                 if (id <= 0)
