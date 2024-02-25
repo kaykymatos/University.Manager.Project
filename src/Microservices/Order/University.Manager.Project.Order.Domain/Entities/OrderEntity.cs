@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using University.Manager.Project.Order.Domain.Entities.Enum;
+﻿using University.Manager.Project.Order.Domain.Entities.Enum;
 using University.Manager.Project.Order.Domain.Validation;
 
 namespace University.Manager.Project.Order.Domain.Entities
@@ -8,8 +7,7 @@ namespace University.Manager.Project.Order.Domain.Entities
     {
         public string Title { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
-        public byte[]? Attachment { get; set; }
-        [EnumDataType(typeof(ETypeOrder))]
+        public string? Attachment { get; set; }
         public ETypeOrder OrderType { get; set; }
         public long UserId { get; set; }
 
@@ -18,7 +16,7 @@ namespace University.Manager.Project.Order.Domain.Entities
 
         }
 
-        public OrderEntity(long id, string title, string message, byte[] attachment, ETypeOrder orderType, long userId)
+        public OrderEntity(long id, string title, string message, string attachment, ETypeOrder orderType, long userId)
         {
             Id = id;
             Title = title;
@@ -27,12 +25,12 @@ namespace University.Manager.Project.Order.Domain.Entities
             OrderType = orderType;
             UserId = userId;
         }
-        public void UpdateDomain(string title, string message, byte[]? attachment, ETypeOrder orderType, long userId)
+        public void UpdateDomain(string title, string message, string? attachment, ETypeOrder orderType, long userId)
         {
             ValidationDomain(title, message, attachment, orderType, userId);
             UpdatedData = DateTime.Now;
         }
-        private void ValidationDomain(string title, string message, byte[]? attachment, ETypeOrder orderType, long userId)
+        private void ValidationDomain(string title, string message, string? attachment, ETypeOrder orderType, long userId)
         {
             DomainExceptionValidation.When(string.IsNullOrWhiteSpace(title),
                 "Invalid Title, Title is required!");
@@ -50,15 +48,12 @@ namespace University.Manager.Project.Order.Domain.Entities
                 "Invalid Message, Message is too long, maximum 200 characters!");
             Message = message;
 
-            if (attachment?.Length > 0)
+            if (!string.IsNullOrWhiteSpace(attachment))
             {
-                DomainExceptionValidation.When(
-                    !IsPdfAttachment(attachment) &&
-                    !IsJpegAttachment(attachment) &&
-                    !IsPngAttachment(attachment),
-                "Invalid Attachment, the Attachment must be .pdf, .png, .jpeg or .jpg!");
                 Attachment = attachment;
             }
+
+
             switch (orderType)
             {
                 case ETypeOrder.GENERAL_PROBLEM:
@@ -76,36 +71,6 @@ namespace University.Manager.Project.Order.Domain.Entities
             UserId = userId;
 
         }
-        static bool CheckSignature(byte[] arquivoBytes, byte[] assinatura)
-        {
-            if (arquivoBytes.Length < assinatura.Length)
-                return false;
 
-            for (int i = 0; i < assinatura.Length; i++)
-            {
-                if (arquivoBytes[i] != assinatura[i])
-                    return false;
-            }
-
-            return true;
-        }
-        static bool IsPdfAttachment(byte[] bytes)
-        {
-            // Assinatura dos primeiros bytes de um arquivo PDF
-            byte[] pdfSignature = { 0x25, 0x50, 0x44, 0x46, 0x2D };
-            return CheckSignature(bytes, pdfSignature);
-        }
-        static bool IsJpegAttachment(byte[] bytes)
-        {
-            // Assinatura dos primeiros bytes de um arquivo JPEG
-            byte[] jpegSignature = { 0xFF, 0xD8, 0xFF, 0xE0 };
-            return CheckSignature(bytes, jpegSignature);
-        }
-        static bool IsPngAttachment(byte[] bytes)
-        {
-            // Assinatura dos primeiros bytes de um arquivo PNG
-            byte[] pngSignature = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
-            return CheckSignature(bytes, pngSignature);
-        }
     }
 }

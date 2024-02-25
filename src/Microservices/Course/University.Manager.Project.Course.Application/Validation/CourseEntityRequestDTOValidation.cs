@@ -27,7 +27,7 @@ namespace University.Manager.Project.Course.Application.Validation
                 .WithName("Workload");
 
             RuleFor(x => x.TotalValue)
-                .GreaterThan(999).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan)
+                .GreaterThan(1).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan)
                 .LessThan(9999999).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeLessThan)
                 .WithName("Total Value");
         }

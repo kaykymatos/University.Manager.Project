@@ -13,7 +13,7 @@ namespace University.Manager.Project.Order.Infra.Data.EntitiesConfiguration
             builder.Property(x => x.Message).HasMaxLength(300).IsRequired();
             builder.Property(x => x.Title).HasMaxLength(20).IsRequired();
             builder.Property(x => x.UserId).IsRequired();
-            builder.Property(x => x.Attachment).IsRequired();
+            builder.Property(x => x.Attachment);
             builder.Property(x => x.CreationData);
             builder.Property(x => x.UpdatedData);
         }
