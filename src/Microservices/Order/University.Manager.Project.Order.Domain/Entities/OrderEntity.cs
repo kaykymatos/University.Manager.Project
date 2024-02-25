@@ -18,12 +18,10 @@ namespace University.Manager.Project.Order.Domain.Entities
 
         public OrderEntity(long id, string title, string message, string attachment, ETypeOrder orderType, long userId)
         {
-            Id = id;
-            Title = title;
-            Message = message;
-            Attachment = attachment;
-            OrderType = orderType;
-            UserId = userId;
+            DomainExceptionValidation.When(id <= 0,
+                "Invalid Id value!");
+
+            ValidationDomain(title, message, attachment, orderType, userId);
         }
         public void UpdateDomain(string title, string message, string? attachment, ETypeOrder orderType, long userId)
         {
@@ -44,7 +42,7 @@ namespace University.Manager.Project.Order.Domain.Entities
                 "Invalid Message, Message is required!");
             DomainExceptionValidation.When(message.Length < 3,
                 "Invalid Message, Message is too short, minimum 3 characters!");
-            DomainExceptionValidation.When(title.Length > 200,
+            DomainExceptionValidation.When(message.Length > 200,
                 "Invalid Message, Message is too long, maximum 200 characters!");
             Message = message;
 

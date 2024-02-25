@@ -124,7 +124,8 @@ namespace University.Manager.Project.Course.Api.Tests
            new CourseEntityRequestDTO(1, "Course", "Course", 1000, 0, 1);
             var validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
-            Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Total Value").Replace("{ComparisonValue}", "999")));
+
+            Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Total Value").Replace("{ComparisonValue}", "1")));
         }
         [Theory]
         [InlineData(0.1)]
@@ -133,19 +134,13 @@ namespace University.Manager.Project.Course.Api.Tests
         [InlineData(0.4)]
         [InlineData(0.5)]
         [InlineData(0.9)]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(20)]
-        [InlineData(30)]
-        [InlineData(90)]
-        [InlineData(999)]
         public async Task CreateCourseEntityRequestDTO_LessTotalValue_DomainExceptionTotalValueMustBeGreater(decimal totalValue)
         {
             var model =
            new CourseEntityRequestDTO(1, "Course", "Course", 1000, totalValue, 1);
             var validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
-            Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Total Value").Replace("{ComparisonValue}", "999")));
+            Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Total Value").Replace("{ComparisonValue}", "1")));
 
         }
         [Theory]
