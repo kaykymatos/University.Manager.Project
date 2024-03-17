@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using University.Manager.Project.Financial.Domain.Entities.Enums;
 using University.Manager.Project.Financial.Domain.Validation;
 
 namespace University.Manager.Project.Financial.Domain.Entities
@@ -10,37 +12,71 @@ namespace University.Manager.Project.Financial.Domain.Entities
     public class CourseInstallments : Entity
     {
         public long StudentId { get; set; }
-        public long InstallmentsNumber { get; set; }
         public decimal InstallmentPrice { get; set; }
-        public CourseInstallments(long id, long studentId, long installmentsNumber, decimal installmentsPrice)
+        public DateTime? PaymentDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public EInstallmentStatus InstallmentStatus { get; set; }
+        public EPaymentMethod PaymentMethod { get; set; }
+
+        public CourseInstallments()
+        {
+
+        }
+
+        public CourseInstallments(long id,long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
         {
             DomainExceptionValidation.When(id < 0, "Invalid Id value!");
             Id = id;
-            ValidationDomain(studentId, installmentsNumber, installmentsPrice);
+            ValidationDomain(studentId, installmentPrice, paymentDate, dueDate, installmentStatus, paymentMethod);
         }
-        public CourseInstallments()
+
+        public void UpdateDomain(long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
         {
-                
-        }
-        public void UpdateDomain(long studentId, long installmentsNumber, decimal installmentsPrice)
-        {
-            ValidationDomain(studentId, installmentsNumber, installmentsPrice);
+            ValidationDomain(studentId, installmentPrice, paymentDate, dueDate, installmentStatus, paymentMethod);
             UpdatedData = DateTime.Now;
         }
-        public void ValidationDomain(long studentId, long installmentsNumber, decimal installmentPrice)
+        public void ValidationDomain(long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
         {
             DomainExceptionValidation.When(studentId <= 0,
                "Invalid Student Id, Student Id is required!");
             StudentId = studentId;
-            DomainExceptionValidation.When(installmentsNumber <= 0,
-               "Invalid installments number, installments number is required!");
-            InstallmentsNumber = installmentsNumber;
 
             DomainExceptionValidation.When(installmentPrice <= 0,
                "Invalid Installment price, Installment price is required!");
             DomainExceptionValidation.When(installmentPrice >= 999999,
                 "Invalid Installment price, Installment price is too long, maximum $999998.00!");
             InstallmentPrice = installmentPrice;
+            
+            if (paymentDate.HasValue)
+            {
+                DomainExceptionValidation.When(paymentDate < DateTime.Today,
+                "Invalid Payment Date, Payment Date cannot be in the past!");
+                PaymentDate = paymentDate;
+            }
+
+            DomainExceptionValidation.When(dueDate < DateTime.Today,
+                "Invalid Due Date, Due Date cannot be in the past!");
+            DueDate = dueDate;
+
+            DomainExceptionValidation.When(installmentStatus != EInstallmentStatus.Pending &&
+                                           installmentStatus != EInstallmentStatus.Paid &&
+                                           installmentStatus != EInstallmentStatus.Overdue &&
+                                           installmentStatus != EInstallmentStatus.Cancelled &&
+                                           installmentStatus != EInstallmentStatus.Refunded &&
+                                           installmentStatus != EInstallmentStatus.Other,
+                "Invalid Installment Status, Invalid status provided!");
+            InstallmentStatus = installmentStatus;
+
+            DomainExceptionValidation.When(paymentMethod != EPaymentMethod.CreditCard &&
+                                           paymentMethod != EPaymentMethod.DebitCard &&
+                                           paymentMethod != EPaymentMethod.BankTransfer &&
+                                           paymentMethod != EPaymentMethod.PayPal &&
+                                           paymentMethod != EPaymentMethod.Cash &&
+                                           paymentMethod != EPaymentMethod.Check &&
+                                           paymentMethod != EPaymentMethod.Other,
+                "Invalid Payment Method, Invalid method provided!");
+            PaymentMethod = paymentMethod;
+
         }
     }
 }

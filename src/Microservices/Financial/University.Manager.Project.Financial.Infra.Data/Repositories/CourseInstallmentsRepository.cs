@@ -49,7 +49,7 @@ namespace University.Manager.Project.Financial.Infra.Data.Repositories
 
         public async Task<CourseInstallments> UpdateModelAsync(CourseInstallments entity)
         {
-            entity.UpdateDomain(entity.StudentId,entity.InstallmentsNumber, entity.InstallmentPrice);
+            entity.UpdateDomain(entity.StudentId, entity.InstallmentPrice, entity.PaymentDate, entity.DueDate, entity.InstallmentStatus, entity.PaymentMethod);
             entity.CreationData = _context.CourseInstallments.FirstAsync(x => x.Id == entity.Id).Result.CreationData;
 
             _context.ChangeTracker.Clear();

@@ -12,5 +12,6 @@ namespace University.Manager.Project.Financial.Domain.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> CreateModelAsync(T entity);
         Task<T> UpdateModelAsync(T entity);
+        Task<T> DeleteModelAsync(T entity);
     }
 }

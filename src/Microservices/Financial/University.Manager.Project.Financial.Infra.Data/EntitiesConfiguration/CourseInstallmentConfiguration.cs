@@ -14,11 +14,14 @@ namespace University.Manager.Project.Financial.Infra.Data.EntitiesConfiguration
         public void Configure(EntityTypeBuilder<CourseInstallments> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.StudentId).IsRequired();
-            builder.Property(x => x.InstallmentPrice).IsRequired().HasPrecision(10, 2);
-            builder.Property(x => x.InstallmentsNumber).IsRequired();
             builder.Property(x => x.CreationData).IsRequired();
             builder.Property(x => x.UpdatedData).IsRequired();
+            builder.Property(x => x.StudentId).IsRequired();
+            builder.Property(x => x.InstallmentPrice).IsRequired().HasPrecision(10, 2);
+            builder.Property(x => x.PaymentDate);
+            builder.Property(x => x.DueDate).IsRequired();
+            builder.Property(x => x.InstallmentStatus).IsRequired();
+            builder.Property(x => x.PaymentMethod).IsRequired();
         }
     }
 }

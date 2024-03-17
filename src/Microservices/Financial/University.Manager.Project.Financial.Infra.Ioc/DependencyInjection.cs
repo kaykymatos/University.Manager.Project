@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -7,6 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using University.Manager.Project.Financial.Application.DTOs.RequestDTOs;
+using University.Manager.Project.Financial.Application.Interfaces;
+using University.Manager.Project.Financial.Application.Mapping;
+using University.Manager.Project.Financial.Application.Services;
+using University.Manager.Project.Financial.Application.Validation;
 using University.Manager.Project.Financial.Domain.Interfaces;
 using University.Manager.Project.Financial.Infra.Data.Context;
 using University.Manager.Project.Financial.Infra.Data.Repositories;
@@ -33,9 +39,11 @@ namespace University.Manager.Project.Financial.Infra.Ioc
             x => x.MigrationsAssembly(typeof(ApplicationContext)
                .Assembly.FullName)));
 
+            services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
             services.AddScoped<ICourseInstallmentsRepository, CourseInstallmentsRepository>();
+            services.AddScoped<ICourseInstallmentsService, CourseInstallmentsService>();
+            services.AddTransient<IValidator<CourseInstallmentsRequestDTO>, CourseInstallmentsRequestDTOValidation>();
 
-           
             return services;
         }
     }
