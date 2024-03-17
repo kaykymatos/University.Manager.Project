@@ -15,7 +15,7 @@ namespace University.Manager.Project.Order.Application.DTOs.RequestDTOs
         }
         public OrderEntityRequestDTO()
         {
-                
+
         }
         public long Id { get; set; }
         public string Title { get; set; } = string.Empty;

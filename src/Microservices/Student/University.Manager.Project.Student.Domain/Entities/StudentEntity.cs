@@ -37,6 +37,7 @@ namespace University.Manager.Project.Student.Domain.Entities
             DomainExceptionValidation.When(courseId <= 0,
                 "Invalid Course Id, Course Id is required!");
             CourseId = courseId;
+
             DomainExceptionValidation.When(studentId <= 0,
                 "Invalid Student Id, Student Id is required!");
             StudentId = studentId;

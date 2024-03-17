@@ -19,6 +19,10 @@ namespace University.Manager.Project.Student.Application.Validation
             RuleFor(x => x.CourseId)
                .GreaterThan(0).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan)
                 .WithName("Course Id");
+
+            RuleFor(x => x.StudentId)
+               .GreaterThan(0).WithMessage(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan)
+                .WithName("Student Id");
         }
     }
 }
