@@ -1,10 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using University.Manager.Project.Financial.Domain.Entities.Enums;
+﻿using University.Manager.Project.Financial.Domain.Entities.Enums;
 using University.Manager.Project.Financial.Domain.Validation;
 
 namespace University.Manager.Project.Financial.Domain.Entities
@@ -23,7 +17,7 @@ namespace University.Manager.Project.Financial.Domain.Entities
 
         }
 
-        public CourseInstallments(long id,long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
+        public CourseInstallments(long id, long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
         {
             DomainExceptionValidation.When(id < 0, "Invalid Id value!");
             Id = id;
@@ -46,7 +40,7 @@ namespace University.Manager.Project.Financial.Domain.Entities
             DomainExceptionValidation.When(installmentPrice >= 999999,
                 "Invalid Installment price, Installment price is too long, maximum $999998.00!");
             InstallmentPrice = installmentPrice;
-            
+
             if (paymentDate.HasValue)
             {
                 DomainExceptionValidation.When(paymentDate < DateTime.Today,

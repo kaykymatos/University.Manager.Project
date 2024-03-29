@@ -6,9 +6,7 @@ namespace University.Manager.Project.Student.Domain.Test
 {
     public class StudentEntityTests
     {
-        public StudentEntityTests()
-        {
-        }
+
         [Fact]
         public void CreateStudentEntity_WithValidParameters_ResultObjectValidState()
         {
