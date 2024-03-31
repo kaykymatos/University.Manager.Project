@@ -41,14 +41,9 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
                 return Results.CreatedAtRoute("order", new { id = model.Id }, model);
             });
 
-            app.MapPut("api/v1/order/{id:long}", async ([FromRoute] long id, [FromBody] OrderEntityRequestDTO model, [FromServices] IOrderService _service, [FromServices] IValidator<OrderEntityRequestDTO> _validator) =>
+            app.MapPut("api/v1/order", async ( [FromBody] OrderEntityRequestDTO model, [FromServices] IOrderService _service, [FromServices] IValidator<OrderEntityRequestDTO> _validator) =>
             {
-                if (id != model.Id)
-                    return Results.BadRequest(
-                        new CustomValidationFailure("Id", "Id can't be different!").ToList()
-                            );
-
-                var modelFound = await _service.GetByIdAsync(id);
+                var modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)
                     return Results.NotFound(
                         new CustomValidationFailure("Id", "Id not found!").ToList());

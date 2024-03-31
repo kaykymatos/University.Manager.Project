@@ -10,11 +10,6 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-        [HttpGet]
         public IActionResult Edit()
         {
             return View();

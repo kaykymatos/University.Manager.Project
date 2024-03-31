@@ -41,14 +41,10 @@ namespace University.Manager.Project.Financial.Api.Endpoints.V1
                 return Results.CreatedAtRoute("financial", new { id = model.Id }, model);
             });
 
-            app.MapPut("api/v1/financial/{id:long}", async ([FromRoute] long id, [FromBody] CourseInstallmentsRequestDTO model, [FromServices] ICourseInstallmentsService _service, [FromServices] IValidator<CourseInstallmentsRequestDTO> _validator) =>
+            app.MapPut("api/v1/financial", async ([FromBody] CourseInstallmentsRequestDTO model, [FromServices] ICourseInstallmentsService _service, [FromServices] IValidator<CourseInstallmentsRequestDTO> _validator) =>
             {
-                if (id != model.Id)
-                    return Results.BadRequest(
-                        new CustomValidationFailure("Id", "Id can't be different!").ToList()
-                            );
 
-                var modelFound = await _service.GetByIdAsync(id);
+                var modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)
                     return Results.NotFound(
                         new CustomValidationFailure("Id", "Id not found!").ToList());

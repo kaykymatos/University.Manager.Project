@@ -57,19 +57,15 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 await _service.CreateModelAsync(model);
                 return Results.CreatedAtRoute("course", new { id = model.Id }, model);
             });
-            app.MapPut("api/v1/course/{id:long}", async ([FromRoute] long id, [FromBody] CourseEntityRequestDTO model, [FromServices] ICourseService _service, [FromServices] ICourseCategoryService _categoryService, [FromServices] IValidator<CourseEntityRequestDTO> _validator) =>
+            app.MapPut("api/v1/course", async ([FromBody] CourseEntityRequestDTO model, [FromServices] ICourseService _service, [FromServices] ICourseCategoryService _categoryService, [FromServices] IValidator<CourseEntityRequestDTO> _validator) =>
             {
-                if (id != model.Id)
-                    return Results.BadRequest(
-                        new CustomValidationFailure("Id", "Id can't by different!").ToList()
-                        );
                 var category = await _categoryService.GetByIdAsync(model.CourseCategoryId);
                 if (category == null)
                     return Results.BadRequest(
                         new CustomValidationFailure("CategoryId", "Category Id not found!").ToList()
                                );
 
-                var modelFound = await _service.GetByIdAsync(id);
+                var modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)
                     return Results.NotFound(new CustomValidationFailure("Id", "Course not found!").ToList());
 

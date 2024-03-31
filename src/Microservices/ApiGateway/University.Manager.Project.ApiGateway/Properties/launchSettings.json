@@ -1,28 +1,27 @@
 ﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:34177",
-      "sslPort": 44346
+      "applicationUrl": "http://localhost:16437",
+      "sslPort": 4480
     }
   },
   "profiles": {
-    "University.Manager.Project.Course.Api": {
+    "University.Manager.Project.ApiGateway": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:4410;http://localhost:4411",
+      "hotReloadProfile": "aspnetcore",
+      "applicationUrl": "https://localhost:4480;http://localhost:4481",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "IIS Express": {
-      "commandName": "IISExpress",
+      "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:4482/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
