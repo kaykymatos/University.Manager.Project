@@ -41,9 +41,9 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 return Results.CreatedAtRoute("courseCategory", new { id = model.Id }, model);
             });
 
-            app.MapPut("api/v1/courseCategory", async ( [FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service, [FromServices] IValidator<CourseCategoryRequestDTO> _validator) =>
+            app.MapPut("api/v1/courseCategory", async ([FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service, [FromServices] IValidator<CourseCategoryRequestDTO> _validator) =>
             {
-               
+
                 var modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)
                     return Results.NotFound(

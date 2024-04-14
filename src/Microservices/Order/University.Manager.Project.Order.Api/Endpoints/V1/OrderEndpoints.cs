@@ -41,7 +41,7 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
                 return Results.CreatedAtRoute("order", new { id = model.Id }, model);
             });
 
-            app.MapPut("api/v1/order", async ( [FromBody] OrderEntityRequestDTO model, [FromServices] IOrderService _service, [FromServices] IValidator<OrderEntityRequestDTO> _validator) =>
+            app.MapPut("api/v1/order", async ([FromBody] OrderEntityRequestDTO model, [FromServices] IOrderService _service, [FromServices] IValidator<OrderEntityRequestDTO> _validator) =>
             {
                 var modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)

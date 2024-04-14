@@ -21,7 +21,7 @@ namespace University.Manager.Project.Course.Application.Validation
                 .MaximumLength(200).WithMessage(BaseValidationErrorMessages.FieldMaxLenght)
                 .Matches("^[a-zA-Z0-9 ]*$").WithMessage(BaseValidationErrorMessages.FieldWithSpecialCharacters)
                 .WithName("Description");
-            
+
         }
     }
 }
