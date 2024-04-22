@@ -35,6 +35,15 @@ IIdentityServerBuilder builderServices = builder.Services.AddIdentityServer(opti
     .AddInMemoryClients(IdentityConfiguration.Clients)
     .AddDeveloperSigningCredential();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.Cookie.Name = "IdetityCookies";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    options.SlidingExpiration = true;
+});
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddRazorPages();

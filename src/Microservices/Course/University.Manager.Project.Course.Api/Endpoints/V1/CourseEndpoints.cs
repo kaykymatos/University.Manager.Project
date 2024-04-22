@@ -16,7 +16,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (listModel.Any())
                     return Results.Ok(listModel);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapGet("api/v1/course/{id:long}", async ([FromRoute] long id, [FromServices] ICourseService _service) =>
             {
                 if (id <= 0)
@@ -26,7 +26,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (modelFound != null)
                     return Results.Ok(modelFound);
                 return Results.NotFound();
-            }).WithName("course");
+            }).RequireAuthorization().WithName("course");
 
             app.MapGet("api/v1/course/category/{id:long}", async ([FromRoute] long id, [FromServices] ICourseService _service) =>
             {
@@ -39,7 +39,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (modelFound.Any())
                     return Results.Ok(modelFound);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapPost("api/v1/course", async ([FromBody] CourseEntityRequestDTO model, [FromServices] ICourseService _service, [FromServices] ICourseCategoryService _categoryService, [FromServices] IValidator<CourseEntityRequestDTO> _validator) =>
             {
                 if (model == null)
@@ -56,7 +56,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
 
                 await _service.CreateModelAsync(model);
                 return Results.CreatedAtRoute("course", new { id = model.Id }, model);
-            });
+            }).RequireAuthorization();
             app.MapPut("api/v1/course", async ([FromBody] CourseEntityRequestDTO model, [FromServices] ICourseService _service, [FromServices] ICourseCategoryService _categoryService, [FromServices] IValidator<CourseEntityRequestDTO> _validator) =>
             {
                 var category = await _categoryService.GetByIdAsync(model.CourseCategoryId);
@@ -75,7 +75,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
 
                 await _service.UpdateModelAsync(model);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapDelete("api/v1/course/{id:long}", async ([FromRoute] long id, [FromServices] ICourseService _service) =>
             {
                 if (id <= 0)
@@ -90,7 +90,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 await _service.DeleteModelAsync(modelFound);
 
                 return Results.Ok(modelFound);
-            });
+            }).RequireAuthorization();
             return app;
         }
     }

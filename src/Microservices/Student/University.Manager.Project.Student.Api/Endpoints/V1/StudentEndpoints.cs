@@ -16,7 +16,7 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
                 if (listModel.Any())
                     return Results.Ok(listModel);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapGet("api/v1/student/{id:long}", async ([FromRoute] long id, [FromServices] IStudentService _service) =>
             {
                 if (id <= 0)
@@ -26,7 +26,7 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
                 if (modelFound != null)
                     return Results.Ok(modelFound);
                 return Results.NotFound();
-            }).WithName("student");
+            }).RequireAuthorization().WithName("student");
 
             app.MapPost("api/v1/student", async ([FromBody] StudentEntityRequestDTO model, [FromServices] IStudentService _service, [FromServices] IValidator<StudentEntityRequestDTO> _validator) =>
             {
@@ -39,7 +39,7 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
 
                 await _service.CreateModelAsync(model);
                 return Results.CreatedAtRoute("student", new { id = model.Id }, model);
-            });
+            }).RequireAuthorization();
 
             app.MapPut("api/v1/student", async ([FromBody] StudentEntityRequestDTO model, [FromServices] IStudentService _service, [FromServices] IValidator<StudentEntityRequestDTO> _validator) =>
             {
@@ -55,7 +55,7 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
 
                 await _service.UpdateModelAsync(model);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapDelete("api/v1/student/{id:long}", async ([FromRoute] long id, [FromServices] IStudentService _service) =>
             {
                 if (id <= 0)
@@ -70,7 +70,7 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
                 await _service.DeleteModelAsync(modelFound);
 
                 return Results.Ok(modelFound);
-            });
+            }).RequireAuthorization();
             return app;
         }
     }

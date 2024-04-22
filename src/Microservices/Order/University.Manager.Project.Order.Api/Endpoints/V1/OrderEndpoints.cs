@@ -16,7 +16,7 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
                 if (listModel.Any())
                     return Results.Ok(listModel);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapGet("api/v1/order/{id:long}", async ([FromRoute] long id, [FromServices] IOrderService _service) =>
             {
                 if (id <= 0)
@@ -26,7 +26,7 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
                 if (modelFound != null)
                     return Results.Ok(modelFound);
                 return Results.NotFound();
-            }).WithName("order");
+            }).RequireAuthorization().WithName("order");
 
             app.MapPost("api/v1/order", async ([FromBody] OrderEntityRequestDTO model, [FromServices] IOrderService _service, [FromServices] IValidator<OrderEntityRequestDTO> _validator) =>
             {
@@ -39,7 +39,7 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
 
                 await _service.CreateModelAsync(model);
                 return Results.CreatedAtRoute("order", new { id = model.Id }, model);
-            });
+            }).RequireAuthorization();
 
             app.MapPut("api/v1/order", async ([FromBody] OrderEntityRequestDTO model, [FromServices] IOrderService _service, [FromServices] IValidator<OrderEntityRequestDTO> _validator) =>
             {
@@ -54,7 +54,7 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
 
                 await _service.UpdateModelAsync(model);
                 return Results.NoContent();
-            });
+            }).RequireAuthorization();
             app.MapDelete("api/v1/order/{id:long}", async ([FromRoute] long id, [FromServices] IOrderService _service) =>
             {
                 if (id <= 0)
@@ -69,7 +69,7 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
                 await _service.DeleteModelAsync(modelFound);
 
                 return Results.Ok(modelFound);
-            });
+            }).RequireAuthorization();
             return app;
         }
     }

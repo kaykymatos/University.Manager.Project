@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
     public class StudentController : Controller
     {
         [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
             return View();

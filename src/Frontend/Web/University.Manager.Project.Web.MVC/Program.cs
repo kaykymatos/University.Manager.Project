@@ -1,8 +1,30 @@
+using Microsoft.AspNetCore.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "oidc";
 
+})
+    .AddCookie("Cookies", x => x.ExpireTimeSpan = TimeSpan.FromMinutes(10))
+    .AddOpenIdConnect("oidc", options =>
+    {
+        options.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.ClientId = "university";
+        options.ClientSecret = "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh";
+        options.ResponseType = "code";
+        options.ClaimActions.MapJsonKey("role", "role", "role");
+        options.ClaimActions.MapJsonKey("sub", "sub", "sub");
+        options.TokenValidationParameters.NameClaimType = "name";
+        options.TokenValidationParameters.RoleClaimType = "role";
+        options.Scope.Add("university");
+        options.SaveTokens = true;
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,6 +40,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
