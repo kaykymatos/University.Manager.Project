@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using University.Manager.Project.Course.Api.Validation.ErrorMessages;
 using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
+using University.Manager.Project.Course.Application.Validation.ErrorMessages;
 
 namespace University.Manager.Project.Course.Application.Validation
 {

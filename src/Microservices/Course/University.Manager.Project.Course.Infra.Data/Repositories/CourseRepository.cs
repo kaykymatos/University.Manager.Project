@@ -43,7 +43,7 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
 
         public async Task<IEnumerable<CourseEntity>> GetCourseByCategoryId(long categoryId)
         {
-            var listModel = await _context.Courses.Where(x => x.CourseCategoryId == categoryId).ToListAsync();
+            List<CourseEntity> listModel = await _context.Courses.Where(x => x.CourseCategoryId == categoryId).ToListAsync();
             return listModel;
         }
 

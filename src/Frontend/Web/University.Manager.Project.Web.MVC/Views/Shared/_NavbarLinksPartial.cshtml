@@ -1,0 +1,35 @@
+﻿<ul class="navbar-nav flex-grow-1">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="CourseCategory" asp-action="Index">Course categories</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Course" asp-action="Index">Courses</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="CourseInstallment" asp-action="Index">Course Installments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Order" asp-action="Index">Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Student" asp-action="Index">Students</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </li>
+    }
+</ul>

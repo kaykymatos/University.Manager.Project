@@ -12,7 +12,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
         {
             app.MapGet("api/v1/courseCategory", async ([FromServices] ICourseCategoryService _service) =>
             {
-                var listModel = await _service.GetAllAsync();
+                IEnumerable<Application.DTOs.CourseCategoryDTO> listModel = await _service.GetAllAsync();
                 if (listModel.Any())
                     return Results.Ok(listModel);
                 return Results.NoContent();
@@ -22,7 +22,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (id <= 0)
                     return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
 
-                var modelFound = await _service.GetByIdAsync(id);
+                Application.DTOs.CourseCategoryDTO modelFound = await _service.GetByIdAsync(id);
                 if (modelFound != null)
                     return Results.Ok(modelFound);
                 return Results.NotFound();
@@ -33,7 +33,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 if (model == null)
                     return Results.BadRequest("Invalid Data!");
 
-                var validationModel = _validator.Validate(model);
+                FluentValidation.Results.ValidationResult validationModel = _validator.Validate(model);
                 if (!validationModel.IsValid)
                     return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
 
@@ -44,12 +44,12 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
             app.MapPut("api/v1/courseCategory", async ([FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service, [FromServices] IValidator<CourseCategoryRequestDTO> _validator) =>
             {
 
-                var modelFound = await _service.GetByIdAsync(model.Id);
+                Application.DTOs.CourseCategoryDTO modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)
                     return Results.NotFound(
                         new CustomValidationFailure("Id", "Id not found!").ToList());
 
-                var validationModel = _validator.Validate(model);
+                FluentValidation.Results.ValidationResult validationModel = _validator.Validate(model);
                 if (!validationModel.IsValid)
                     return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
 
@@ -62,7 +62,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                     return Results.BadRequest(
                         new CustomValidationFailure("Id", "Invalid Id!").ToList());
 
-                var modelFound = await _service.GetByIdAsync(id);
+                Application.DTOs.CourseCategoryDTO modelFound = await _service.GetByIdAsync(id);
                 if (modelFound == null)
                     return Results.NotFound(
                         new CustomValidationFailure("Id", "Id not found!").ToList());

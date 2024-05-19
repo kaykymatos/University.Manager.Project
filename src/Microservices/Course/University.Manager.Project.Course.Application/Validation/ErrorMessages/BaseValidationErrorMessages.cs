@@ -1,4 +1,4 @@
-﻿namespace University.Manager.Project.Course.Api.Validation.ErrorMessages
+﻿namespace University.Manager.Project.Course.Application.Validation.ErrorMessages
 {
     public class BaseValidationErrorMessages
     {

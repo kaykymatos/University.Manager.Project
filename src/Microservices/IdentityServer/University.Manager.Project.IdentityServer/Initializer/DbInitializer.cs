@@ -1,9 +1,8 @@
-﻿using University.Manager.Project.IdentityServer;
+﻿using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using University.Manager.Project.IdentityServer.Data;
-using IdentityModel;
 using University.Manager.Project.IdentityServer.Configuration;
+using University.Manager.Project.IdentityServer.Data;
 
 namespace University.Manager.Project.IdentityServer.Initializer
 {
@@ -76,7 +75,7 @@ namespace University.Manager.Project.IdentityServer.Initializer
                 new (JwtClaimTypes.Role, IdentityConfiguration.Student)
             ]).Result;
 
-            ApplicationUser employer= new()
+            ApplicationUser employer = new()
             {
                 UserName = "kayky-employer",
                 Email = "kayky-employer@gmail.com",

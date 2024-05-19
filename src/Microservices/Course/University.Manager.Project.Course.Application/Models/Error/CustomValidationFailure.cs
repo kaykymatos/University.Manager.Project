@@ -11,10 +11,10 @@
         }
         public IList<CustomValidationFailure> ToList()
         {
-            return new List<CustomValidationFailure>()
-            {
+            return
+            [
                 new CustomValidationFailure(PropertyName, ErrorMessage),
-            };
+            ];
         }
     }
 }

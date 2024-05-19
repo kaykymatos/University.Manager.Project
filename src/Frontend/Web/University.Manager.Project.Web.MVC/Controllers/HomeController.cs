@@ -6,7 +6,7 @@ using University.Manager.Project.Web.MVC.Models;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

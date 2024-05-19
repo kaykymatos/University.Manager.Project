@@ -12,7 +12,7 @@ namespace University.Manager.Project.Financial.Application.Test
 
         public CourseInstallmentsRequestDTOTests()
         {
-            var provider = new ServiceCollection()
+            ServiceProvider provider = new ServiceCollection()
                 .AddTransient<CourseInstallmentsRequestDTOValidation>()
                 .BuildServiceProvider();
 
@@ -22,8 +22,8 @@ namespace University.Manager.Project.Financial.Application.Test
         [Fact]
         public async Task CreateStudentWithValidParameters()
         {
-            var instance = _builder.Build();
-            var validation = await _validator.ValidateAsync(instance);
+            DTOs.RequestDTOs.CourseInstallmentsRequestDTO instance = _builder.Build();
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(instance);
             Assert.True(validation.IsValid);
         }
 
@@ -33,8 +33,8 @@ namespace University.Manager.Project.Financial.Application.Test
         [Fact]
         public async Task CreateCourseInstallment_WithInvalidStudentId_ResultStudentIdMustBeGreterThan()
         {
-            var instance = _builder.With(x => x.StudentId = 0).Build();
-            var validation = await _validator.ValidateAsync(instance);
+            DTOs.RequestDTOs.CourseInstallmentsRequestDTO instance = _builder.With(x => x.StudentId = 0).Build();
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(instance);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Student Id").Replace("{ComparisonValue}", "0")));
 
@@ -42,8 +42,8 @@ namespace University.Manager.Project.Financial.Application.Test
         [Fact]
         public async Task CreateCourseInstallment_WithInvalidInstallmentPrice_ResultStudentIdMustBeGreaterThan()
         {
-            var instance = _builder.With(x => x.InstallmentPrice = 0).Build();
-            var validation = await _validator.ValidateAsync(instance);
+            DTOs.RequestDTOs.CourseInstallmentsRequestDTO instance = _builder.With(x => x.InstallmentPrice = 0).Build();
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(instance);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Installment Price").Replace("{ComparisonValue}", "0")));
 
@@ -51,8 +51,8 @@ namespace University.Manager.Project.Financial.Application.Test
         [Fact]
         public async Task CreateCourseInstallment_WithInvalidInstallmentPrice_ResultStudentIdMustBeLessThan()
         {
-            var instance = _builder.With(x => x.InstallmentPrice = 100000000).Build();
-            var validation = await _validator.ValidateAsync(instance);
+            DTOs.RequestDTOs.CourseInstallmentsRequestDTO instance = _builder.With(x => x.InstallmentPrice = 100000000).Build();
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(instance);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeLessThan.Replace("{PropertyName}", "Installment Price").Replace("{ComparisonValue}", "999999")));
 
@@ -62,8 +62,8 @@ namespace University.Manager.Project.Financial.Application.Test
         [Fact]
         public async Task CreateCourseInstallment_WithInvalidDueDate_ResultDueDateMustBeLessThanToday()
         {
-            var instance = _builder.With(x => x.DueDate = DateTime.Today.AddDays(-2)).Build();
-            var validation = await _validator.ValidateAsync(instance);
+            DTOs.RequestDTOs.CourseInstallmentsRequestDTO instance = _builder.With(x => x.DueDate = DateTime.Today.AddDays(-2)).Build();
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(instance);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains("The filed Due Date must bee greater today!"));
 

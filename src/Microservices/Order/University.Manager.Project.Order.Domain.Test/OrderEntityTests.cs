@@ -1,5 +1,4 @@
-
-namespace University.Manager.Project.Order.Domain.Tests
+namespace University.Manager.Project.Order.Domain.Test
 {
     public class OrderEntityTests
     {

@@ -20,25 +20,25 @@ namespace University.Manager.Project.Order.Application.Services
 
         public async Task CreateModelAsync(OrderEntityRequestDTO entity)
         {
-            var model = _mapper.Map<OrderEntity>(entity);
+            OrderEntity model = _mapper.Map<OrderEntity>(entity);
 
-            var createModel = await _orderRepository.CreateModelAsync(model);
+            OrderEntity createModel = await _orderRepository.CreateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on create a new Order");
         }
 
         public async Task DeleteModelAsync(OrderEntityDTO entity)
         {
-            var model = _mapper.Map<OrderEntity>(entity);
+            OrderEntity model = _mapper.Map<OrderEntity>(entity);
 
-            var deleteModel = await _orderRepository.DeleteModelAsync(model);
+            OrderEntity deleteModel = await _orderRepository.DeleteModelAsync(model);
             if (deleteModel == null)
                 throw new ApplicationException("Error on delete a Order");
         }
 
         public async Task<IEnumerable<OrderEntityDTO>> GetAllAsync()
         {
-            var listOrders = await _orderRepository.GetAllAsync();
+            IEnumerable<OrderEntity> listOrders = await _orderRepository.GetAllAsync();
             return listOrders == null ?
                 throw new ApplicationException("Error on list a Orders")
                 : _mapper.Map<IEnumerable<OrderEntityDTO>>(listOrders);
@@ -46,14 +46,14 @@ namespace University.Manager.Project.Order.Application.Services
 
         public async Task<OrderEntityDTO> GetByIdAsync(long id)
         {
-            var model = await _orderRepository.GetByIdAsync(id);
+            OrderEntity model = await _orderRepository.GetByIdAsync(id);
             return _mapper.Map<OrderEntityDTO>(model);
         }
         public async Task UpdateModelAsync(OrderEntityRequestDTO entity)
         {
-            var model = _mapper.Map<OrderEntity>(entity);
+            OrderEntity model = _mapper.Map<OrderEntity>(entity);
 
-            var createModel = await _orderRepository.UpdateModelAsync(model);
+            OrderEntity createModel = await _orderRepository.UpdateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on delete a Order");
 

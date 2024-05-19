@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
+using University.Manager.Project.Web.MVC.Interfaces;
+using University.Manager.Project.Web.MVC.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -25,7 +27,28 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("university");
         options.SaveTokens = true;
     });
-var app = builder.Build();
+builder.Services.AddHttpClient<ICourseCategoryService, CourseCategoryService>(x =>
+{
+    x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
+});
+builder.Services.AddHttpClient<ICourseInstallmentService, CourseInstallmentService>(x =>
+{
+    x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
+});
+builder.Services.AddHttpClient<ICourseService, CourseService>(x =>
+{
+    x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
+});
+builder.Services.AddHttpClient<IOrderService, OrderService>(x =>
+{
+    x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
+});
+builder.Services.AddHttpClient<IStudentService, StudentService>(x =>
+{
+    x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
+});
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

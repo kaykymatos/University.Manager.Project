@@ -19,25 +19,25 @@ namespace University.Manager.Project.Financial.Application.Services
         }
         public async Task CreateModelAsync(CourseInstallmentsRequestDTO entity)
         {
-            var model = _mapper.Map<CourseInstallments>(entity);
+            CourseInstallments model = _mapper.Map<CourseInstallments>(entity);
 
-            var createModel = await _courseInstallmentRepository.CreateModelAsync(model);
+            CourseInstallments createModel = await _courseInstallmentRepository.CreateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on create a new CourseInstallment");
         }
 
         public async Task DeleteModelAsync(CourseInstallmentsDTO entity)
         {
-            var model = _mapper.Map<CourseInstallments>(entity);
+            CourseInstallments model = _mapper.Map<CourseInstallments>(entity);
 
-            var deleteModel = await _courseInstallmentRepository.DeleteModelAsync(model);
+            CourseInstallments deleteModel = await _courseInstallmentRepository.DeleteModelAsync(model);
             if (deleteModel == null)
                 throw new ApplicationException("Error on delete a CourseInstallment");
         }
 
         public async Task<IEnumerable<CourseInstallmentsDTO>> GetAllAsync()
         {
-            var listCourseInstallments = await _courseInstallmentRepository.GetAllAsync();
+            IEnumerable<CourseInstallments> listCourseInstallments = await _courseInstallmentRepository.GetAllAsync();
             return listCourseInstallments == null ?
                 throw new ApplicationException("Error on list a CourseInstallments")
                 : _mapper.Map<IEnumerable<CourseInstallmentsDTO>>(listCourseInstallments);
@@ -45,14 +45,14 @@ namespace University.Manager.Project.Financial.Application.Services
 
         public async Task<CourseInstallmentsDTO> GetByIdAsync(long id)
         {
-            var model = await _courseInstallmentRepository.GetByIdAsync(id);
+            CourseInstallments model = await _courseInstallmentRepository.GetByIdAsync(id);
             return _mapper.Map<CourseInstallmentsDTO>(model);
         }
         public async Task UpdateModelAsync(CourseInstallmentsRequestDTO entity)
         {
-            var model = _mapper.Map<CourseInstallments>(entity);
+            CourseInstallments model = _mapper.Map<CourseInstallments>(entity);
 
-            var createModel = await _courseInstallmentRepository.UpdateModelAsync(model);
+            CourseInstallments createModel = await _courseInstallmentRepository.UpdateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on delete a CourseInstallment");
 

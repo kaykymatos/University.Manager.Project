@@ -15,8 +15,8 @@ namespace University.Manager.Project.Order.Application.Test
         [Fact]
         public async Task CreateOrderEntityRequestDTO_WithValidParameters_ResultObjectValidState()
         {
-            var model = new OrderEntityRequestDTO(1, "Teste", "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            OrderEntityRequestDTO model = new OrderEntityRequestDTO(1, "Teste", "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.True(validation.IsValid);
         }
 
@@ -25,36 +25,36 @@ namespace University.Manager.Project.Order.Application.Test
         [InlineData("ab")]
         public async Task CreateOrderEntityRequestDTO_ShortTitle_DomainExceptionShortTitle(string title)
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, title, "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Title").Replace("{MinLength}", "3")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_NullTitle_DomainExceptionTitleIsRequired()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, null, "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNull.Replace("{PropertyName}", "Title")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_EmptyTitle_DomainExceptionTitleIsRequired()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, string.Empty, "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Title").Replace("{MinLength}", "3")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_EmptyStringTitle_DomainExceptionTitleIsRequired()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, "", "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Title").Replace("{MinLength}", "3")));
         }
@@ -62,9 +62,9 @@ namespace University.Manager.Project.Order.Application.Test
         [Fact]
         public async Task CreateOrderEntityRequestDTO_GreaterThanTitle_DomainExceptionGreaterThanTitle()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, "teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste", "Teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMaxLenght.Replace("{PropertyName}", "Title").Replace("{MaxLength}", "200")));
         }
@@ -73,36 +73,36 @@ namespace University.Manager.Project.Order.Application.Test
         [InlineData("ab")]
         public async Task CreateOrderEntityRequestDTO_ShortMessage_DomainExceptionShortMessage(string message)
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, "Teste", message, "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Message").Replace("{MinLength}", "3")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_NullMessage_DomainExceptionMessageIsRequired()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, "Teste", null, "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNull.Replace("{PropertyName}", "Message")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_EmptyMessage_DomainExceptionMessageIsRequired()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, "Teste", string.Empty, "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Message").Replace("{MinLength}", "3")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_EmptyStringMessage_DomainExceptionMessageIsRequired()
         {
-            var model =
+            OrderEntityRequestDTO model =
             new OrderEntityRequestDTO(1, "Teste", "", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Message").Replace("{MinLength}", "3")));
         }
@@ -110,18 +110,18 @@ namespace University.Manager.Project.Order.Application.Test
         [Fact]
         public async Task CreateOrderEntityRequestDTO_GreaterThanMessage_DomainExceptionGreaterThanMessage()
         {
-            var model =
+            OrderEntityRequestDTO model =
              new OrderEntityRequestDTO(1, "Teste", "teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste", "", ETypeOrder.GENERAL_PROBLEM, 1);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMaxLenght.Replace("{PropertyName}", "Message").Replace("{MaxLength}", "200")));
         }
         [Fact]
         public async Task CreateOrderEntityRequestDTO_UserIdLessThan_DomainExceptionUserIdLessThan()
         {
-            var model =
+            OrderEntityRequestDTO model =
             new OrderEntityRequestDTO(1, "Teste", "Teste", "", ETypeOrder.GENERAL_PROBLEM, 0);
-            var validation = await _validator.ValidateAsync(model);
+            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "UserId").Replace("{ComparisonValue}", "0")));
         }
