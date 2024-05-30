@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-University.Manager.Project.IdentityServer-918c114b-6266-485b-b1f2-7f23019c7fd7</UserSecretsId>
   </PropertyGroup>

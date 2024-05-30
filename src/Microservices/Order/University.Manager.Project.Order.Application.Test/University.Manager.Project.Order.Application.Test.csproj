@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.3" />
+	  <PackageReference Include="NBuilder" Version="6.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -25,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\University.Manager.Project.Order.Application\University.Manager.Project.Order.Application.csproj" />
+    <ProjectReference Include="..\University.Manager.Project.Order.Infra.Ioc\University.Manager.Project.Order.Infra.Ioc.csproj" />
   </ItemGroup>
 
 </Project>

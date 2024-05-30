@@ -12,12 +12,10 @@ namespace University.Manager.Project.Financial.Application.Test
 
         public CourseInstallmentsRequestDTOTests()
         {
-            ServiceProvider provider = new ServiceCollection()
-                .AddTransient<CourseInstallmentsRequestDTOValidation>()
-                .BuildServiceProvider();
-
             _builder = new CourseInstallmentsRequestDTOBuilder();
-            _validator = provider.GetService<CourseInstallmentsRequestDTOValidation>();
+            _validator = new ServiceCollection()
+                .AddTransient<CourseInstallmentsRequestDTOValidation>()
+                .BuildServiceProvider().GetService<CourseInstallmentsRequestDTOValidation>();
         }
         [Fact]
         public async Task CreateStudentWithValidParameters()
