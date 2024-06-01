@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Common;
 using University.Manager.Project.Web.MVC.Interfaces;
 using University.Manager.Project.Web.MVC.Models;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
     [Authorize]
-    public class StudentController : BaseController
+    public class StudentController(IStudentService service, ICourseCategoryService categoryService) : BaseController
     {
-        private readonly IStudentService _service;
+        private readonly IStudentService _service = service;
+        private readonly ICourseCategoryService _categoryService = categoryService;
 
-        public StudentController(IStudentService service)
-        {
-            _service = service;
-        }
         public async Task<ActionResult> Index()
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -28,8 +27,12 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return View(await _service.FindById(id, token));
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            string token = await HttpContext.GetTokenAsync("access_token");
+            var courses = await _categoryService.FindAll(token);
+            ViewBag.CourseId = new SelectList(courses, "Id", "Name");
+
             return View();
         }
 
@@ -40,39 +43,52 @@ namespace University.Manager.Project.Web.MVC.Controllers
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> createModel = await _service.Create(model, token);
             if (createModel.Any())
+            {
+                var courses = await _categoryService.FindAll(token);
+                ViewBag.CourseId = new SelectList(courses, "Id", "Name");
+
                 return View(ModelStateError(model, createModel));
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            var courses = await _categoryService.FindAll(token);
+            ViewBag.CourseId = new SelectList(courses, "Id", "Name");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, StudentViewModel model)
+        public async Task<ActionResult> Edit(StudentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> updateModel = await _service.Update(model, token);
             if (updateModel.Any())
-                return View(ModelStateError(model, updateModel));
+            {
+                var courses = await _categoryService.FindAll(token);
+                ViewBag.CourseId = new SelectList(courses, "Id", "Name");
 
+                return View(ModelStateError(model, updateModel));
+            }
             return RedirectToAction(nameof(Index));
 
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, StudentViewModel model)
+        public async Task<ActionResult> Delete(StudentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            bool deleteModel = await _service.DeleteById(id, token);
+            bool deleteModel = await _service.DeleteById(model.Id, token);
             if (deleteModel)
                 return RedirectToAction(nameof(Index));
 

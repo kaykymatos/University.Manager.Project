@@ -32,7 +32,6 @@ namespace University.Manager.Project.Order.Api.Endpoints.V1
             {
                 if (model == null)
                     return Results.BadRequest("Invalid Data!");
-
                 FluentValidation.Results.ValidationResult validationModel = _validator.Validate(model);
                 if (!validationModel.IsValid)
                     return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());

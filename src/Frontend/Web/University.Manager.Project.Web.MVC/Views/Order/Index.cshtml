@@ -1,77 +1,115 @@
-﻿@model IEnumerable<University.Manager.Project.Web.MVC.Models.OrderViewModel>
+﻿@using University.Manager.Project.Web.MVC.Interfaces
+@model IEnumerable<University.Manager.Project.Web.MVC.Models.OrderViewModel>
 
 @{
     ViewData["Title"] = "Index";
+    var studets = ViewBag.Students as IEnumerable<StudentViewModel>;
+    static string VerifyAttatchmentType(string? base64String)
+    {
+        if (string.IsNullOrWhiteSpace(base64String))
+            return "application/octet-stream";
+        var data = base64String.Substring(0, 5);
+        switch (data.ToUpper())
+        {
+            case "IVBOR":
+                return "image/png";
+            case "/9J/4":
+                return "image/jpeg";
+            case "AAAAF":
+                return "video/mp4";
+            case "JVBER":
+                return "application/pdf";
+            case "AAABA":
+                return "image/x-icon";
+            case "UMFYI":
+                return "application/x-rar-compressed";
+            case "E1XYD":
+                return "application/rtf";
+            case "U1PKC":
+                return "text/plain";
+            case "MQOWM":
+            case "77U/M":
+                return "text/plain"; // Por exemplo, legendas de vídeo (srt)
+            default:
+                return string.Empty;
+        }
+
+    }
 }
 
-<h1>Index</h1>
+<div class="container">
+    <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Attachment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Attachment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Creation Data
+                </th>
+                <th>
+                    Updated Data
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Message
+                </th>
+                <th>
+                    Attachment
+                </th>
+                <th>
+                    Order Type
+                </th>
+                <th>
+                    Student
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationData)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdatedData)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td>
+                        <img width="100%" src="data:@VerifyAttatchmentType(item.Attachment);base64,@item.Attachment" alt="Img Attachment" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderType)
+                    </td>
+                    <td>
+                        @Html.Raw(studets.FirstOrDefault(x => x.Id == item.UserId).Name)
+
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

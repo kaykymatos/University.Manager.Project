@@ -45,17 +45,19 @@ namespace University.Manager.Project.Order.Application.Validation
         {
             if (string.IsNullOrWhiteSpace(base64String))
                 return false;
-
-            string header = ObterHeader(base64String);
-
-            if (header.StartsWith("JVBERi0xLj") || header.StartsWith("%PDF-"))
-                return true;
-            else if (header.StartsWith("/9j/") || header.StartsWith("ÿØÿÛ"))
-                return true;
-            else if (header.StartsWith("iVBORw0KGgo="))
-                return true;
-            else
-                return false;
+            var data = base64String.Substring(0, 5);
+            switch (data.ToUpper())
+            {
+                case "IVBOR":
+                    return true;
+                case "/9J/4":
+                    return true;
+              
+                case "JVBER":
+                    return true;
+                default:
+                    return false;
+            }
 
         }
 

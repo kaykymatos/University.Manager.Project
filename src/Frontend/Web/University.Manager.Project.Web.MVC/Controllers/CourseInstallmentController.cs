@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Common;
 using University.Manager.Project.Web.MVC.Interfaces;
 using University.Manager.Project.Web.MVC.Models;
+using University.Manager.Project.Web.MVC.Models.Enums;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
     [Authorize]
-    public class CourseInstallmentController : BaseController
+    public class CourseInstallmentController(ICourseInstallmentService service, IStudentService studentService) : BaseController
     {
-        private readonly ICourseInstallmentService _service;
-
-        public CourseInstallmentController(ICourseInstallmentService service)
-        {
-            _service = service;
-        }
+        private readonly ICourseInstallmentService _service = service;
+        private readonly IStudentService _studentService = studentService;
 
         public async Task<ActionResult> Index()
         {
@@ -29,8 +28,30 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return View(await _service.FindById(id, token));
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            string token = await HttpContext.GetTokenAsync("access_token");
+
+            var students = await _studentService.FindAll(token);
+            ViewBag.InstallmentStatus = Enum.GetValues(typeof(EInstallmentStatus))
+                                       .Cast<EInstallmentStatus>()
+                                       .Select(e => new SelectListItem
+                                       {
+                                           Value = ((int)e).ToString(),
+                                           Text = e.ToString()
+                                       })
+                                       .ToList();
+
+            ViewBag.PaymentMethod = Enum.GetValues(typeof(EInstallmentStatus))
+                                     .Cast<EPaymentMethod>()
+                                     .Select(e => new SelectListItem
+                                     {
+                                         Value = ((int)e).ToString(),
+                                         Text = e.ToString()
+                                     })
+                                     .ToList();
+            ViewBag.StudentsId = new SelectList(students, "Id", "Name");
+
             return View();
         }
 
@@ -41,39 +62,87 @@ namespace University.Manager.Project.Web.MVC.Controllers
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> createModel = await _service.Create(model, token);
             if (createModel.Any())
+            {
+                var students = await _studentService.FindAll(token);
+                ViewBag.InstallmentStatus = Enum.GetValues(typeof(EInstallmentStatus))
+                                           .Cast<EInstallmentStatus>()
+                                           .Select(e => new SelectListItem
+                                           {
+                                               Value = ((int)e).ToString(),
+                                               Text = e.ToString()
+                                           })
+                                           .ToList();
+
+                ViewBag.PaymentMethod = Enum.GetValues(typeof(EInstallmentStatus))
+                                         .Cast<EPaymentMethod>()
+                                         .Select(e => new SelectListItem
+                                         {
+                                             Value = ((int)e).ToString(),
+                                             Text = e.ToString()
+                                         })
+                                         .ToList();
+                ViewBag.StudentsId = new SelectList(students, "Id", "Name");
+
                 return View(ModelStateError(model, createModel));
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+           
+            var students = await _studentService.FindAll(token);
+            ViewBag.StudentsId = new SelectList(students, "Id", "Name");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, CourseInstallmentViewModel model)
+        public async Task<ActionResult> Edit(CourseInstallmentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> updateModel = await _service.Update(model, token);
             if (updateModel.Any())
-                return View(ModelStateError(model, updateModel));
+            {
+                var students = await _studentService.FindAll(token);
+                ViewBag.InstallmentStatus = Enum.GetValues(typeof(EInstallmentStatus))
+                                           .Cast<EInstallmentStatus>()
+                                           .Select(e => new SelectListItem
+                                           {
+                                               Value = ((int)e).ToString(),
+                                               Text = e.ToString()
+                                           })
+                                           .ToList();
 
+                ViewBag.PaymentMethod = Enum.GetValues(typeof(EInstallmentStatus))
+                                         .Cast<EPaymentMethod>()
+                                         .Select(e => new SelectListItem
+                                         {
+                                             Value = ((int)e).ToString(),
+                                             Text = e.ToString()
+                                         })
+                                         .ToList();
+                ViewBag.StudentsId = new SelectList(students, "Id", "Name");
+
+                return View(ModelStateError(model, updateModel));
+            }
             return RedirectToAction(nameof(Index));
 
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, CourseInstallmentViewModel model)
+        public async Task<ActionResult> Delete(CourseInstallmentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            bool deleteModel = await _service.DeleteById(id, token);
+            bool deleteModel = await _service.DeleteById(model.Id, token);
             if (deleteModel)
                 return RedirectToAction(nameof(Index));
 

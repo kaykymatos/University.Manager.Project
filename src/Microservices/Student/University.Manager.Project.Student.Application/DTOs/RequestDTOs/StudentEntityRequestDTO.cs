@@ -2,10 +2,9 @@
 {
     public class StudentEntityRequestDTO
     {
-        public StudentEntityRequestDTO(long id, string registerCode, long courseId, long studentId)
+        public StudentEntityRequestDTO(long id, string registerCode, long courseId)
         {
             Id = id;
-            StudentId = studentId;
             RegisterCode = registerCode;
             CourseId = courseId;
         }
@@ -16,6 +15,7 @@
         public long Id { get; set; }
         public string RegisterCode { get; set; } = string.Empty;
         public long CourseId { get; set; }
-        public long StudentId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
 }

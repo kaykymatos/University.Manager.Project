@@ -9,7 +9,6 @@ namespace University.Manager.Project.Student.Application.Test.Builder
         {
             _builderInstance = Builder<StudentEntityRequestDTO>.CreateNew()
                 .With(x => x.CourseId = 1)
-                .With(x => x.StudentId = 1)
                 .With(x => x.RegisterCode = "1234");
         }
     }

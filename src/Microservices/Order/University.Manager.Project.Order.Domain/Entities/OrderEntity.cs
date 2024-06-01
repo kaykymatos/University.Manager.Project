@@ -18,7 +18,7 @@ namespace University.Manager.Project.Order.Domain.Entities
 
         public OrderEntity(long id, string title, string message, string attachment, ETypeOrder orderType, long userId)
         {
-            DomainExceptionValidation.When(id <= 0,
+            DomainExceptionValidation.When(id < 0,
                 "Invalid Id value!");
 
             ValidationDomain(title, message, attachment, orderType, userId);

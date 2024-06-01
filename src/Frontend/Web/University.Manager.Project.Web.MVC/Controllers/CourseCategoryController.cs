@@ -7,14 +7,9 @@ using University.Manager.Project.Web.MVC.Models;
 namespace University.Manager.Project.Web.MVC.Controllers
 {
     [Authorize]
-    public class CourseCategoryController : BaseController
+    public class CourseCategoryController(ICourseCategoryService service) : BaseController
     {
-        private readonly ICourseCategoryService _service;
-
-        public CourseCategoryController(ICourseCategoryService service)
-        {
-            _service = service;
-        }
+        private readonly ICourseCategoryService _service = service;
 
         public async Task<ActionResult> Index()
         {
@@ -45,14 +40,15 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, CourseCategoryViewModel model)
+        public async Task<ActionResult> Edit(CourseCategoryViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> updateModel = await _service.Update(model, token);
@@ -63,17 +59,18 @@ namespace University.Manager.Project.Web.MVC.Controllers
 
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, CourseCategoryViewModel model)
+        public async Task<ActionResult> Delete(CourseCategoryViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            bool deleteModel = await _service.DeleteById(id, token);
+            bool deleteModel = await _service.DeleteById(model.Id, token);
             if (deleteModel)
                 return RedirectToAction(nameof(Index));
 

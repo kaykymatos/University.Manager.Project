@@ -5,28 +5,30 @@ namespace University.Manager.Project.Student.Domain.Entities
     public class StudentEntity : Entity
     {
         public string RegisterCode { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public long CourseId { get; set; }
-        public long StudentId { get; set; }
+       
 
         public StudentEntity()
         {
 
         }
 
-        public StudentEntity(long id, string registerCode, long courseId, long studentId)
+        public StudentEntity(long id, string registerCode, long courseId,  string name, string email)
         {
 
             DomainExceptionValidation.When(id < 0, "Invalid Id value!");
             Id = id;
-            ValidationDomain(registerCode, courseId, studentId);
+            ValidationDomain(registerCode, courseId, name, email);
         }
 
-        public void UpdateDomain(string registerCode, long courseId, long studentId)
+        public void UpdateDomain(string registerCode, long courseId,  string name, string email)
         {
-            ValidationDomain(registerCode, courseId, studentId);
+            ValidationDomain(registerCode, courseId, name, email);
             UpdatedData = DateTime.Now;
         }
-        private void ValidationDomain(string registerCode, long courseId, long studentId)
+        private void ValidationDomain(string registerCode, long courseId,  string name, string email)
         {
             DomainExceptionValidation.When(registerCode.Length < 3,
                 "Invalid Register code, Register code is too short, minimum 3 characters!");
@@ -38,10 +40,19 @@ namespace University.Manager.Project.Student.Domain.Entities
                 "Invalid Course Id, Course Id is required!");
             CourseId = courseId;
 
-            DomainExceptionValidation.When(studentId <= 0,
-                "Invalid Student Id, Student Id is required!");
-            StudentId = studentId;
 
+            DomainExceptionValidation.When(name.Length < 3,
+                "Invalid Register code, Name is too short, minimum 3 characters!");
+            DomainExceptionValidation.When(name.Length > 200,
+                "Invalid Register code, Name is too long, maximum 200 characters!");
+            Name = name;
+
+
+            DomainExceptionValidation.When(email.Length < 3,
+                "Invalid Register code, Email is too short, minimum 3 characters!");
+            DomainExceptionValidation.When(email.Length > 200,
+                "Invalid Register code, Email is too long, maximum 200 characters!");
+            Email = email;
         }
 
     }

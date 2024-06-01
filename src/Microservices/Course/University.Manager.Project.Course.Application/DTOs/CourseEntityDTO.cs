@@ -10,6 +10,7 @@
         public float Workload { get; set; }
         public decimal TotalValue { get; set; }
         public long CourseCategoryId { get; set; }
+        public CourseCategoryDTO CourseCategory { get; set; }
 
     }
 }

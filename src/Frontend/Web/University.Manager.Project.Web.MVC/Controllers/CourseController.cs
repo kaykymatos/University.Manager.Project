@@ -1,20 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Common;
 using University.Manager.Project.Web.MVC.Interfaces;
 using University.Manager.Project.Web.MVC.Models;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
     [Authorize]
-    public class CourseController : BaseController
+    public class CourseController(ICourseService service,ICourseCategoryService serviceCategory) : BaseController
     {
-        private readonly ICourseService _service;
-
-        public CourseController(ICourseService service)
-        {
-            _service = service;
-        }
+        private readonly ICourseService _service = service;
+        private readonly ICourseCategoryService _serviceCategory = serviceCategory;
 
         public async Task<ActionResult> Index()
         {
@@ -29,8 +27,11 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return View(await _service.FindById(id, token));
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            string token = await HttpContext.GetTokenAsync("access_token");
+            var categories = await _serviceCategory.FindAll(token);
+            ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
 
             return View();
         }
@@ -40,42 +41,56 @@ namespace University.Manager.Project.Web.MVC.Controllers
         public async Task<ActionResult> Create(CourseViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-
+            
+            
             IEnumerable<ApiErrorViewModel> createModel = await _service.Create(model, token);
             if (createModel.Any())
+            {
+                var categories = await _serviceCategory.FindAll(token);
+                ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
+
                 return View(ModelStateError(model, createModel));
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            var categories = await _serviceCategory.FindAll(token);
+            ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, CourseViewModel model)
+        public async Task<ActionResult> Edit(CourseViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> updateModel = await _service.Update(model, token);
             if (updateModel.Any())
-                return View(ModelStateError(model, updateModel));
+            {
+                var categories = await _serviceCategory.FindAll(token);
+                ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
 
+                return View(ModelStateError(model, updateModel));
+            }
             return RedirectToAction(nameof(Index));
 
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            string token = await HttpContext.GetTokenAsync("access_token");
+            return View(await _service.FindById(id, token));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, CourseViewModel model)
+        public async Task<ActionResult> Delete(CourseViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            bool deleteModel = await _service.DeleteById(id, token);
+            bool deleteModel = await _service.DeleteById(model.Id, token);
             if (deleteModel)
                 return RedirectToAction(nameof(Index));
 

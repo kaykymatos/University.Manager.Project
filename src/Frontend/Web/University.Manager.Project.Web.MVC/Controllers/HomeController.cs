@@ -6,14 +6,9 @@ using University.Manager.Project.Web.MVC.Models;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController(ILogger<HomeController> logger) : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<HomeController> _logger = logger;
 
         public async Task<IActionResult> Index()
         {

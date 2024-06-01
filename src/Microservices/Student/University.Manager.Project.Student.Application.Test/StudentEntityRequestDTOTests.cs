@@ -28,14 +28,6 @@ namespace University.Manager.Project.Student.Application.Test
         }
 
         [Fact]
-        public async Task CreateStudentEntity_WithStudentIdLess_ResultObjectInvalidStudentIdMustBeGreaterThan()
-        {
-            DTOs.RequestDTOs.StudentEntityRequestDTO instance = _builder.With(x => x.StudentId = 0).Build();
-            FluentValidation.Results.ValidationResult validation = await _validator.ValidateAsync(instance);
-            Assert.False(validation.IsValid);
-            Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNumberMustBeGreaterThan.Replace("{PropertyName}", "Student Id").Replace("{ComparisonValue}", "0")));
-        }
-        [Fact]
         public async Task CreateStudentEntity_WithCourseIdLess_ResultObjectInvalidCourseIMustBeGreaterThan()
         {
             DTOs.RequestDTOs.StudentEntityRequestDTO instance = _builder.With(x => x.CourseId = 0).Build();
