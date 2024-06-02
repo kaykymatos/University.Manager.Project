@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using University.Manager.Project.Student.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Student.Application.Interfaces;
 using University.Manager.Project.Student.Application.Mapping;
+using University.Manager.Project.Student.Application.RabbitMQSender;
 using University.Manager.Project.Student.Application.Services;
 using University.Manager.Project.Student.Application.Validation;
 using University.Manager.Project.Student.Domain.Interfaces;
@@ -84,6 +85,7 @@ namespace University.Manager.Project.Student.Infra.Ioc
 
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
+            services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
             services.AddTransient<IValidator<StudentEntityRequestDTO>, StudentEntityRequestDTOValidation>();
 

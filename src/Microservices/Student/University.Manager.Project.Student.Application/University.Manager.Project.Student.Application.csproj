@@ -9,6 +9,8 @@
 
   <ItemGroup>
 	  <PackageReference Include="FluentValidation" Version="11.9.0" />
+	  <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+	  <ProjectReference Include="..\..\MessageBus\University.Manager.Project.MessageBus\University.Manager.Project.MessageBus.csproj" />
     <ProjectReference Include="..\University.Manager.Project.Student.Domain\University.Manager.Project.Student.Domain.csproj" />
   </ItemGroup>
 

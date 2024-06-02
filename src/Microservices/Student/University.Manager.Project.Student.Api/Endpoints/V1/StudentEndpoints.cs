@@ -1,8 +1,10 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using University.Manager.Project.Student.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Student.Application.Interfaces;
 using University.Manager.Project.Student.Application.Models.Error;
+using University.Manager.Project.Student.Application.RabbitMQSender;
 
 namespace University.Manager.Project.Student.Api.Endpoints.V1
 {
@@ -28,7 +30,12 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
                 return Results.NotFound();
             }).RequireAuthorization().WithName("student");
 
-            app.MapPost("api/v1/student", async ([FromBody] StudentEntityRequestDTO model, [FromServices] IStudentService _service, [FromServices] IValidator<StudentEntityRequestDTO> _validator) =>
+            app.MapPost("api/v1/student", async (
+                [FromBody] StudentEntityRequestDTO model,
+                [FromServices] IStudentService _service, 
+                [FromServices] IValidator<StudentEntityRequestDTO> _validator,
+                [FromServices] IRabbitMQMessageSender _sender,
+                [FromServices] IMapper _mapper) =>
             {
                 if (model == null)
                     return Results.BadRequest("Invalid Data!");
@@ -37,6 +44,10 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
                 if (!validationModel.IsValid)
                     return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
 
+
+
+                _sender.SendMessage(_mapper.Map<StudentEntityRequestMessageDTO>(model),"student_financial_installments");
+               
                 await _service.CreateModelAsync(model);
                 return Results.CreatedAtRoute("student", new { id = model.Id }, model);
             }).RequireAuthorization();

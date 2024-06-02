@@ -1,6 +1,8 @@
-﻿namespace University.Manager.Project.Student.Application.DTOs.RequestDTOs
+﻿using University.Manager.Project.MessageBus;
+
+namespace University.Manager.Project.Student.Application.DTOs.RequestDTOs
 {
-    public class StudentEntityRequestDTO
+    public class StudentEntityRequestDTO 
     {
         public StudentEntityRequestDTO(long id, string registerCode, long courseId)
         {

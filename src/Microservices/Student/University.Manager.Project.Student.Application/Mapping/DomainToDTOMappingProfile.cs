@@ -12,6 +12,7 @@ namespace University.Manager.Project.Student.Application.Mapping
 
             CreateMap<StudentEntity, StudentEntityDTO>().ReverseMap();
 
+            CreateMap<StudentEntityRequestMessageDTO, StudentEntityRequestDTO>().ReverseMap();
             CreateMap<StudentEntityDTO, StudentEntityRequestDTO>().ReverseMap();
             CreateMap<StudentEntity, StudentEntityRequestDTO>().ReverseMap();
         }
