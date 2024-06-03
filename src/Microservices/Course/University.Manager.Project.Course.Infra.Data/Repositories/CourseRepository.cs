@@ -33,7 +33,7 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
 
         public async Task<IEnumerable<CourseEntity>> GetAllAsync()
         {
-            return await _context.Courses.Include(x=>x.CourseCategory).ToListAsync();
+            return await _context.Courses.Include(x => x.CourseCategory).ToListAsync();
         }
 
         public async Task<CourseEntity> GetByIdAsync(long id)

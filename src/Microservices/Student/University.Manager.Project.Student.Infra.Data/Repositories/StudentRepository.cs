@@ -40,7 +40,7 @@ namespace University.Manager.Project.Student.Infra.Data.Repositories
 
         public async Task<StudentEntity> UpdateModelAsync(StudentEntity entity)
         {
-            entity.UpdateDomain(entity.RegisterCode, entity.CourseId,  entity.Name, entity.Email);
+            entity.UpdateDomain(entity.RegisterCode, entity.CourseId, entity.Name, entity.Email);
             entity.CreationData = _context.Students.FirstAsync(x => x.Id == entity.Id).Result.CreationData;
 
             _context.ChangeTracker.Clear();

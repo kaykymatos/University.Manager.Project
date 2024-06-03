@@ -32,8 +32,11 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="CourseId" class="form-label">Course</label>
-                    <select class="form-select" asp-for="CourseId" asp-items="@ViewBag.CourseId">
-                        <option value="0">Select</option>
+                    <select class="form-select" asp-for="CourseId" >
+                        @foreach (var course in ViewBag.CourseId)
+                        {
+                            <option value="@course.Id">@course.Name - @course.TotalValue</option>
+                        }
                     </select>
                     <span asp-validation-for="CourseId" class="text-danger"></span>
                 </div>

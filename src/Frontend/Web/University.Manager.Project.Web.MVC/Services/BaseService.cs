@@ -13,16 +13,16 @@ namespace University.Manager.Project.Web.MVC.Services
             _client = client ?? throw new ArgumentNullException(nameof(client));
             BasePath = basePath;
         }
-        public async Task<IEnumerable<T>> FindAll(string token)
+        public virtual async Task<IEnumerable<T>> FindAll(string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.GetAsync(BasePath);
-            var res = await response.ReadContentAs<List<T>>();
+            List<T> res = await response.ReadContentAs<List<T>>();
             if (res == null)
-                return new List<T>();
+                return [];
             return await response.ReadContentAs<List<T>>();
         }
-        public async Task<T> FindById(long id, string token)
+        public virtual async Task<T> FindById(long id, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.GetAsync($"{BasePath}/{id}");
@@ -30,7 +30,7 @@ namespace University.Manager.Project.Web.MVC.Services
         }
 
 
-        public async Task<IEnumerable<ApiErrorViewModel>> Create(T model, string token)
+        public virtual async Task<IEnumerable<ApiErrorViewModel>> Create(T model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.PostAsJson(BasePath, model);
@@ -41,7 +41,7 @@ namespace University.Manager.Project.Web.MVC.Services
             else
                 throw new Exception("Something wen wrong when calling API");
         }
-        public async Task<IEnumerable<ApiErrorViewModel>> Update(T model, string token)
+        public virtual async Task<IEnumerable<ApiErrorViewModel>> Update(T model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.PutAsJson(BasePath, model);
@@ -52,7 +52,7 @@ namespace University.Manager.Project.Web.MVC.Services
             else
                 throw new Exception("Something wen wrong when calling API");
         }
-        public async Task<bool> DeleteById(long id, string token)
+        public virtual async Task<bool> DeleteById(long id, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.DeleteAsync($"{BasePath}/{id}");

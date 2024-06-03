@@ -1,7 +1,5 @@
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using University.Manager.Project.Order.Application.DTOs.Enum;
 using University.Manager.Project.Order.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Order.Application.Test.Builder;
 using University.Manager.Project.Order.Application.Validation;
@@ -68,7 +66,7 @@ namespace University.Manager.Project.Order.Application.Test
         [Fact]
         public async Task CreateOrderEntityRequestDTO_GreaterThanTitle_DomainExceptionGreaterThanTitle()
         {
-            OrderEntityRequestDTO model = _builder.With(x => x.Title = "teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste").Build();            
+            OrderEntityRequestDTO model = _builder.With(x => x.Title = "teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste teste").Build();
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMaxLenght.Replace("{PropertyName}", "Title").Replace("{MaxLength}", "200")));
@@ -78,7 +76,7 @@ namespace University.Manager.Project.Order.Application.Test
         [InlineData("ab")]
         public async Task CreateOrderEntityRequestDTO_ShortMessage_DomainExceptionShortMessage(string message)
         {
-            OrderEntityRequestDTO model = _builder.With(x => x.Message=message).Build();
+            OrderEntityRequestDTO model = _builder.With(x => x.Message = message).Build();
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Message").Replace("{MinLength}", "3")));

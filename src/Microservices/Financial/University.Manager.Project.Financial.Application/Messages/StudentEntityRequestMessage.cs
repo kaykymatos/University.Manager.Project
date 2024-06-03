@@ -1,8 +1,8 @@
 ﻿using University.Manager.Project.MessageBus;
 
-namespace University.Manager.Project.Student.Application.DTOs.RequestDTOs
+namespace University.Manager.Project.Financial.Application.Messages
 {
-    public class StudentEntityRequestMessageDTO : BaseMessage
+    public class StudentEntityRequestMessage : BaseMessage
     {
         public string RegisterCode { get; set; } = string.Empty;
         public long CourseId { get; set; }

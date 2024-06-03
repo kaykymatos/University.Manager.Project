@@ -10,10 +10,10 @@ namespace University.Manager.Project.Student.Domain.Test
         [Fact]
         public void CreateStudentEntity_WithValidParameters_ResultObjectValidState()
         {
-            Action action = () => new StudentEntity(1, "1233",  1, "Student","student@student.com");
+            Action action = () => new StudentEntity(1, "1233", 1, "Student", "student@student.com");
             action.Should().NotThrow<DomainExceptionValidation>();
         }
-       
+
         [Fact]
         public void CreateStudentEntity_WithCourseIdLess_ResultObjectInvalidCourseIMustBeGreaterThan()
         {

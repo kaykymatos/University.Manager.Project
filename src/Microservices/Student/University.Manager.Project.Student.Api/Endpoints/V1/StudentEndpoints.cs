@@ -32,7 +32,7 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
 
             app.MapPost("api/v1/student", async (
                 [FromBody] StudentEntityRequestDTO model,
-                [FromServices] IStudentService _service, 
+                [FromServices] IStudentService _service,
                 [FromServices] IValidator<StudentEntityRequestDTO> _validator,
                 [FromServices] IRabbitMQMessageSender _sender,
                 [FromServices] IMapper _mapper) =>
@@ -43,12 +43,12 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
                 FluentValidation.Results.ValidationResult validationModel = _validator.Validate(model);
                 if (!validationModel.IsValid)
                     return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
-
-
-
-                _sender.SendMessage(_mapper.Map<StudentEntityRequestMessageDTO>(model),"student_financial_installments");
-               
                 await _service.CreateModelAsync(model);
+                IEnumerable<Application.DTOs.StudentEntityDTO> student = await _service.GetAllAsync();
+                StudentEntityRequestMessageDTO mapped = _mapper.Map<StudentEntityRequestMessageDTO>(model);
+                mapped.Id = student.Max(x => x.Id);
+                _sender.SendMessage(mapped, "student_financial_installments");
+
                 return Results.CreatedAtRoute("student", new { id = model.Id }, model);
             }).RequireAuthorization();
 

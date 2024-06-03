@@ -1,8 +1,6 @@
-﻿using University.Manager.Project.MessageBus;
-
-namespace University.Manager.Project.Student.Application.DTOs.RequestDTOs
+﻿namespace University.Manager.Project.Student.Application.DTOs.RequestDTOs
 {
-    public class StudentEntityRequestDTO 
+    public class StudentEntityRequestDTO
     {
         public StudentEntityRequestDTO(long id, string registerCode, long courseId)
         {
@@ -19,5 +17,7 @@ namespace University.Manager.Project.Student.Application.DTOs.RequestDTOs
         public long CourseId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public decimal TotalValue { get; set; }
+        public float Workload { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using University.Manager.Project.Financial.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Financial.Application.Interfaces;
 using University.Manager.Project.Financial.Application.Mapping;
+using University.Manager.Project.Financial.Application.MessageConsumer;
 using University.Manager.Project.Financial.Application.Services;
 using University.Manager.Project.Financial.Application.Validation;
 using University.Manager.Project.Financial.Domain.Interfaces;
@@ -43,6 +44,8 @@ namespace University.Manager.Project.Financial.Infra.Ioc
                 });
             });
 
+            DbContextOptionsBuilder<ApplicationContext> builderDb = new();
+
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new OpenApiInfo { Title = "NomeDaApiSwagger", Version = "v1" });
@@ -73,17 +76,22 @@ namespace University.Manager.Project.Financial.Infra.Ioc
                     }
                 });
             });
+            DbContextOptionsBuilder<ApplicationContext> builderSql = new DbContextOptionsBuilder<ApplicationContext>();
 
             services.AddDbContext<ApplicationContext>(options =>
                options.UseSqlServer(
                    configuration.GetConnectionString("DefaultConnection"),
             x => x.MigrationsAssembly(typeof(ApplicationContext)
                .Assembly.FullName)));
-
+            services.AddTransient<IValidator<CourseInstallmentsRequestDTO>, CourseInstallmentsRequestDTOValidation>();
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+
+
+            // services.AddSingleton<CourseInstallmentsRepository>();
             services.AddScoped<ICourseInstallmentsRepository, CourseInstallmentsRepository>();
             services.AddScoped<ICourseInstallmentsService, CourseInstallmentsService>();
-            services.AddTransient<IValidator<CourseInstallmentsRequestDTO>, CourseInstallmentsRequestDTOValidation>();
+            services.AddHostedService<RabbitMQStudentInstallmentConsumer>();
+
 
             return services;
         }

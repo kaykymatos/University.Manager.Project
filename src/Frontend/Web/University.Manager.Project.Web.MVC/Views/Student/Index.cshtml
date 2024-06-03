@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<University.Manager.Project.Web.MVC.Models.StudentViewModel>
 
 @{
+    var studets = ViewBag.Courses as IEnumerable<CourseViewModel>;
     ViewData["Title"] = "Index";
 }
 
@@ -55,7 +56,7 @@
                         @Html.DisplayFor(modelItem => item.RegisterCode)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CourseId)
+                        @Html.Raw(studets.FirstOrDefault(x => x.Id == item.CourseId).Name)
                     </td>
                    
                     <td>

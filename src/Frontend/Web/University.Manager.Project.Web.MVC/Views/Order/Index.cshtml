@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Index";
     var studets = ViewBag.Students as IEnumerable<StudentViewModel>;
-    static string VerifyAttatchmentType(string? base64String)
+    static string VerifyAttatchmentType(string base64String)
     {
         if (string.IsNullOrWhiteSpace(base64String))
             return "application/octet-stream";

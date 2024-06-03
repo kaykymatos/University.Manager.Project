@@ -11,7 +11,7 @@ namespace University.Manager.Project.Web.MVC.Utils
             string dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(dataAsString))
                 return Activator.CreateInstance<T>();
-            
+
             return JsonSerializer.Deserialize<T>(dataAsString,
                 new JsonSerializerOptions
                 { PropertyNameCaseInsensitive = true }

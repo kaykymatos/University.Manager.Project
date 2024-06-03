@@ -7,7 +7,7 @@ namespace University.Manager.Project.Course.Application.Test
 {
     public class CourseCategoryRequestDTOTests
     {
-       
+
         private readonly CourseCategoryRequestDTOValidation _validator;
         private readonly CourseCategoryRequestDTOBuilder _builder;
         public CourseCategoryRequestDTOTests()
@@ -30,7 +30,7 @@ namespace University.Manager.Project.Course.Application.Test
         [InlineData("ab")]
         public async Task CreateCourseCategory_ShortName_DomainExceptionShortName(string name)
         {
-            CourseCategoryRequestDTO model = _builder.With(x => x.Name=name).Build();
+            CourseCategoryRequestDTO model = _builder.With(x => x.Name = name).Build();
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Name").Replace("{MinLength}", "3")));
@@ -69,7 +69,7 @@ namespace University.Manager.Project.Course.Application.Test
         public async Task CreateCourseCategory_ShortDescription_DomainExceptionShortDescription(string description)
         {
             CourseCategoryRequestDTO model = _builder.With(x => x.Description = description).Build();
-                
+
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMinLenght.Replace("{PropertyName}", "Description").Replace("{MinLength}", "3")));
@@ -78,7 +78,7 @@ namespace University.Manager.Project.Course.Application.Test
         [Fact]
         public async Task CreateCourseCategory_NullDescription_DomainExceptionDescriptionIsRequired()
         {
-            CourseCategoryRequestDTO model =_builder.With(x => x.Description = null).Build();
+            CourseCategoryRequestDTO model = _builder.With(x => x.Description = null).Build();
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNull.Replace("{PropertyName}", "Description")));
@@ -96,7 +96,7 @@ namespace University.Manager.Project.Course.Application.Test
         [Fact]
         public async Task CreateCourseCategory_EmptyStringDescription_DomainExceptionDescriptionIsRequired()
         {
-            CourseCategoryRequestDTO model = _builder.With(x => x.Description = "").Build(); 
+            CourseCategoryRequestDTO model = _builder.With(x => x.Description = "").Build();
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldNull.Replace("{PropertyName}", "Description")));
@@ -106,7 +106,7 @@ namespace University.Manager.Project.Course.Application.Test
         public async Task CreateCourseCategory_LongName_DomainExceptionLongName()
         {
             CourseCategoryRequestDTO model = _builder.With(x => x.Name = "Course category Course category Course category Course category Course category Course category Course category Course category Course category Course category Course category Course category Course cs").Build();
-            
+
             ValidationResult validation = await _validator.ValidateAsync(model);
             Assert.False(validation.IsValid);
             Assert.Contains(validation.Errors, x => x.ErrorMessage.Contains(BaseValidationErrorMessages.FieldMaxLenght.Replace("{PropertyName}", "Name").Replace("{MaxLength}", "200")));

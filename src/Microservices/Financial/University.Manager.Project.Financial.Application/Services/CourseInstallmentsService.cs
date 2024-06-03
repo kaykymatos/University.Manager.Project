@@ -17,6 +17,12 @@ namespace University.Manager.Project.Financial.Application.Services
             _courseInstallmentRepository = courseInstallmentRepository;
             _mapper = mapper;
         }
+
+        public async Task<IEnumerable<CourseInstallments>> CreateMany(List<CourseInstallments> listModels)
+        {
+            return await _courseInstallmentRepository.CreateMany(listModels);
+        }
+
         public async Task CreateModelAsync(CourseInstallmentsRequestDTO entity)
         {
             CourseInstallments model = _mapper.Map<CourseInstallments>(entity);

@@ -8,14 +8,14 @@ namespace University.Manager.Project.Student.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public long CourseId { get; set; }
-       
+
 
         public StudentEntity()
         {
 
         }
 
-        public StudentEntity(long id, string registerCode, long courseId,  string name, string email)
+        public StudentEntity(long id, string registerCode, long courseId, string name, string email)
         {
 
             DomainExceptionValidation.When(id < 0, "Invalid Id value!");
@@ -23,12 +23,12 @@ namespace University.Manager.Project.Student.Domain.Entities
             ValidationDomain(registerCode, courseId, name, email);
         }
 
-        public void UpdateDomain(string registerCode, long courseId,  string name, string email)
+        public void UpdateDomain(string registerCode, long courseId, string name, string email)
         {
             ValidationDomain(registerCode, courseId, name, email);
             UpdatedData = DateTime.Now;
         }
-        private void ValidationDomain(string registerCode, long courseId,  string name, string email)
+        private void ValidationDomain(string registerCode, long courseId, string name, string email)
         {
             DomainExceptionValidation.When(registerCode.Length < 3,
                 "Invalid Register code, Register code is too short, minimum 3 characters!");

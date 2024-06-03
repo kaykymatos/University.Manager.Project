@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Common;
 using University.Manager.Project.Web.MVC.Interfaces;
 using University.Manager.Project.Web.MVC.Models;
 
 namespace University.Manager.Project.Web.MVC.Controllers
 {
     [Authorize]
-    public class CourseController(ICourseService service,ICourseCategoryService serviceCategory) : BaseController
+    public class CourseController(ICourseService service, ICourseCategoryService serviceCategory) : BaseController
     {
         private readonly ICourseService _service = service;
         private readonly ICourseCategoryService _serviceCategory = serviceCategory;
@@ -30,7 +29,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         public async Task<ActionResult> Create()
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            var categories = await _serviceCategory.FindAll(token);
+            IEnumerable<CourseCategoryViewModel> categories = await _serviceCategory.FindAll(token);
             ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
 
             return View();
@@ -41,12 +40,12 @@ namespace University.Manager.Project.Web.MVC.Controllers
         public async Task<ActionResult> Create(CourseViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            
-            
+
+
             IEnumerable<ApiErrorViewModel> createModel = await _service.Create(model, token);
             if (createModel.Any())
             {
-                var categories = await _serviceCategory.FindAll(token);
+                IEnumerable<CourseCategoryViewModel> categories = await _serviceCategory.FindAll(token);
                 ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
 
                 return View(ModelStateError(model, createModel));
@@ -57,7 +56,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            var categories = await _serviceCategory.FindAll(token);
+            IEnumerable<CourseCategoryViewModel> categories = await _serviceCategory.FindAll(token);
             ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
             return View(await _service.FindById(id, token));
         }
@@ -70,7 +69,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             IEnumerable<ApiErrorViewModel> updateModel = await _service.Update(model, token);
             if (updateModel.Any())
             {
-                var categories = await _serviceCategory.FindAll(token);
+                IEnumerable<CourseCategoryViewModel> categories = await _serviceCategory.FindAll(token);
                 ViewBag.CourseCategoryId = new SelectList(categories, "Id", "Name");
 
                 return View(ModelStateError(model, updateModel));

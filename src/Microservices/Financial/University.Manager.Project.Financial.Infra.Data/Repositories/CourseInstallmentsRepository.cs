@@ -7,12 +7,18 @@ namespace University.Manager.Project.Financial.Infra.Data.Repositories
 {
     public class CourseInstallmentsRepository : ICourseInstallmentsRepository
     {
+
         private readonly ApplicationContext _context;
         public CourseInstallmentsRepository(ApplicationContext context)
         {
             _context = context;
         }
-
+        public async Task<IEnumerable<CourseInstallments>> CreateMany(List<CourseInstallments> listModels)
+        {
+            _context.CourseInstallments.AddRange(listModels);
+            await _context.SaveChangesAsync();
+            return listModels;
+        }
         public async Task<CourseInstallments> CreateModelAsync(CourseInstallments entity)
         {
             entity.CreationData = DateTime.Now;

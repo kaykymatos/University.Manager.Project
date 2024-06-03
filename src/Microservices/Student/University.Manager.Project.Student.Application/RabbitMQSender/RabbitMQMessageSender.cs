@@ -1,10 +1,6 @@
 ﻿using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using University.Manager.Project.MessageBus;
 using University.Manager.Project.Student.Application.DTOs.RequestDTOs;
 
@@ -28,7 +24,7 @@ namespace University.Manager.Project.Student.Application.RabbitMQSender
         {
             if (ConnectionExists())
             {
-                using var channel = _connection.CreateModel();
+                using IModel channel = _connection.CreateModel();
                 channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
                 byte[] body = GetMessageAsByteArray(message);
                 channel.BasicPublish(

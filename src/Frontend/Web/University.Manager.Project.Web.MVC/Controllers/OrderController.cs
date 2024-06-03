@@ -32,9 +32,9 @@ namespace University.Manager.Project.Web.MVC.Controllers
         {
             string token = await HttpContext.GetTokenAsync("access_token");
 
-            var students = await _studentService.FindAll(token);
+            IEnumerable<StudentViewModel> students = await _studentService.FindAll(token);
             ViewBag.Usuario = new SelectList(students, "Id", "Name");
-            
+
             ViewBag.OrderType = Enum.GetValues(typeof(ETypeOrder))
                                           .Cast<ETypeOrder>()
                                           .Select(e => new SelectListItem
@@ -52,8 +52,8 @@ namespace University.Manager.Project.Web.MVC.Controllers
         {
             string base64String = string.Empty;
             if (Attachment != null)
-            { 
-                if(Attachment.Length > 0)
+            {
+                if (Attachment.Length > 0)
                 {
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
@@ -65,14 +65,14 @@ namespace University.Manager.Project.Web.MVC.Controllers
 
                     model.Attachment = base64String;
                 }
-               
+
             }
-               
+
             string token = await HttpContext.GetTokenAsync("access_token");
             IEnumerable<ApiErrorViewModel> createModel = await _service.Create(model, token);
             if (createModel.Any())
             {
-                var students = await _studentService.FindAll(token);
+                IEnumerable<StudentViewModel> students = await _studentService.FindAll(token);
                 ViewBag.Usuario = new SelectList(students, "Id", "Name");
                 ViewBag.OrderType = Enum.GetValues(typeof(ETypeOrder))
                                           .Cast<ETypeOrder>()
@@ -90,7 +90,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
-            var students = await _studentService.FindAll(token);
+            IEnumerable<StudentViewModel> students = await _studentService.FindAll(token);
             ViewBag.Usuario = new SelectList(students, "Id", "Name");
             ViewBag.OrderType = Enum.GetValues(typeof(ETypeOrder))
                                           .Cast<ETypeOrder>()
@@ -99,7 +99,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
                                               Value = ((int)e).ToString(),
                                               Text = e.ToString()
                                           })
-                                          .ToList(); 
+                                          .ToList();
             return View(await _service.FindById(id, token));
         }
 
@@ -111,7 +111,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             IEnumerable<ApiErrorViewModel> updateModel = await _service.Update(model, token);
             if (updateModel.Any())
             {
-                var students = await _studentService.FindAll(token);
+                IEnumerable<StudentViewModel> students = await _studentService.FindAll(token);
                 ViewBag.Usuario = new SelectList(students, "Id", "Name");
                 ViewBag.OrderType = Enum.GetValues(typeof(ETypeOrder))
                                           .Cast<ETypeOrder>()

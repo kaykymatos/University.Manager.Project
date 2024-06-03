@@ -45,14 +45,14 @@ namespace University.Manager.Project.Order.Application.Validation
         {
             if (string.IsNullOrWhiteSpace(base64String))
                 return false;
-            var data = base64String.Substring(0, 5);
+            string data = base64String.Substring(0, 5);
             switch (data.ToUpper())
             {
                 case "IVBOR":
                     return true;
                 case "/9J/4":
                     return true;
-              
+
                 case "JVBER":
                     return true;
                 default:
