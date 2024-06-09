@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using University.Manager.Project.IdentityServer.Data;
 
 namespace University.Manager.Project.IdentityServer.Areas.Identity.Pages.Account

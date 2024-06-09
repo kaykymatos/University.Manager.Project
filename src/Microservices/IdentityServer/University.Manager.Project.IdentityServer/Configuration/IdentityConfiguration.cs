@@ -30,14 +30,14 @@ namespace University.Manager.Project.IdentityServer.Configuration
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets =
                     {
-                        new Secret("ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh".Sha256())
+                        new Secret(Environment.GetEnvironmentVariable("SecretIdentity").Sha256())
                     }, AllowedScopes = {"read", "write", "profile" }
                 },
                 new Client
                 {
                     ClientId = "university",
                     AllowedGrantTypes = GrantTypes.Code,
-                    ClientSecrets = {new Secret("ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh".Sha256())},
+                    ClientSecrets = {new Secret(Environment.GetEnvironmentVariable("SecretIdentity").Sha256())},
                     RedirectUris = {"https://localhost:4430/signin-oidc"},
                     PostLogoutRedirectUris = {"https://localhost:4430/signout-callback-oidc"},
                     AllowedScopes = {

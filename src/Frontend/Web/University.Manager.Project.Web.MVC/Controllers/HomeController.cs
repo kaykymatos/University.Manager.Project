@@ -34,7 +34,11 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
         public IActionResult Logout()
         {
-            return SignOut("Cookies", "oidc");
+            return SignOut(
+                new AuthenticationProperties
+                {
+                    RedirectUri = "/Home/Index"
+                }, "Cookies", "oidc");
         }
     }
 }

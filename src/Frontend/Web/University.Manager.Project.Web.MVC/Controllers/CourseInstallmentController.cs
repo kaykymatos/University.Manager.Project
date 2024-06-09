@@ -19,13 +19,13 @@ namespace University.Manager.Project.Web.MVC.Controllers
             string token = await HttpContext.GetTokenAsync("access_token");
             return View(await _service.FindAll(token));
         }
-
+        [Authorize(Roles = "Admin,Student")]
         public async Task<ActionResult> Details(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
             return View(await _service.FindById(id, token));
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create()
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -54,7 +54,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(CourseInstallmentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -85,7 +85,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -96,7 +96,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(CourseInstallmentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -128,7 +128,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -136,7 +136,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(CourseInstallmentViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");

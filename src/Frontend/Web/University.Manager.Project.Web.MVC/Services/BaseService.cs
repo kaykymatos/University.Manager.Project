@@ -57,7 +57,9 @@ namespace University.Manager.Project.Web.MVC.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.DeleteAsync($"{BasePath}/{id}");
             if (response.IsSuccessStatusCode)
-                return await response.ReadContentAs<bool>();
+                return true;
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                return false;
             else
                 throw new Exception("Something wen wrong when calling API");
         }

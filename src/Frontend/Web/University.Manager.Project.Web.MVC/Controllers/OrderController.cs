@@ -27,7 +27,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             ViewBag.Students = _studentService.FindAll(token).Result;
             return View(await _service.FindById(id, token));
         }
-
+        [Authorize(Roles = "Admin,Employer")]
         public async Task<ActionResult> Create()
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -47,7 +47,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employer")]
         public async Task<ActionResult> Create(OrderViewModel model, IFormFile Attachment)
         {
             string base64String = string.Empty;
@@ -86,7 +86,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin,Employer")]
         public async Task<ActionResult> Edit(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -104,7 +104,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employer")]
         public async Task<ActionResult> Edit(OrderViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -126,7 +126,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
+        [Authorize(Roles = "Admin,Employer")]
         public async Task<ActionResult> Delete(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -134,7 +134,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Employer")]
         public async Task<ActionResult> Delete(OrderViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");

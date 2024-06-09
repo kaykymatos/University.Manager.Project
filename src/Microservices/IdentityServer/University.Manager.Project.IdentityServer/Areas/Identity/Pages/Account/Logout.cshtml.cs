@@ -2,9 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using IdentityServer4.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using University.Manager.Project.IdentityServer.Data;
 
 namespace University.Manager.Project.IdentityServer.Areas.Identity.Pages.Account
@@ -19,11 +22,20 @@ namespace University.Manager.Project.IdentityServer.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
         }
+        public async Task OnGetAsync(string returnUrl = null)
+        {
+           
+            returnUrl ??= Url.Content("~/");
 
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+        }
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+           
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

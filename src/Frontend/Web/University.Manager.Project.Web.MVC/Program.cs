@@ -13,12 +13,12 @@ builder.Services.AddAuthentication(options =>
 
 })
     .AddCookie("Cookies", x => x.ExpireTimeSpan = TimeSpan.FromMinutes(10))
-    .AddOpenIdConnect("oidc", options =>
+    .AddOpenIdConnect("oidc", options => 
     {
         options.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
         options.GetClaimsFromUserInfoEndpoint = true;
         options.ClientId = "university";
-        options.ClientSecret = "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh";
+        options.ClientSecret = Environment.GetEnvironmentVariable("SecretIdentity");
         options.ResponseType = "code";
         options.ClaimActions.MapJsonKey("role", "role", "role");
         options.ClaimActions.MapJsonKey("sub", "sub", "sub");

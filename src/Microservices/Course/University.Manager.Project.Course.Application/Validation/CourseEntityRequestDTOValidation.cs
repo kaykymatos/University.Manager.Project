@@ -12,14 +12,12 @@ namespace University.Manager.Project.Course.Application.Validation
                 .NotEmpty().WithMessage(BaseValidationErrorMessages.FieldNull)
                 .MinimumLength(3).WithMessage(BaseValidationErrorMessages.FieldMinLenght)
                 .MaximumLength(200).WithMessage(BaseValidationErrorMessages.FieldMaxLenght)
-                .Matches("^[a-zA-Z0-9 ]*$").WithMessage(BaseValidationErrorMessages.FieldWithSpecialCharacters)
                 .WithName("Name");
 
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage(BaseValidationErrorMessages.FieldNull)
                 .MinimumLength(3).WithMessage(BaseValidationErrorMessages.FieldMinLenght)
                 .MaximumLength(200).WithMessage(BaseValidationErrorMessages.FieldMaxLenght)
-                .Matches("^[a-zA-Z0-9 ]*$").WithMessage(BaseValidationErrorMessages.FieldWithSpecialCharacters)
                 .WithName("Description");
 
             RuleFor(x => x.Workload)

@@ -35,8 +35,10 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             ApplicationUser admin = new()
             {
-                UserName = "kayky-admin",
+                UserName = "kayky-admin@gmail.com",
                 Email = "kayky-admin@gmail.com",
+                NormalizedUserName = "KAYKY-ADMIN@GMAIL.COM",
+                NormalizedEmail = "KAYKY-ADMIN@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (11) 11111-1111",
                 FirstName = "kayky",
@@ -56,8 +58,10 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             ApplicationUser client = new()
             {
-                UserName = "kayky-client",
+                UserName = "kayky-client@gmail.com",
                 Email = "kayky-client@gmail.com",
+                NormalizedUserName = "KAYKY-CLIENT@GMAIL.COM",
+                NormalizedEmail = "KAYKY-CLIENT@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (11) 11111-1111",
                 FirstName = "kayky",
@@ -77,7 +81,9 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             ApplicationUser employer = new()
             {
-                UserName = "kayky-employer",
+                UserName = "kayky-employer@gmail.com",
+                NormalizedUserName= "KAYKY-EMPLOYER@GMAIL.COM",
+                NormalizedEmail= "KAYKY-EMPLOYER@GMAIL.COM",
                 Email = "kayky-employer@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (11) 11111-1111",
@@ -87,7 +93,7 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             _user.CreateAsync(employer, "Kayky123$").GetAwaiter().GetResult();
             _user.AddToRoleAsync(employer,
-                IdentityConfiguration.Student).GetAwaiter().GetResult();
+                IdentityConfiguration.Employer).GetAwaiter().GetResult();
             IdentityResult employerClaims = _user.AddClaimsAsync(employer,
             [
                 new Claim(JwtClaimTypes.Name, $"{employer.FirstName} {employer.LastName}"),

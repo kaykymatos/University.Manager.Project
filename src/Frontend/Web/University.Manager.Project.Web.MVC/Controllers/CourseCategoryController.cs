@@ -23,14 +23,14 @@ namespace University.Manager.Project.Web.MVC.Controllers
             string token = await HttpContext.GetTokenAsync("access_token");
             return View(await _service.FindById(id, token));
         }
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(CourseCategoryViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -39,7 +39,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
                 return View(ModelStateError(model, createModel));
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -47,7 +47,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(CourseCategoryViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -58,7 +58,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
@@ -66,7 +66,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(CourseCategoryViewModel model)
         {
             string token = await HttpContext.GetTokenAsync("access_token");
