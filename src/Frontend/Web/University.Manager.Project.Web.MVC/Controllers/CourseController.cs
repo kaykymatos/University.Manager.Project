@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data;
 using University.Manager.Project.Web.MVC.Interfaces;
 using University.Manager.Project.Web.MVC.Models;
 

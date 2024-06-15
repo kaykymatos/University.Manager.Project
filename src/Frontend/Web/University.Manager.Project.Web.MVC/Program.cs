@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using University.Manager.Project.Web.MVC.Interfaces;
 using University.Manager.Project.Web.MVC.Services;
 
@@ -13,7 +14,7 @@ builder.Services.AddAuthentication(options =>
 
 })
     .AddCookie("Cookies", x => x.ExpireTimeSpan = TimeSpan.FromMinutes(10))
-    .AddOpenIdConnect("oidc", options => 
+    .AddOpenIdConnect("oidc", options =>
     {
         options.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
         options.GetClaimsFromUserInfoEndpoint = true;
@@ -64,6 +65,35 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+app.Use(async (context, next) =>
+{
+    // Verificar se o usuário está autenticado e se a rota requer uma role específica
+    if (context.User.Identity.IsAuthenticated)
+    {
+        Endpoint endpoint = context.GetEndpoint();
+        if (endpoint != null)
+        {
+            AuthorizeAttribute authorizeAttribute = endpoint.Metadata.GetMetadata<AuthorizeAttribute>();
+            if (authorizeAttribute != null && authorizeAttribute.Roles != null)
+            {
+                string[] roles = authorizeAttribute.Roles.Split(',');
+                bool userHasRequiredRole = roles.Any(role => context.User.IsInRole(role));
+
+                if (!userHasRequiredRole)
+                {
+                    HttpRequest requestVariable = context.Request;
+                    string returnUrl = $"{requestVariable.Scheme}://{requestVariable.Host.Host}:{requestVariable.Host.Port}";
+                    string accessDeniedUrl = $"{builder.Configuration["ServiceUrls:IdentityServer"]}/Account/AccessDenied?returnUrl={Uri.EscapeDataString(returnUrl)}";
+                    context.Response.Redirect(accessDeniedUrl);
+                    return;
+                }
+            }
+        }
+    }
+
+    await next();
+});
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

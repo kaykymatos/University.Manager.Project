@@ -1,8 +1,8 @@
 ﻿using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using University.Manager.Project.IdentityServer.Configuration;
 using University.Manager.Project.IdentityServer.Data;
+using University.Manager.Project.IdentityServer.Models;
 
 namespace University.Manager.Project.IdentityServer.Initializer
 {
@@ -25,13 +25,13 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
         public void Initialize()
         {
-            if (_role.FindByNameAsync(IdentityConfiguration.Admin).Result != null) return;
+            if (_role.FindByNameAsync(Config.Admin).Result != null) return;
             _role.CreateAsync(new IdentityRole(
-                IdentityConfiguration.Admin)).GetAwaiter().GetResult();
+                Config.Admin)).GetAwaiter().GetResult();
             _role.CreateAsync(new IdentityRole(
-                IdentityConfiguration.Student)).GetAwaiter().GetResult();
+                Config.Student)).GetAwaiter().GetResult();
             _role.CreateAsync(new IdentityRole(
-               IdentityConfiguration.Employer)).GetAwaiter().GetResult();
+               Config.Employer)).GetAwaiter().GetResult();
 
             ApplicationUser admin = new()
             {
@@ -47,13 +47,13 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             _user.CreateAsync(admin, "Kayky123$").GetAwaiter().GetResult();
             _user.AddToRoleAsync(admin,
-                IdentityConfiguration.Admin).GetAwaiter().GetResult();
+                Config.Admin).GetAwaiter().GetResult();
             IdentityResult adminClaims = _user.AddClaimsAsync(admin,
             [
                 new (JwtClaimTypes.Name, $"{admin.FirstName} {admin.LastName}"),
                 new (JwtClaimTypes.GivenName, admin.FirstName),
                 new (JwtClaimTypes.FamilyName, admin.LastName),
-                new (JwtClaimTypes.Role, IdentityConfiguration.Admin)
+                new (JwtClaimTypes.Role, Config.Admin)
             ]).Result;
 
             ApplicationUser client = new()
@@ -70,20 +70,20 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             _user.CreateAsync(client, "Kayky123$").GetAwaiter().GetResult();
             _user.AddToRoleAsync(client,
-                IdentityConfiguration.Student).GetAwaiter().GetResult();
+                Config.Student).GetAwaiter().GetResult();
             IdentityResult clientClaims = _user.AddClaimsAsync(client,
             [
                 new(JwtClaimTypes.Name, $"{client.FirstName} {client.LastName}"),
                 new(JwtClaimTypes.GivenName, client.FirstName),
                 new(JwtClaimTypes.FamilyName, client.LastName),
-                new (JwtClaimTypes.Role, IdentityConfiguration.Student)
+                new (JwtClaimTypes.Role, Config.Student)
             ]).Result;
 
             ApplicationUser employer = new()
             {
                 UserName = "kayky-employer@gmail.com",
-                NormalizedUserName= "KAYKY-EMPLOYER@GMAIL.COM",
-                NormalizedEmail= "KAYKY-EMPLOYER@GMAIL.COM",
+                NormalizedUserName = "KAYKY-EMPLOYER@GMAIL.COM",
+                NormalizedEmail = "KAYKY-EMPLOYER@GMAIL.COM",
                 Email = "kayky-employer@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+55 (11) 11111-1111",
@@ -93,13 +93,13 @@ namespace University.Manager.Project.IdentityServer.Initializer
 
             _user.CreateAsync(employer, "Kayky123$").GetAwaiter().GetResult();
             _user.AddToRoleAsync(employer,
-                IdentityConfiguration.Employer).GetAwaiter().GetResult();
+                Config.Employer).GetAwaiter().GetResult();
             IdentityResult employerClaims = _user.AddClaimsAsync(employer,
             [
                 new Claim(JwtClaimTypes.Name, $"{employer.FirstName} {employer.LastName}"),
                 new Claim(JwtClaimTypes.GivenName, employer.FirstName),
                 new Claim(JwtClaimTypes.FamilyName, employer.LastName),
-                new Claim(JwtClaimTypes.Role, IdentityConfiguration.Student)
+                new Claim(JwtClaimTypes.Role, Config.Student)
             ]).Result;
         }
 
