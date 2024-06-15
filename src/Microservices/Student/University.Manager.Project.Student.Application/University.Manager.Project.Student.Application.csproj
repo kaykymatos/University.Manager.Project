@@ -3,7 +3,19 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
+	  <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="FluentValidation" Version="11.9.0" />
+	  <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+	  <ProjectReference Include="..\..\MessageBus\University.Manager.Project.MessageBus\University.Manager.Project.MessageBus.csproj" />
+    <ProjectReference Include="..\University.Manager.Project.Student.Domain\University.Manager.Project.Student.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
 
 </Project>

@@ -33,7 +33,7 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
 
         public async Task<IEnumerable<CourseEntity>> GetAllAsync()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses.Include(x => x.CourseCategory).ToListAsync();
         }
 
         public async Task<CourseEntity> GetByIdAsync(long id)
@@ -43,14 +43,15 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
 
         public async Task<IEnumerable<CourseEntity>> GetCourseByCategoryId(long categoryId)
         {
-            var listModel = await _context.Courses.Where(x => x.CourseCategoryId == categoryId).ToListAsync();
+            List<CourseEntity> listModel = await _context.Courses.Where(x => x.CourseCategoryId == categoryId).ToListAsync();
             return listModel;
         }
 
         public async Task<CourseEntity> UpdateModelAsync(CourseEntity entity)
         {
-            entity.CreationData = entity.CreationData;
             entity.UpdateDomain(entity.Name, entity.Description, entity.Workload, entity.TotalValue);
+            entity.CreationData = _context.Courses.FirstAsync(x => x.Id == entity.Id).Result.CreationData;
+
             _context.ChangeTracker.Clear();
             _context.Courses.Update(entity);
             await _context.SaveChangesAsync();

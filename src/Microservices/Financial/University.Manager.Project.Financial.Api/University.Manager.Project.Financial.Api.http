@@ -1,6 +1,0 @@
-@University.Manager.Project.Financial.Api_HostAddress = http://localhost:5270
-
-GET {{University.Manager.Project.Financial.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

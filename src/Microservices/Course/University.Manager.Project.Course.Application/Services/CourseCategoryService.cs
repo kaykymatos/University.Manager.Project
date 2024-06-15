@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using University.Manager.Project.Course.Application.DTOs;
+using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Course.Application.Interfaces;
 using University.Manager.Project.Course.Domain.Entities;
 using University.Manager.Project.Course.Domain.Interfaces;
@@ -17,27 +18,27 @@ namespace University.Manager.Project.Course.Application.Services
             _mapper = mapper;
         }
 
-        public async Task CreateModelAsync(CourseCategoryDTO entity)
+        public async Task CreateModelAsync(CourseCategoryRequestDTO entity)
         {
-            var model = _mapper.Map<CourseCategory>(entity);
+            CourseCategory model = _mapper.Map<CourseCategory>(entity);
 
-            var createModel = await _courseCategoryRepository.CreateModelAsync(model);
+            CourseCategory createModel = await _courseCategoryRepository.CreateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on create a new Course");
         }
 
         public async Task DeleteModelAsync(CourseCategoryDTO entity)
         {
-            var model = _mapper.Map<CourseCategory>(entity);
+            CourseCategory model = _mapper.Map<CourseCategory>(entity);
 
-            var deleteModel = await _courseCategoryRepository.DeleteModelAsync(model);
+            CourseCategory deleteModel = await _courseCategoryRepository.DeleteModelAsync(model);
             if (deleteModel == null)
                 throw new ApplicationException("Error on delete a Course");
         }
 
         public async Task<IEnumerable<CourseCategoryDTO>> GetAllAsync()
         {
-            var listCourses = await _courseCategoryRepository.GetAllAsync();
+            IEnumerable<CourseCategory> listCourses = await _courseCategoryRepository.GetAllAsync();
             return listCourses == null ?
                 throw new ApplicationException("Error on list a Courses")
                 : _mapper.Map<IEnumerable<CourseCategoryDTO>>(listCourses);
@@ -45,13 +46,14 @@ namespace University.Manager.Project.Course.Application.Services
 
         public async Task<CourseCategoryDTO> GetByIdAsync(long id)
         {
-            var model = await _courseCategoryRepository.GetByIdAsync(id);
+            CourseCategory model = await _courseCategoryRepository.GetByIdAsync(id);
             return _mapper.Map<CourseCategoryDTO>(model);
         }
-        public async Task UpdateModelAsync(CourseCategoryDTO entity)
+        public async Task UpdateModelAsync(CourseCategoryRequestDTO entity)
         {
-            var model = _mapper.Map<CourseCategory>(entity);
-            var createModel = await _courseCategoryRepository.UpdateModelAsync(model);
+            CourseCategory model = _mapper.Map<CourseCategory>(entity);
+
+            CourseCategory createModel = await _courseCategoryRepository.UpdateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on delete a Course");
 

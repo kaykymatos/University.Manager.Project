@@ -48,7 +48,7 @@ namespace University.Manager.Project.Course.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CourseCategories");
+                    b.ToTable("CourseCategories", (string)null);
                 });
 
             modelBuilder.Entity("University.Manager.Project.Course.Domain.Entities.CourseEntity", b =>
@@ -82,14 +82,14 @@ namespace University.Manager.Project.Course.Infra.Data.Migrations
                     b.Property<DateTime>("UpdatedData")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Workload")
-                        .HasColumnType("datetime2");
+                    b.Property<float>("Workload")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseCategoryId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("University.Manager.Project.Course.Domain.Entities.CourseEntity", b =>

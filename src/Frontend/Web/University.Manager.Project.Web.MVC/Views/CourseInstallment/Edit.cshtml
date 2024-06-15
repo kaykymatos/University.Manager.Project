@@ -1,0 +1,77 @@
+﻿@model University.Manager.Project.Web.MVC.Models.CourseInstallmentViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Course Installment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="StudentId" class="form-label">Student</label>
+                <select class="form-select" asp-for="StudentId" asp-items="@ViewBag.StudentsId">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstallmentPrice" class="control-label">Installment Price</label>
+                <input asp-for="InstallmentPrice" class="form-control" />
+                <span asp-validation-for="InstallmentPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentDate" class="control-label">Payment Date</label>
+                <input asp-for="PaymentDate" class="form-control" />
+                <span asp-validation-for="PaymentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DueDate" class="control-label">Due Date</label>
+                <input asp-for="DueDate" class="form-control" />
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstallmentStatus" class="control-label">Installment Status</label>
+                <select asp-for="InstallmentStatus" class="form-control">
+                    <option value="">Select</option>
+                    @foreach (var status in ViewBag.InstallmentStatus)
+                    {
+                        <option value="@status.Value">@status.Text</option>
+                    }
+
+                </select>
+                <span asp-validation-for="InstallmentStatus" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentMethod" class="control-label">Payment Method</label>
+                <select asp-for="PaymentMethod" class="form-control">
+                    <option value="">Select</option>
+                    @foreach (var method in ViewBag.PaymentMethod)
+                    {
+                        <option value="@method.Value">@method.Text</option>
+
+                    }
+
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

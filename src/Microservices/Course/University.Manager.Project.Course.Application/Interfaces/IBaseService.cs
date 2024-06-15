@@ -1,11 +1,11 @@
 ﻿namespace University.Manager.Project.Course.Application.Interfaces
 {
-    public interface IBaseService<T> where T : class
+    public interface IBaseService<T, Z> where T : class where Z : class
     {
         Task<T> GetByIdAsync(long id);
         Task<IEnumerable<T>> GetAllAsync();
-        Task CreateModelAsync(T entity);
-        Task UpdateModelAsync(T entity);
+        Task CreateModelAsync(Z entity);
+        Task UpdateModelAsync(Z entity);
         Task DeleteModelAsync(T entity);
     }
 }
