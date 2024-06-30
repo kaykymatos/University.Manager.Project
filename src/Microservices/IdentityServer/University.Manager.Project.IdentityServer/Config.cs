@@ -16,7 +16,8 @@ public static class Config
        ];
     public static IEnumerable<ApiScope> ApiScopes =>
     [
-        new ApiScope("university", "University"),
+            new ApiScope("universityBlazor", "UniversityBlazor"),
+            new ApiScope("university", "University"),
             new ApiScope("read", "Reade data"),
             new ApiScope("write", "Write data"),
             new ApiScope("delete", "Delete data"),
@@ -45,6 +46,19 @@ public static class Config
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "university" }
+                },
+                new Client
+                {
+                    ClientId = "universityBlazor",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    ClientSecrets = {new Secret(Environment.GetEnvironmentVariable("SecretIdentityBlazor").Sha256())},
+                    RedirectUris = {"https://localhost:7252/signin-oidc"},
+                    PostLogoutRedirectUris = {"https://localhost:7252/signout-callback-oidc"},
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "universityBlazor" }
                 },
             ];
 }

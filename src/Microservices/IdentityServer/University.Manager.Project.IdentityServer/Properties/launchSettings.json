@@ -5,8 +5,8 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SecretIdentity": "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh"
-
+        "SecretIdentity": "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh",
+        "SecretIdentityBlazor": "lçkmkknbhbjjknçj53nio45094u9830098237972302yhdiwhoeuhdouwehdwe"
       },
       "applicationUrl": "https://localhost:4435;http://localhost:4436"
     }

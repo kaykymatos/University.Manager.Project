@@ -1,0 +1,53 @@
+﻿ @page "/courses/details"
+@inject ICourseService service
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>course</h4>
+    <hr />
+    @if (course is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@course.Name</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@course.Description</dd>
+            <dt class="col-sm-2">Workload</dt>
+            <dd class="col-sm-10">@course.Workload</dd>
+            <dt class="col-sm-2">Total Value</dt>
+            <dd class="col-sm-10">@course.TotalValue</dd>
+            <dt class="col-sm-2">Course CategoryI</dt>
+            <dd class="col-sm-10">@course.CourseCategoryId</dd>
+        </dl>
+        <div>
+            <a href="@($"/courses/edit?id={course.Id}")">Edit</a> |
+            <a href="@($"/courses")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    CourseViewModel? course;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+    private string token;
+    protected override async Task OnInitializedAsync()
+    {
+        token = await TokenService.GetTokenAsync();
+
+        course = await service.FindById(Id,token);
+
+        if (course is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

@@ -89,7 +89,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.IdentityServer", "src\Microservices\IdentityServer\University.Manager.Project.IdentityServer\University.Manager.Project.IdentityServer.csproj", "{DDFB0050-D69A-427D-8A7F-0B226581CD1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University.Manager.Project.Web.Blazor", "src\Frontend\Web\University.Manager.Project.Web.Blazor\University.Manager.Project.Web.Blazor.csproj", "{7FE60B26-CD69-4487-9355-9041E662008E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University.Manager.Project.Web.Blazor", "src\Frontend\Web\University.Manager.Project.Web.Blazor\University.Manager.Project.Web.Blazor.csproj", "{7FE60B26-CD69-4487-9355-9041E662008E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,99 @@
+﻿@page "/courses"
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Identity
+@inject ICourseService service
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="courses/create">Create New</a>
+</p>
+
+<MudDataGrid T="CourseViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+             Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Courses</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <SelectColumn T="CourseViewModel" />
+        <MudBlazor.PropertyColumn Property="x => x.Id" Title="Id" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Description" Title="Description" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Workload" Title="Workload" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.TotalValue" Title="Total Value" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.CourseCategoryId" Title="Course CategoryId" Sortable="true" />
+
+        <MudBlazor.TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"courses/edit/{context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"courses/delete?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"courses/details?id={context.Item.Id}")" />
+            </CellTemplate>
+        </MudBlazor.TemplateColumn>
+
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="CourseViewModel" />
+    </PagerContent>
+
+</MudDataGrid>
+<MudBlazor.MudButton Href="courses/create"
+                     Variant="Variant.Filled"
+                     EndIcon="@Icons.Material.Outlined.Create"
+                     Color="Color.Primary">
+                Create
+</MudBlazor.MudButton>
+
+@code {
+
+    private IEnumerable<CourseViewModel> Elements = new List<CourseViewModel>();
+    private string _searchString;
+    private List<string> _events = new();
+
+    private Func<CourseViewModel, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+
+        return false;
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await TokenService.GetTokenAsync();
+
+        Elements = await service.FindAll(token);
+    }
+
+    // events
+    void RowClicked(DataGridRowClickEventArgs<CourseViewModel> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void RowRightClicked(DataGridRowClickEventArgs<CourseViewModel> args)
+    {
+        _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<CourseViewModel> items)
+    {
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
+    }
+}

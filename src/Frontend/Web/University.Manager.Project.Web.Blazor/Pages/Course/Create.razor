@@ -1,0 +1,112 @@
+﻿@page "/courses/create"
+@page "/courses/edit/{Id:int}"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject ICourseService service
+@inject ICourseCategoryService courseCategories
+
+<PageTitle>@(Id > 0 ? "Update" : "Create")</PageTitle>
+
+<h1>@(Id > 0 ? "Update" : "Create")</h1>
+
+<h4>Task</h4>
+<hr />
+<div class="row">
+    <ErrorAlert ServerError="@ServerError" />
+    <div class="col-md-4">
+        <EditForm method="post" Model="CourseViewModel" OnValidSubmit="AddCourseViewModel" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ServerValidator @ref="_serverValidator" />
+            <div class="mb-3">
+                <label for="title" class="form-label">Name:</label>
+                <InputText id="title" @bind-Value="CourseViewModel.Name" class="form-control" />
+                <ValidationMessage For="() => CourseViewModel.Name" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label>
+                <InputText id="description" @bind-Value="CourseViewModel.Description" class="form-control" />
+                <ValidationMessage For="() => CourseViewModel.Description" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="workload" class="form-label">Workload:</label>
+                <InputNumber id="workload" @bind-Value="CourseViewModel.Workload" class="form-control" />
+                <ValidationMessage For="() => CourseViewModel.Workload" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="totalValue" class="form-label">Total Value:</label>
+                <InputNumber id="totalValue" @bind-Value="CourseViewModel.TotalValue" class="form-control" />
+                <ValidationMessage For="() => CourseViewModel.TotalValue" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="enddate" class="form-label">Category:</label>
+                <InputSelect @bind-Value="CourseViewModel.CourseCategoryId">
+                    @foreach (var category in courseCategorieList)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => CourseViewModel.CourseCategoryId" class="text-danger" />
+            </div> 
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/courses">Back to List</a>
+</div>
+
+@code {
+
+
+    [Parameter]
+    public int Id { get; set; }
+    private string ServerError { get; set; }
+    [SupplyParameterFromForm]
+    public CourseViewModel CourseViewModel { get; set; } = new();
+    public string token;
+    private ServerValidator _serverValidator;
+
+    private IEnumerable<CourseCategoryViewModel> courseCategorieList = new List<CourseCategoryViewModel>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        token = await TokenService.GetTokenAsync();
+        courseCategorieList = await courseCategories.FindAll(token);
+
+        ServerError = null;
+    }
+
+
+    public async Task AddCourseViewModel()
+    {
+
+        ServerError = null;
+
+        IEnumerable<ApiErrorViewModel> response;
+        if (CourseViewModel.Id == 0)
+            response = await service.Create(CourseViewModel, token);
+        else
+            response = await service.Update(CourseViewModel, token);
+
+        if (response == null)
+        {
+            ServerError = "Erro interno no servidor";
+        }
+        else if (response.Count() == 0)
+        {
+            NavigationManager.NavigateTo("/courses");
+        }
+        else
+        {
+            _serverValidator.DisplayErrors(response);
+
+        }
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+            CourseViewModel = await service.FindById(Id, token);
+    }
+}
