@@ -1,87 +1,72 @@
 ﻿@page "/courses/create"
 @page "/courses/edit/{Id:int}"
 @inject NavigationManager NavigationManager
-@rendermode InteractiveServer
 @inject ICourseService service
 @inject ICourseCategoryService courseCategories
+<ErrorAlert ServerError="@ServerError" />
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
 
-<PageTitle>@(Id > 0 ? "Update" : "Create")</PageTitle>
-
-<h1>@(Id > 0 ? "Update" : "Create")</h1>
-
-<h4>Task</h4>
-<hr />
-<div class="row">
-    <ErrorAlert ServerError="@ServerError" />
-    <div class="col-md-4">
-        <EditForm method="post" Model="CourseViewModel" OnValidSubmit="AddCourseViewModel" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ServerValidator @ref="_serverValidator" />
-            <div class="mb-3">
-                <label for="title" class="form-label">Name:</label>
-                <InputText id="title" @bind-Value="CourseViewModel.Name" class="form-control" />
-                <ValidationMessage For="() => CourseViewModel.Name" class="text-danger" />
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description:</label>
-                <InputText id="description" @bind-Value="CourseViewModel.Description" class="form-control" />
-                <ValidationMessage For="() => CourseViewModel.Description" class="text-danger" />
-            </div>
-            <div class="mb-3">
-                <label for="workload" class="form-label">Workload:</label>
-                <InputNumber id="workload" @bind-Value="CourseViewModel.Workload" class="form-control" />
-                <ValidationMessage For="() => CourseViewModel.Workload" class="text-danger" />
-            </div>
-            <div class="mb-3">
-                <label for="totalValue" class="form-label">Total Value:</label>
-                <InputNumber id="totalValue" @bind-Value="CourseViewModel.TotalValue" class="form-control" />
-                <ValidationMessage For="() => CourseViewModel.TotalValue" class="text-danger" />
-            </div>
-            <div class="mb-3">
-                <label for="enddate" class="form-label">Category:</label>
-                <InputSelect @bind-Value="CourseViewModel.CourseCategoryId">
-                    @foreach (var category in courseCategorieList)
+            <MudForm @ref="form">
+                <MudTextField T="long" @bind-Value="CourseViewModel.Id" hidden />
+                <MudTextField T="string" @bind-Value="CourseViewModel.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(GetFieldErrors("Name").FirstOrDefault())" />
+                <MudTextField T="string" @bind-Value="CourseViewModel.Description" Label="Description" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Description"))" ErrorText="@(GetFieldErrors("Description").FirstOrDefault())" />
+                <MudTextField T="float" @bind-Value="CourseViewModel.Workload" Label="Workload" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Workload"))" ErrorText="@(GetFieldErrors("Workload").FirstOrDefault())" />
+                <MudTextField T="decimal" @bind-Value="CourseViewModel.TotalValue" Label="TotalValue" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "TotalValue"))" ErrorText="@(GetFieldErrors("TotalValue").FirstOrDefault())" />
+                <MudSelect T="long" Label="Select Course Category" @bind-Value="CourseViewModel.CourseCategoryId">
+                    @if (courseCategorieList == null || !courseCategorieList.Any())
                     {
-                        <option value="@category.Id">@category.Name</option>
+                        <MudSelectItem Value="@((long)0)" Disabled>Loading...</MudSelectItem>
                     }
-                </InputSelect>
-                <ValidationMessage For="() => CourseViewModel.CourseCategoryId" class="text-danger" />
-            </div> 
-            <button type="submit" class="btn btn-primary">Create</button>
-        </EditForm>
-    </div>
-</div>
-
-<div>
-    <a href="/courses">Back to List</a>
-</div>
+                    else
+                    {
+                        @foreach (var category in courseCategorieList)
+                        {
+                            <MudSelectItem Value="@category.Id">@category.Name</MudSelectItem>
+                        }
+                    }
+                </MudSelect>
+                <div class="d-flex align-center justify-space-between">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCourseViewModel" Class="ml-auto">Register</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 @code {
-
+    private MudForm form;
 
     [Parameter]
     public int Id { get; set; }
     private string ServerError { get; set; }
-    [SupplyParameterFromForm]
+
     public CourseViewModel CourseViewModel { get; set; } = new();
     public string token;
-    private ServerValidator _serverValidator;
 
-    private IEnumerable<CourseCategoryViewModel> courseCategorieList = new List<CourseCategoryViewModel>();
-
+    private IEnumerable<ApiErrorViewModel> errorViewModels = new List<ApiErrorViewModel>();
+    private IEnumerable<CourseCategoryViewModel>? courseCategorieList = new List<CourseCategoryViewModel>();
 
     protected async override Task OnInitializedAsync()
     {
+        ServerError = null;
         token = await TokenService.GetTokenAsync();
         courseCategorieList = await courseCategories.FindAll(token);
 
-        ServerError = null;
+        if (Id > 0)
+            CourseViewModel = await service.FindById(Id, token);
     }
 
+    private IEnumerable<string> GetFieldErrors(string fieldName)
+    {
+        return errorViewModels
+            .Where(error => error.PropertyName == fieldName)
+            .Select(error => error.ErrorMessage);
+    }
 
     public async Task AddCourseViewModel()
     {
-
         ServerError = null;
 
         IEnumerable<ApiErrorViewModel> response;
@@ -94,16 +79,16 @@
         {
             ServerError = "Erro interno no servidor";
         }
-        else if (response.Count() == 0)
+        else if (!response.Any())
         {
             NavigationManager.NavigateTo("/courses");
         }
         else
         {
-            _serverValidator.DisplayErrors(response);
-
+            errorViewModels = response;
         }
     }
+
     protected override async Task OnParametersSetAsync()
     {
         if (Id > 0)
