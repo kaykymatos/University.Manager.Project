@@ -24,10 +24,27 @@
 
   
   <ItemGroup>
+    <Folder Include="Components\Inputs\" />
     <Folder Include="Pages\CourseCategory\" />
     <Folder Include="Pages\CourseInstallment\" />
     <Folder Include="Pages\Student\" />
     <Folder Include="Pages\Order\" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Content Update="Pages\CourseCategory\CreateOrEdit.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Pages\CourseCategory\Delete.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Pages\CourseCategory\Details.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Pages\CourseCategory\Index.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
   </ItemGroup>
   
 </Project>

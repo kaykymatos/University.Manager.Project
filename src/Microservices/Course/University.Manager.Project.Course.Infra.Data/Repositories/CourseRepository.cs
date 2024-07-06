@@ -38,7 +38,7 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
 
         public async Task<CourseEntity> GetByIdAsync(long id)
         {
-            return await _context.Courses.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Courses.Include(x=>x.CourseCategory).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<CourseEntity>> GetCourseByCategoryId(long categoryId)

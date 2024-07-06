@@ -3,7 +3,11 @@
 @inject NavigationManager NavigationManager
 @inject ICourseService service
 @inject ICourseCategoryService courseCategories
+@inject ErrorService ErrorService
+@attribute [Authorize]
+
 @rendermode InteractiveServer
+
 <ErrorAlert ServerError="@ServerError" />
 
 <MudGrid>
@@ -12,10 +16,10 @@
 
             <MudForm @ref="form">
                 <MudTextField T="long" @bind-Value="course.Id" hidden />
-                <MudTextField T="string" @bind-Value="course.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(GetFieldErrors("Name").FirstOrDefault())" />
-                <MudTextField T="string" @bind-Value="course.Description" Label="Description" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Description"))" ErrorText="@(GetFieldErrors("Description").FirstOrDefault())" />
-                <MudTextField T="float" @bind-Value="course.Workload" Label="Workload" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Workload"))" ErrorText="@(GetFieldErrors("Workload").FirstOrDefault())" />
-                <MudTextField T="decimal" @bind-Value="course.TotalValue" Label="Total Value" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "TotalValue"))" ErrorText="@(GetFieldErrors("TotalValue").FirstOrDefault())" />
+                <MudTextField T="string" @bind-Value="course.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
+                <MudTextField T="string" @bind-Value="course.Description" Label="Description" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Description"))" ErrorText="@(ErrorService.GetFieldErrors("Description",errorViewModels))" />
+                <MudTextField T="float" @bind-Value="course.Workload" Label="Workload" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Workload"))" ErrorText="@(ErrorService.GetFieldErrors("Workload",errorViewModels))" />
+                <MudTextField T="decimal" @bind-Value="course.TotalValue" Label="Total Value" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "TotalValue"))" ErrorText="@(ErrorService.GetFieldErrors("TotalValue",errorViewModels))" />
 
 
                 <div class="mud-input-control mud-input-required mud-input-input-control">
@@ -44,7 +48,7 @@
                         <span class="mud-input-helper-text mud-input-error">
                             <div class="d-flex">
                                 <div class="me-auto">
-                                    @GetFieldErrors("CategoryId").FirstOrDefault()
+                                    @ErrorService.GetFieldErrors("CategoryId", errorViewModels)
                                 </div>
                             </div>
                         </span>
@@ -52,8 +56,13 @@
                 </div>
 
                 <div class="d-flex align-center justify-space-between mt-3">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               ButtonType="ButtonType.Button" OnClick="UpdateOrCreateCourse" Class="ml-auto">@(Id>0?"Update":"Create")</MudButton>
+                    <div class="ms-auto">
+                        <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                                   ButtonType="ButtonType.Button" Href="/courses" Class="ml-auto">Back to List</MudButton>
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   ButtonType="ButtonType.Button" OnClick="UpdateOrCreateCourse" Class="ml-auto">@(Id > 0 ? "Update" : "Create")</MudButton>
+                    </div>
                 </div>
             </MudForm>
         </MudPaper>
@@ -80,14 +89,6 @@
         courseCategorieList = await courseCategories.FindAll(token);
 
     }
-
-    private IEnumerable<string> GetFieldErrors(string fieldName)
-    {
-        return errorViewModels
-            .Where(error => error.PropertyName == fieldName)
-            .Select(error => error.ErrorMessage);
-    }
-
     private async Task UpdateOrCreateCourse()
     {
 
@@ -105,6 +106,7 @@
         }
         else if (!response.Any())
         {
+            ErrorService.ClearErrors();
             NavigationManager.NavigateTo("/courses");
         }
         else

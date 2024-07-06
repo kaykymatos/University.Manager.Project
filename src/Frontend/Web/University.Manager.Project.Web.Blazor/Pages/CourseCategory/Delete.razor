@@ -1,7 +1,6 @@
-﻿@page "/courses/delete"
-@inject ICourseService service
+﻿@page "/courseCategories/delete"
+@inject ICourseCategoryService service
 @inject NavigationManager NavigationManager
-@rendermode InteractiveServer
 @attribute [Authorize]
 
 <PageTitle>Delete</PageTitle>
@@ -27,32 +26,27 @@
             <dd class="col-sm-10">@courseViewModel.Description</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">Workload</dt>
-            <dd class="col-sm-10">@courseViewModel.Workload</dd>
+            <dt class="col-sm-2">Creation Date</dt>
+            <dd class="col-sm-10">@courseViewModel.CreationData</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">Total Value</dt>
-            <dd class="col-sm-10">@courseViewModel.TotalValue</dd>
-        </dl>
-        <dl class="row">
-            <dt class="col-sm-2">Course Category</dt>
-            <dd class="col-sm-10">@courseViewModel.CourseCategory.Name</dd>
+            <dt class="col-sm-2">Updated Date</dt>
+            <dd class="col-sm-10">@courseViewModel.UpdatedData</dd>
         </dl>
         <EditForm method="post" Model="courseViewModel" OnValidSubmit="DeletecourseViewModel" FormName="delete" Enhance>
             <MudButton Variant="Variant.Filled" Color="Color.Error"
                        ButtonType="ButtonType.Submit" Class="ml-auto">Delete</MudButton>
 
             <MudButton Variant="Variant.Filled" Color="Color.Transparent"
-                       ButtonType="ButtonType.Button" Href="/courses" Class="ml-auto">Back to List</MudButton>
+                       ButtonType="ButtonType.Button" Href="/courseCategories" Class="ml-auto">Back to List</MudButton>
 
         </EditForm>
-
     }
 </div>
 
 @code {
     private string ServerError { get; set; }
-    CourseViewModel? courseViewModel;
+    CourseCategoryViewModel? courseViewModel;
     private string token;
     [SupplyParameterFromQuery]
     public int Id { get; set; }
@@ -77,7 +71,7 @@
         }
         else
         {
-            NavigationManager.NavigateTo("/courses");
+            NavigationManager.NavigateTo("/courseCategories");
         }
 
     }

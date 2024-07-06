@@ -3,6 +3,7 @@ using University.Manager.Project.Web.Blazor;
 using Microsoft.AspNetCore.Authentication;
 using University.Manager.Project.Web.Blazor.Extensions;
 using University.Manager.Project.Web.Blazor.Pages;
+using University.Manager.Project.Web.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddQuickGridEntityFrameworkAdapter();;
@@ -39,6 +40,7 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("universityBlazor");
         options.SaveTokens = true;
     });
+builder.Services.AddSingleton<ErrorService>();
 
 var app = builder.Build();
 

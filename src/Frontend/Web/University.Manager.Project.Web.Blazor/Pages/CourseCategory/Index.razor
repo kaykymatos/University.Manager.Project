@@ -1,5 +1,5 @@
-﻿@page "/courses"
-@inject ICourseService service
+﻿@page "/courseCategories"
+@inject ICourseCategoryService service
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @attribute [Authorize]
@@ -12,7 +12,7 @@
     <a href="courses/create">Create New</a>
 </p>
 
-<MudDataGrid T="CourseViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+<MudDataGrid T="CourseCategoryViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
              Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Courses</MudText>
@@ -22,13 +22,12 @@
     </ToolBarContent>
 
     <Columns>
-        <SelectColumn T="CourseViewModel" />
+        <SelectColumn T="CourseCategoryViewModel" />
         <MudBlazor.PropertyColumn Property="x => x.Id" Title="Id" Sortable="true" />
         <MudBlazor.PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" />
         <MudBlazor.PropertyColumn Property="x => x.Description" Title="Description" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.Workload" Title="Workload" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.TotalValue" Title="Total Value" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.CourseCategory.Name" Title="Course Category" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.CreationData" Title="Creation Date" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.UpdatedData" Title="Updated Date" Sortable="true" />
 
         <MudBlazor.TemplateColumn CellClass="d-flex justify-end">
             <CellTemplate>
@@ -40,24 +39,24 @@
 
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="CourseViewModel" />
+        <MudDataGridPager T="CourseCategoryViewModel" />
     </PagerContent>
 
 </MudDataGrid>
-<MudBlazor.MudButton Href="courses/create"
+<MudBlazor.MudButton Href="courseCategories/create"
                      Variant="Variant.Filled"
                      EndIcon="@Icons.Material.Outlined.Create"
                      Color="Color.Primary">
-                Create
+    Create
 </MudBlazor.MudButton>
 
 @code {
 
-    private IEnumerable<CourseViewModel> Elements = new List<CourseViewModel>();
+    private IEnumerable<CourseCategoryViewModel> Elements = new List<CourseCategoryViewModel>();
     private string _searchString;
     private List<string> _events = new();
 
-    private Func<CourseViewModel, bool> _quickFilter => x =>
+    private Func<CourseCategoryViewModel, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -68,8 +67,6 @@
         if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        if (x.CourseCategory.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
 
         return false;
     };
@@ -83,17 +80,17 @@
     }
 
     // events
-    void RowClicked(DataGridRowClickEventArgs<CourseViewModel> args)
+    void RowClicked(DataGridRowClickEventArgs<CourseCategoryViewModel> args)
     {
         _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
     }
 
-    void RowRightClicked(DataGridRowClickEventArgs<CourseViewModel> args)
+    void RowRightClicked(DataGridRowClickEventArgs<CourseCategoryViewModel> args)
     {
         _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
     }
 
-    void SelectedItemsChanged(HashSet<CourseViewModel> items)
+    void SelectedItemsChanged(HashSet<CourseCategoryViewModel> items)
     {
         _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
     }
