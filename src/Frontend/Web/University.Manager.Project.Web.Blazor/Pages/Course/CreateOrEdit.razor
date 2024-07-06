@@ -1,0 +1,126 @@
+﻿@page "/courses/create"
+@page "/courses/edit/{Id:int}"
+@inject NavigationManager NavigationManager
+@inject ICourseService service
+@inject ICourseCategoryService courseCategories
+@rendermode InteractiveServer
+<ErrorAlert ServerError="@ServerError" />
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+
+            <MudForm @ref="form">
+                <MudTextField T="long" @bind-Value="course.Id" hidden />
+                <MudTextField T="string" @bind-Value="course.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(GetFieldErrors("Name").FirstOrDefault())" />
+                <MudTextField T="string" @bind-Value="course.Description" Label="Description" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Description"))" ErrorText="@(GetFieldErrors("Description").FirstOrDefault())" />
+                <MudTextField T="float" @bind-Value="course.Workload" Label="Workload" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Workload"))" ErrorText="@(GetFieldErrors("Workload").FirstOrDefault())" />
+                <MudTextField T="decimal" @bind-Value="course.TotalValue" Label="Total Value" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "TotalValue"))" ErrorText="@(GetFieldErrors("TotalValue").FirstOrDefault())" />
+
+
+                <div class="mud-input-control mud-input-required mud-input-input-control">
+                    <div class="mud-input-control-input-container">
+                        <div class="mud-input mud-input-text mud-input-text-with-label mud-input-underline mud-shrink mud-typography-input">
+
+                            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="course.CourseCategoryId">
+                                @if (courseCategorieList is not null)
+                                {
+                                    <option value="0" selected>Select</option>
+
+                                    foreach (var item in courseCategorieList)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">Loading...</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">Categories</label>
+                    </div>
+                    <div class="mud-input-control-helper-container">
+                        <span class="mud-input-helper-text mud-input-error">
+                            <div class="d-flex">
+                                <div class="me-auto">
+                                    @GetFieldErrors("CategoryId").FirstOrDefault()
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-center justify-space-between mt-3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                               ButtonType="ButtonType.Button" OnClick="UpdateOrCreateCourse" Class="ml-auto">@(Id>0?"Update":"Create")</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private string ServerError { get; set; }
+    private MudForm form;
+    private bool formIsValid;
+    public CourseViewModel course { get; set; } = new();
+    public string token;
+
+    private IEnumerable<ApiErrorViewModel> errorViewModels = new List<ApiErrorViewModel>();
+    private IEnumerable<CourseCategoryViewModel>? courseCategorieList;
+
+    protected async override Task OnInitializedAsync()
+    {
+        ServerError = null;
+        token = await TokenService.GetTokenAsync();
+        courseCategorieList = await courseCategories.FindAll(token);
+
+    }
+
+    private IEnumerable<string> GetFieldErrors(string fieldName)
+    {
+        return errorViewModels
+            .Where(error => error.PropertyName == fieldName)
+            .Select(error => error.ErrorMessage);
+    }
+
+    private async Task UpdateOrCreateCourse()
+    {
+
+        ServerError = null;
+
+        IEnumerable<ApiErrorViewModel> response;
+        if (course.Id == 0)
+            response = await service.Create(course, token);
+        else
+            response = await service.Update(course, token);
+
+        if (response == null)
+        {
+            ServerError = "Erro interno no servidor";
+        }
+        else if (!response.Any())
+        {
+            NavigationManager.NavigateTo("/courses");
+        }
+        else
+        {
+            errorViewModels = response;
+        }
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            course = await service.FindById(Id, token);
+            if (string.IsNullOrWhiteSpace(course.Description))
+                NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
