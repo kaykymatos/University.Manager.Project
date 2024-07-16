@@ -1,9 +1,10 @@
-﻿@page "/courseCategories/delete"
-@inject ICourseCategoryService service
+﻿@page "/students/delete"
+@inject IStudentService service
+@inject ICourseService courseService
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
-<PageTitle>Course categories</PageTitle>
+<PageTitle>Students</PageTitle>
 
 <h1>Delete</h1>
 
@@ -11,7 +12,7 @@
 <div>
     <h4>courseViewModel</h4>
     <hr />
-    @if (courseViewModel is null)
+    @if (student is null)
     {
         <p><em>Loading...</em></p>
     }
@@ -19,26 +20,31 @@
     {
         <dl class="row">
             <dt class="col-sm-2">Name</dt>
-            <dd class="col-sm-10">@courseViewModel.Name</dd>
+            <dd class="col-sm-10">@student.Name</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">Description</dt>
-            <dd class="col-sm-10">@courseViewModel.Description</dd>
+            <dt class="col-sm-2">Email</dt>
+            <dd class="col-sm-10">@student.Email</dd>
         </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Register Code</dt>
+            <dd class="col-sm-10">@student.RegisterCode</dd>
+        </dl>
+       
         <dl class="row">
             <dt class="col-sm-2">Creation Date</dt>
-            <dd class="col-sm-10">@courseViewModel.CreationData</dd>
+            <dd class="col-sm-10">@student.CreationData</dd>
         </dl>
         <dl class="row">
             <dt class="col-sm-2">Updated Date</dt>
-            <dd class="col-sm-10">@courseViewModel.UpdatedData</dd>
+            <dd class="col-sm-10">@student.UpdatedData</dd>
         </dl>
-        <EditForm method="post" Model="courseViewModel" OnValidSubmit="DeleteCourseViewModel" FormName="delete" Enhance>
+        <EditForm method="post" Model="student" OnValidSubmit="DeleteStudentViewModel" FormName="deleteStudent" Enhance>
             <MudButton Variant="Variant.Filled" Color="Color.Error"
                        ButtonType="ButtonType.Submit" Class="ml-auto">Delete</MudButton>
 
             <MudButton Variant="Variant.Filled" Color="Color.Transparent"
-                       ButtonType="ButtonType.Button" Href="/courseCategories" Class="ml-auto">Back to List</MudButton>
+                       ButtonType="ButtonType.Button" Href="/students" Class="ml-auto">Back to List</MudButton>
 
         </EditForm>
     }
@@ -46,7 +52,7 @@
 
 @code {
     private string ServerError { get; set; }
-    CourseCategoryViewModel? courseViewModel;
+    StudentViewModel? student;
     private string token;
     [SupplyParameterFromQuery]
     public int Id { get; set; }
@@ -54,15 +60,15 @@
     protected override async Task OnInitializedAsync()
     {
         token = await TokenService.GetTokenAsync();
-        courseViewModel = await service.FindById(Id, token);
+        student = await service.FindById(Id, token);
 
-        if (courseViewModel is null)
+        if (student is null)
         {
             NavigationManager.NavigateTo("notfound");
         }
     }
 
-    public async Task DeleteCourseViewModel()
+    public async Task DeleteStudentViewModel()
     {
         var response = await service.DeleteById(Id, token);
         if (!response)
@@ -71,7 +77,7 @@
         }
         else
         {
-            NavigationManager.NavigateTo("/courseCategories");
+            NavigationManager.NavigateTo("/students");
         }
 
     }

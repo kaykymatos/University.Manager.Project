@@ -2,10 +2,10 @@
 @page "/courseCategories/edit/{Id:int}"
 @inject NavigationManager NavigationManager
 @inject ICourseCategoryService service
-@rendermode InteractiveServer
 @inject ErrorService ErrorService
 @attribute [Authorize]
 
+<PageTitle>Course categories</PageTitle>
 <ErrorAlert ServerError="@ServerError" />
 
 <MudGrid>

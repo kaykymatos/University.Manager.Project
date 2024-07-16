@@ -6,11 +6,14 @@ using University.Manager.Project.Web.Blazor.Pages;
 using University.Manager.Project.Web.Blazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddQuickGridEntityFrameworkAdapter();;
+
+builder.Services.AddQuickGridEntityFrameworkAdapter(); ;
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
+builder.Services.AddRazorComponents(options =>
+    options.DetailedErrors = builder.Environment.IsDevelopment())
     .AddInteractiveServerComponents();
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenService>();
@@ -55,9 +58,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-app.UseAntiforgery();
 
 app.UseAuthentication();
+app.UseAntiforgery();
 //app.Use(async (context, next) =>
 //{
 //    // Verificar se o usuário está autenticado e se a rota requer uma role específica

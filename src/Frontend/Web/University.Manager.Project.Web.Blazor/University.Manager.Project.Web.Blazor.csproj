@@ -27,7 +27,6 @@
     <Folder Include="Components\Inputs\" />
     <Folder Include="Pages\CourseCategory\" />
     <Folder Include="Pages\CourseInstallment\" />
-    <Folder Include="Pages\Student\" />
     <Folder Include="Pages\Order\" />
   </ItemGroup>
 

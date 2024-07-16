@@ -1,35 +1,33 @@
-﻿@page "/courses/create"
-@page "/courses/edit/{Id:int}"
+﻿@page "/students/create"
+@page "/students/edit/{Id:int}"
 @inject NavigationManager NavigationManager
-@inject ICourseService service
-@inject ICourseCategoryService courseCategories
+@inject IStudentService service
+@inject ICourseService courseService
 @inject ErrorService ErrorService
 @attribute [Authorize]
 
-<PageTitle>Courses</PageTitle>
+<PageTitle>Students</PageTitle>
 <ErrorAlert ServerError="@ServerError" />
+
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
 
             <MudForm @ref="form">
-                <MudTextField T="long" @bind-Value="course.Id" hidden />
-                <MudTextField T="string" @bind-Value="course.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
-                <MudTextField T="string" @bind-Value="course.Description" Label="Description" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Description"))" ErrorText="@(ErrorService.GetFieldErrors("Description",errorViewModels))" />
-                <MudTextField T="float" @bind-Value="course.Workload" Label="Workload" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Workload"))" ErrorText="@(ErrorService.GetFieldErrors("Workload",errorViewModels))" />
-                <MudTextField T="decimal" @bind-Value="course.TotalValue" Label="Total Value" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "TotalValue"))" ErrorText="@(ErrorService.GetFieldErrors("TotalValue",errorViewModels))" />
-
-
+                <MudTextField T="long" @bind-Value="student.Id" hidden />
+                <MudTextField T="string" @bind-Value="student.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
+                <MudTextField T="string" @bind-Value="student.Email" Label="Email" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Email"))" ErrorText="@(ErrorService.GetFieldErrors("Email",errorViewModels))" />
+                <MudTextField T="string" @bind-Value="student.RegisterCode" Label="Register code" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "RegisterCode"))" ErrorText="@(ErrorService.GetFieldErrors("RegisterCode",errorViewModels))" />
                 <div class="mud-input-control mud-input-required mud-input-input-control">
                     <div class="mud-input-control-input-container">
                         <div class="mud-input mud-input-text mud-input-text-with-label mud-input-underline mud-shrink mud-typography-input">
 
-                            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="course.CourseCategoryId">
-                                @if (courseCategorieList is not null)
+                            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="student.CourseId">
+                                @if (coursesList is not null)
                                 {
                                     <option value="0" selected>Select</option>
 
-                                    foreach (var item in courseCategorieList)
+                                    foreach (var item in coursesList)
                                     {
                                         <option value="@item.Id">@item.Name</option>
                                     }
@@ -46,20 +44,19 @@
                         <span class="mud-input-helper-text mud-input-error">
                             <div class="d-flex">
                                 <div class="me-auto">
-                                    @ErrorService.GetFieldErrors("CategoryId", errorViewModels)
+                                    @ErrorService.GetFieldErrors("CourseId", errorViewModels)
                                 </div>
                             </div>
                         </span>
                     </div>
                 </div>
-
+                    
                 <div class="d-flex align-center justify-space-between mt-3">
                     <div class="ms-auto">
                         <MudButton Variant="Variant.Filled" Color="Color.Transparent"
-                                   ButtonType="ButtonType.Button" Href="/courses" Class="ml-auto">Back to List</MudButton>
-
+                                   ButtonType="ButtonType.Button" Href="/students" Class="ml-auto">Back to List</MudButton>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                   ButtonType="ButtonType.Button" OnClick="UpdateOrCreateCourse" Class="ml-auto">@(Id > 0 ? "Update" : "Create")</MudButton>
+                                   ButtonType="ButtonType.Button" OnClick="UpdateOrCreateStudent" Class="ml-auto">@(Id > 0 ? "Update" : "Create")</MudButton>
                     </div>
                 </div>
             </MudForm>
@@ -74,29 +71,30 @@
     private string ServerError { get; set; }
     private MudForm form;
     private bool formIsValid;
-    public CourseViewModel course { get; set; } = new();
+    public StudentViewModel student { get; set; } = new();
     public string token;
 
     private IEnumerable<ApiErrorViewModel> errorViewModels = new List<ApiErrorViewModel>();
-    private IEnumerable<CourseCategoryViewModel>? courseCategorieList;
+    private IEnumerable<CourseViewModel>? coursesList;
 
     protected async override Task OnInitializedAsync()
     {
         ServerError = null;
         token = await TokenService.GetTokenAsync();
-        courseCategorieList = await courseCategories.FindAll(token);
+        coursesList = await courseService.FindAll(token);
 
     }
-    private async Task UpdateOrCreateCourse()
+
+    private async Task UpdateOrCreateStudent()
     {
 
         ServerError = null;
 
         IEnumerable<ApiErrorViewModel> response;
-        if (course.Id == 0)
-            response = await service.Create(course, token);
+        if (student.Id == 0)
+            response = await service.Create(student, token);
         else
-            response = await service.Update(course, token);
+            response = await service.Update(student, token);
 
         if (response == null)
         {
@@ -105,7 +103,7 @@
         else if (!response.Any())
         {
             ErrorService.ClearErrors();
-            NavigationManager.NavigateTo("/courses");
+            NavigationManager.NavigateTo("/students");
         }
         else
         {
@@ -118,8 +116,8 @@
     {
         if (Id > 0)
         {
-            course = await service.FindById(Id, token);
-            if (string.IsNullOrWhiteSpace(course.Description))
+            student = await service.FindById(Id, token);
+            if (string.IsNullOrWhiteSpace(student.Name))
                 NavigationManager.NavigateTo("notfound");
         }
     }

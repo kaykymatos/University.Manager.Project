@@ -1,10 +1,9 @@
 ﻿@page "/courses/delete"
 @inject ICourseService service
 @inject NavigationManager NavigationManager
-@rendermode InteractiveServer
 @attribute [Authorize]
 
-<PageTitle>Delete</PageTitle>
+<PageTitle>Courses</PageTitle>
 
 <h1>Delete</h1>
 
@@ -38,7 +37,7 @@
             <dt class="col-sm-2">Course Category</dt>
             <dd class="col-sm-10">@courseViewModel.CourseCategory.Name</dd>
         </dl>
-        <EditForm method="post" Model="courseViewModel" OnValidSubmit="DeletecourseViewModel" FormName="delete" Enhance>
+        <EditForm method="post" Model="courseViewModel" OnValidSubmit="DeleteCourseViewModel" FormName="delete" Enhance>
             <MudButton Variant="Variant.Filled" Color="Color.Error"
                        ButtonType="ButtonType.Submit" Class="ml-auto">Delete</MudButton>
 
@@ -68,7 +67,7 @@
         }
     }
 
-    public async Task DeletecourseViewModel()
+    public async Task DeleteCourseViewModel()
     {
         var response = await service.DeleteById(Id, token);
         if (!response)
