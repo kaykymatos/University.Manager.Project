@@ -82,6 +82,20 @@ namespace University.Manager.Project.Student.Api.Endpoints.V1
 
                 return Results.Ok(modelFound);
             }).RequireAuthorization();
+
+            app.MapDelete("api/v1/student", async ([FromBody] IEnumerable<long> ids,
+               [FromServices] IStudentService _service) =>
+            {
+                if (!ids.Any())
+                    return Results.BadRequest(
+                        new CustomValidationFailure("Id", "Invalid Id!").ToList());
+
+
+                await _service.DeleteMultipleAsync(ids);
+
+                return Results.Ok(ids);
+            }).RequireAuthorization();
+
             return app;
         }
     }

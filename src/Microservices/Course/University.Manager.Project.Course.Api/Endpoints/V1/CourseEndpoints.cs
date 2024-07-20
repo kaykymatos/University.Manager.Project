@@ -91,7 +91,22 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
 
                 return Results.Ok(modelFound);
             }).RequireAuthorization();
+
+
+            app.MapDelete("api/v1/course", async ([FromBody] IEnumerable<long> ids,
+                [FromServices] ICourseService _service) =>
+            {
+                if (!ids.Any())
+                    return Results.BadRequest(
+                        new CustomValidationFailure("Id", "Invalid Id!").ToList());
+
+
+                await _service.DeleteMultipleAsync(ids);
+
+                return Results.Ok(ids);
+            }).RequireAuthorization();
             return app;
+        
         }
     }
 }

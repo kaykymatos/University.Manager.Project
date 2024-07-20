@@ -49,5 +49,20 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
             await _context.SaveChangesAsync();
             return entity;
         }
+        public async Task<bool> DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            try
+            {
+                var itemsToDelete = await _context.CourseCategories.Where(item => ids.Contains(item.Id)).ToListAsync();
+                _context.CourseCategories.RemoveRange(itemsToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
     }
 }

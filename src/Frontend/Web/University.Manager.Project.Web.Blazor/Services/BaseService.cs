@@ -63,5 +63,22 @@ namespace University.Manager.Project.Web.Blazor.Services
             else
                 throw new Exception("Something wen wrong when calling API");
         }
+        public virtual async Task<bool> DeletMultiple(IEnumerable<long> ids, string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var request = new HttpRequestMessage(HttpMethod.Delete,BasePath)
+            {
+                Content = JsonContent.Create(ids)
+            };
+            var response = await _client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+                return true;
+            else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                return false;
+            else
+                throw new Exception("Something wen wrong when calling API");
+        }
     }
 }

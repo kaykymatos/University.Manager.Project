@@ -19,6 +19,21 @@ namespace University.Manager.Project.Financial.Infra.Data.Repositories
             await _context.SaveChangesAsync();
             return listModels;
         }
+        public async Task<bool> DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            try
+            {
+                var itemsToDelete = await _context.CourseInstallments.Where(item => ids.Contains(item.Id)).ToListAsync();
+                _context.CourseInstallments.RemoveRange(itemsToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
         public async Task<CourseInstallments> CreateModelAsync(CourseInstallments entity)
         {
             entity.CreationData = DateTime.Now;

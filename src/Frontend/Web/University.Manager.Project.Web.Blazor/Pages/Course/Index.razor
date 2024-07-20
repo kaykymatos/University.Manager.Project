@@ -1,6 +1,7 @@
 ﻿@page "/courses"
 @inject ICourseService service
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 @attribute [Authorize]
 
 <PageTitle>Courses</PageTitle>
@@ -9,11 +10,19 @@
 <p>
     <a href="courses/create">Create New</a>
 </p>
+<ErrorAlert ServerError="@ServerError" />
 
 <MudDataGrid T="CourseViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
              Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Courses</MudText>
+        <MudText Typo="Typo.h6">
+            Courses<br>
+            @if (selectedItens.Any())
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Error"
+                           ButtonType="ButtonType.Submit" Class="ml-auto" OnClick="DeteleMultiple">Delete</MudButton>
+            }
+        </MudText>
         <MudSpacer />
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
@@ -80,7 +89,25 @@
         Elements = await service.FindAll(token);
     }
 
-    // events
+    private string ServerError { get; set; }
+    public HashSet<CourseViewModel> selectedItens = new HashSet<CourseViewModel>();
+
+    async Task DeteleMultiple()
+    {
+        var token = await TokenService.GetTokenAsync();
+
+        var deleteStudents = selectedItens.Select(x => x.Id).ToList();
+        var deletMulti = await service.DeletMultiple(deleteStudents, token);
+        if (!deletMulti)
+        {
+            ServerError = "Erro al tentar deletar vários registros";
+        }
+        else
+        {
+            Elements = Elements.Where(x => !deleteStudents.Any(y => y == x.Id)).ToList();
+        }
+    }
+    
     void RowClicked(DataGridRowClickEventArgs<CourseViewModel> args)
     {
         _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
@@ -93,6 +120,12 @@
 
     void SelectedItemsChanged(HashSet<CourseViewModel> items)
     {
+        selectedItens = new HashSet<CourseViewModel>();
+
+        foreach (var item in items)
+        {
+            selectedItens.Add(item);
+        }
         _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
     }
 }

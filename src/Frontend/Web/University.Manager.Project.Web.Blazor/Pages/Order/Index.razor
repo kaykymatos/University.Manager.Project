@@ -1,6 +1,6 @@
-﻿@page "/students"
-@inject IStudentService service
-@inject ICourseService courseService
+﻿@page "/orders"
+@inject IOrderService service
+@inject IStudentService studentService
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @attribute [Authorize]
@@ -10,11 +10,11 @@
 <h1>Index</h1>
 
 <p>
-    <a href="students/create">Create New</a>
+    <a href="orders/create">Create New</a>
 </p>
 <ErrorAlert ServerError="@ServerError" />
 
-<MudDataGrid T="StudentViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+<MudDataGrid T="OrderViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
              Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
     <ToolBarContent>
         <MudText Typo="Typo.h6">
@@ -32,30 +32,31 @@
     </ToolBarContent>
 
     <Columns>
-        <SelectColumn T="StudentViewModel" />
+        <SelectColumn T="OrderViewModel" />
         <MudBlazor.PropertyColumn Property="x => x.Id" Title="Id" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.RegisterCode" Title="Register Code" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x=>courses.FirstOrDefault(y=>y.Id==x.CourseId).Name" Title="Course" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.CreationData" Title="Creation Date" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.UpdatedData" Title="Updated Date" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Title" Title="Title" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Message" Title="Message" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.OrderType" Title="Order Type" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x=>students.FirstOrDefault(y=>y.Id==x.UserId).Name" Title="Course" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Attachment" Title="Attachment" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.UpdatedData" Title="UpdatedData" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.CreationData" Title="CreationData" Sortable="true" />
 
         <MudBlazor.TemplateColumn CellClass="d-flex justify-end">
             <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"students/edit/{context.Item.Id}")" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"students/delete?id={context.Item.Id}")" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"students/details?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"orders/edit/{context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"orders/delete?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"orders/details?id={context.Item.Id}")" />
             </CellTemplate>
         </MudBlazor.TemplateColumn>
 
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="StudentViewModel" />
+        <MudDataGridPager T="OrderViewModel" />
     </PagerContent>
 
 </MudDataGrid>
-<MudBlazor.MudButton Href="students/create"
+<MudBlazor.MudButton Href="orders/create"
                      Variant="Variant.Filled"
                      EndIcon="@Icons.Material.Outlined.Create"
                      Color="Color.Primary">
@@ -64,16 +65,13 @@
 
 @code {
 
-    private IEnumerable<StudentViewModel> Elements = new List<StudentViewModel>();
+    private IEnumerable<OrderViewModel> Elements = new List<OrderViewModel>();
     private string _searchString;
     private List<string> _events = new();
-    private IEnumerable<CourseViewModel> courses;
-    private Func<StudentViewModel, bool> _quickFilter => x =>
+    private IEnumerable<StudentViewModel> students;
+    private Func<OrderViewModel, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
 
@@ -84,41 +82,41 @@
     protected override async Task OnInitializedAsync()
     {
         var token = await TokenService.GetTokenAsync();
-        courses = await courseService.FindAll(token);
+        students = await studentService.FindAll(token);
         Elements = await service.FindAll(token);
     }
     private string ServerError { get; set; }
-    public HashSet<StudentViewModel> selectedItens = new HashSet<StudentViewModel>();
+    public HashSet<OrderViewModel> selectedItens = new HashSet<OrderViewModel>();
 
     async Task DeteleMultiple()
     {
         var token = await TokenService.GetTokenAsync();
 
-        var deleteStudents = selectedItens.Select(x => x.Id).ToList();
-        var deletMulti = await service.DeletMultiple(deleteStudents, token);
+        var deleteOrders = selectedItens.Select(x => x.Id).ToList();
+        var deletMulti = await service.DeletMultiple(deleteOrders, token);
         if (!deletMulti)
         {
             ServerError = "Erro al tentar deletar vários registros";
         }
         else
         {
-            Elements = Elements.Where(x => !deleteStudents.Any(y => y == x.Id)).ToList();
+            Elements = Elements.Where(x => !deleteOrders.Any(y => y == x.Id)).ToList();
         }
     }
     
-    void RowClicked(DataGridRowClickEventArgs<StudentViewModel> args)
+    void RowClicked(DataGridRowClickEventArgs<OrderViewModel> args)
     {
         _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
     }
 
-    void RowRightClicked(DataGridRowClickEventArgs<StudentViewModel> args)
+    void RowRightClicked(DataGridRowClickEventArgs<OrderViewModel> args)
     {
         _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
     }
 
-    void SelectedItemsChanged(HashSet<StudentViewModel> items)
+    void SelectedItemsChanged(HashSet<OrderViewModel> items)
     {
-        selectedItens = new HashSet<StudentViewModel>();
+        selectedItens = new HashSet<OrderViewModel>();
 
         foreach (var item in items)
         {

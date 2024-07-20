@@ -1,9 +1,6 @@
 ﻿@if (!string.IsNullOrWhiteSpace(ServerError))
 {
-    <Alert Color="AlertColor.Danger">
-        <Icon Name="IconName.ExclamationTriangleFill" class="me-2"></Icon>
-        @ServerError
-    </Alert>
+    <MudAlert Severity="Severity.Error" Class="w-100">@ServerError</MudAlert>
 }
 @code {
     [Parameter]

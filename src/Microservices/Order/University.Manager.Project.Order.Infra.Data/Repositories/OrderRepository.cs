@@ -13,7 +13,21 @@ namespace University.Manager.Project.Order.Infra.Data.Repositories
         {
             _context = context;
         }
+        public async Task<bool> DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            try
+            {
+                var itemsToDelete = await _context.Orders.Where(item => ids.Contains(item.Id)).ToListAsync();
+                _context.Orders.RemoveRange(itemsToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
 
+                return false;
+            }
+        }
         public async Task<OrderEntity> CreateModelAsync(OrderEntity entity)
         {
             entity.CreationData = DateTime.Now;

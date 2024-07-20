@@ -18,6 +18,12 @@ namespace University.Manager.Project.Order.Application.Services
             _mapper = mapper;
         }
 
+        public async Task DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            var deleteModel = await _orderRepository.DeleteMultipleAsync(ids);
+            if (!deleteModel)
+                throw new ApplicationException("Error on delete a Order");
+        }
         public async Task CreateModelAsync(OrderEntityRequestDTO entity)
         {
             OrderEntity model = _mapper.Map<OrderEntity>(entity);

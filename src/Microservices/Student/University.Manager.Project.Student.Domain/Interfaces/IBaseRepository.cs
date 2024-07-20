@@ -7,5 +7,6 @@
         Task<T> CreateModelAsync(T entity);
         Task<T> UpdateModelAsync(T entity);
         Task<T> DeleteModelAsync(T entity);
+        Task<bool> DeleteMultipleAsync(IEnumerable<long> ids);
     }
 }

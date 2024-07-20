@@ -10,5 +10,6 @@ namespace University.Manager.Project.Web.Blazor.Services
         Task<IEnumerable<ApiErrorViewModel>> Create(T model, string token);
         Task<IEnumerable<ApiErrorViewModel>> Update(T model, string token);
         Task<bool> DeleteById(long id, string token);
+        Task<bool> DeletMultiple(IEnumerable<long> ids, string token);
     }
 }

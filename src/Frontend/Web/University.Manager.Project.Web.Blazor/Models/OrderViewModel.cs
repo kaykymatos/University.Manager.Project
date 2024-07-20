@@ -1,6 +1,6 @@
 ﻿using University.Manager.Project.Web.Blazor.Models.Enums;
 
-namespace University.Manager.Project.Web.MVC.Models
+namespace University.Manager.Project.Web.Blazor.Models
 {
     public class OrderViewModel
     {

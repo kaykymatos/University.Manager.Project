@@ -1,24 +1,24 @@
-﻿@page "/students"
-@inject IStudentService service
-@inject ICourseService courseService
+﻿@page "/courseInstallments"
+@inject ICourseInstallmentService service
+@inject IStudentService studentService
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @attribute [Authorize]
 
-<PageTitle>Students</PageTitle>
+<PageTitle>Course installments</PageTitle>
 
 <h1>Index</h1>
 
 <p>
-    <a href="students/create">Create New</a>
+    <a href="courseInstallments/create">Create New</a>
 </p>
 <ErrorAlert ServerError="@ServerError" />
 
-<MudDataGrid T="StudentViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+<MudDataGrid T="CourseInstallmentViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
              Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
     <ToolBarContent>
         <MudText Typo="Typo.h6">
-            Students
+            Course Installments
             <br>
             @if (selectedItens.Any())
             {
@@ -26,36 +26,53 @@
                            ButtonType="ButtonType.Submit" Class="ml-auto" OnClick="DeteleMultiple">Delete</MudButton>
             }
         </MudText>
+
         <MudSpacer />
         <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
     </ToolBarContent>
 
-    <Columns>
-        <SelectColumn T="StudentViewModel" />
+    <Columns >
+
+        <SelectColumn T="CourseInstallmentViewModel" />
         <MudBlazor.PropertyColumn Property="x => x.Id" Title="Id" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.RegisterCode" Title="Register Code" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x=>courses.FirstOrDefault(y=>y.Id==x.CourseId).Name" Title="Course" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.CreationData" Title="Creation Date" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x => x.UpdatedData" Title="Updated Date" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.PaymentMethod" Title="Payment Method" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.InstallmentPrice" Title="Installment Price" Sortable="true" />
+
+        <MudBlazor.TemplateColumn Title="Student">
+            <CellTemplate>
+                @{
+                    var foudStudent = students.FirstOrDefault(x => x.Id == context.Item.StudentId);
+                    if (foudStudent is null)
+                    {
+                        <span></span>
+                    }
+                    else
+                    {
+                        <span>@foudStudent.Name</span>
+                    }
+                }
+            </CellTemplate>
+        </MudBlazor.TemplateColumn>
+        <MudBlazor.PropertyColumn Property="x => x.DueDate" Title="Due Date" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.PaymentDate" Title="Payment Date" Sortable="true" />
 
         <MudBlazor.TemplateColumn CellClass="d-flex justify-end">
             <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"students/edit/{context.Item.Id}")" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"students/delete?id={context.Item.Id}")" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"students/details?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"courseInstallments/edit/{context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"courseInstallments/delete?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"courseInstallments/details?id={context.Item.Id}")" />
             </CellTemplate>
         </MudBlazor.TemplateColumn>
 
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="StudentViewModel" />
+        <MudDataGridPager T="CourseInstallmentViewModel" />
     </PagerContent>
 
 </MudDataGrid>
-<MudBlazor.MudButton Href="students/create"
+<MudBlazor.MudButton Href="courseInstallments/create"
                      Variant="Variant.Filled"
                      EndIcon="@Icons.Material.Outlined.Create"
                      Color="Color.Primary">
@@ -64,16 +81,14 @@
 
 @code {
 
-    private IEnumerable<StudentViewModel> Elements = new List<StudentViewModel>();
+    private IEnumerable<CourseInstallmentViewModel> Elements = new List<CourseInstallmentViewModel>();
+    private IEnumerable<StudentViewModel> students;
     private string _searchString;
     private List<string> _events = new();
-    private IEnumerable<CourseViewModel> courses;
-    private Func<StudentViewModel, bool> _quickFilter => x =>
+    private string ServerError { get; set; }
+    private Func<CourseInstallmentViewModel, bool> _quickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
 
@@ -83,12 +98,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        ServerError = null;
         var token = await TokenService.GetTokenAsync();
-        courses = await courseService.FindAll(token);
+        students = await studentService.FindAll(token);
         Elements = await service.FindAll(token);
     }
-    private string ServerError { get; set; }
-    public HashSet<StudentViewModel> selectedItens = new HashSet<StudentViewModel>();
+    public HashSet<CourseInstallmentViewModel> selectedItens = new HashSet<CourseInstallmentViewModel>();
 
     async Task DeteleMultiple()
     {
@@ -106,19 +121,19 @@
         }
     }
     
-    void RowClicked(DataGridRowClickEventArgs<StudentViewModel> args)
+    void RowClicked(DataGridRowClickEventArgs<CourseInstallmentViewModel> args)
     {
         _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
     }
 
-    void RowRightClicked(DataGridRowClickEventArgs<StudentViewModel> args)
+    void RowRightClicked(DataGridRowClickEventArgs<CourseInstallmentViewModel> args)
     {
         _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
     }
 
-    void SelectedItemsChanged(HashSet<StudentViewModel> items)
+    void SelectedItemsChanged(HashSet<CourseInstallmentViewModel> items)
     {
-        selectedItens = new HashSet<StudentViewModel>();
+        selectedItens = new HashSet<CourseInstallmentViewModel>();
 
         foreach (var item in items)
         {

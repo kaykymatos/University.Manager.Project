@@ -12,6 +12,21 @@ namespace University.Manager.Project.Student.Infra.Data.Repositories
         {
             _context = context;
         }
+        public async Task<bool> DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            try
+            {
+                var itemsToDelete = await _context.Students.Where(item => ids.Contains(item.Id)).ToListAsync();
+                _context.Students.RemoveRange(itemsToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
         public async Task<StudentEntity> CreateModelAsync(StudentEntity entity)
         {
             entity.CreationData = DateTime.Now;
