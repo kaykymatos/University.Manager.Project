@@ -21,11 +21,11 @@ namespace University.Manager.Project.Web.Blazor.Extensions
                 x.DefaultRequestHeaders.Add("Accept", "application/json");
                 x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
             });
-           builder.Services.AddHttpClient<IStudentService, StudentService>(x =>
-            {
-                x.DefaultRequestHeaders.Add("Accept", "application/json");
-                x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
-            });
+            builder.Services.AddHttpClient<IStudentService, StudentService>(x =>
+             {
+                 x.DefaultRequestHeaders.Add("Accept", "application/json");
+                 x.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ApiGateway"]);
+             });
             builder.Services.AddHttpClient<IStudentService, StudentService>(x =>
             {
                 x.DefaultRequestHeaders.Add("Accept", "application/json");

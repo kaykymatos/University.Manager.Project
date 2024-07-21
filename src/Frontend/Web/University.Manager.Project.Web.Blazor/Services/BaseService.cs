@@ -67,7 +67,7 @@ namespace University.Manager.Project.Web.Blazor.Services
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var request = new HttpRequestMessage(HttpMethod.Delete,BasePath)
+            var request = new HttpRequestMessage(HttpMethod.Delete, BasePath)
             {
                 Content = JsonContent.Create(ids)
             };

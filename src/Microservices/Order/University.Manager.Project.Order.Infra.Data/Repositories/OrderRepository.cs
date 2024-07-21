@@ -57,12 +57,14 @@ namespace University.Manager.Project.Order.Infra.Data.Repositories
 
         public async Task<OrderEntity> UpdateModelAsync(OrderEntity entity)
         {
-            entity.UpdateDomain(entity.Title, entity.Message, entity.Attachment, entity.OrderType, entity.UserId);
-            entity.CreationData = _context.Orders.FirstAsync(x => x.Id == entity.Id).Result.CreationData;
-            _context.ChangeTracker.Clear();
-            _context.Orders.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+                entity.UpdateDomain(entity.Title, entity.Message, entity.Attachment, entity.OrderType, entity.UserId);
+                var data = await _context.Orders.FirstAsync(x => x.Id == entity.Id);
+                entity.CreationData = data.CreationData;
+                _context.ChangeTracker.Clear();
+                _context.Orders.Update(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+        
         }
     }
 }

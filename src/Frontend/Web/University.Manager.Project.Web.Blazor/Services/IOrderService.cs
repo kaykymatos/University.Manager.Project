@@ -1,4 +1,4 @@
-﻿using University.Manager.Project.Web.MVC.Models;
+﻿using University.Manager.Project.Web.Blazor.Models;
 
 namespace University.Manager.Project.Web.Blazor.Services
 {

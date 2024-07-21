@@ -1,0 +1,71 @@
+﻿ @page "/orders/details"
+@inject IOrderService service
+@inject IStudentService studentService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<PageTitle>Students</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>course</h4>
+    <hr />
+    @if (order is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Id</dt>
+            <dd class="col-sm-10">@order.Id</dd>
+            <dt class="col-sm-2">Title</dt>
+            <dd class="col-sm-10">@order.Title</dd>
+
+            <dt class="col-sm-2">Message</dt>
+            <dd class="col-sm-10">@order.Message</dd>
+            <dt class="col-sm-2">Order Type</dt>
+            <dd class="col-sm-10">@order.OrderType</dd>
+
+            <dt class="col-sm-2">User</dt>
+            <dd class="col-sm-10">@students.FirstOrDefault(y => y.Id == order.UserId).Name</dd>
+
+            <dt class="col-sm-2">Attachment</dt>
+            <dd class="col-sm-10">@order.Attachment</dd>
+            <dt class="col-sm-2">Updated Data</dt>
+            <dd class="col-sm-10">@order.UpdatedData</dd>
+            <dt class="col-sm-2">Creation Data</dt>
+            <dd class="col-sm-10">@order.CreationData</dd>
+
+
+        </dl>
+        <div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       ButtonType="ButtonType.Button" Href="@($"/orders/edit/{order.Id}")" Class="ml-auto">Edit</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                       ButtonType="ButtonType.Button" Href="/orders" Class="ml-auto">Back to List</MudButton>
+
+        </div>
+    }
+</div>
+
+@code {
+    OrderViewModel? order;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+    private string token;
+    IEnumerable<StudentViewModel> students = new List<StudentViewModel>();
+    protected override async Task OnInitializedAsync()
+    {
+        token = await TokenService.GetTokenAsync();
+
+        order = await service.FindById(Id,token);
+
+        if (order is null)
+            NavigationManager.NavigateTo("notfound");
+
+        students = await studentService.FindAll(token);
+    }
+}

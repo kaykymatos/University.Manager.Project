@@ -1,6 +1,6 @@
-﻿using MudBlazor.Services;
+﻿using Microsoft.AspNetCore.Authentication;
+using MudBlazor.Services;
 using University.Manager.Project.Web.Blazor;
-using Microsoft.AspNetCore.Authentication;
 using University.Manager.Project.Web.Blazor.Extensions;
 using University.Manager.Project.Web.Blazor.Pages;
 using University.Manager.Project.Web.Blazor.Services;
