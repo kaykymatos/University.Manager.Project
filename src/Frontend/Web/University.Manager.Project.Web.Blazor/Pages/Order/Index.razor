@@ -39,7 +39,7 @@
         <MudBlazor.PropertyColumn Property="x => x.Title" Title="Title" Sortable="true" />
         <MudBlazor.PropertyColumn Property="x => x.Message" Title="Message" Sortable="true" />
         <MudBlazor.PropertyColumn Property="x => x.OrderType" Title="Order Type" Sortable="true" />
-        <MudBlazor.PropertyColumn Property="x=>students.FirstOrDefault(y=>y.Id==x.UserId).Name" Title="User" />
+        <MudBlazor.PropertyColumn Property="x=>GetStudentNameFromId(x.UserId)" Title="User" />
 
 
         <MudBlazor.TemplateColumn>
@@ -109,6 +109,14 @@
         var pdfBytes = Convert.FromBase64String(base64Pdf);
 
         await JS.InvokeVoidAsync("downloadPdf", pdfBytes, "arquivo.pdf");
+    }
+    private string GetStudentNameFromId(long id)
+    {
+
+        var student = students.FirstOrDefault(y => y.Id == id);
+        if (student == null)
+            return string.Empty;
+        return student.Name;
     }
     private IEnumerable<OrderViewModel> Elements = new List<OrderViewModel>();
     private string _searchString;

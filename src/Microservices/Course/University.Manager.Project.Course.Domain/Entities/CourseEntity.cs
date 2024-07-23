@@ -1,4 +1,5 @@
-﻿using University.Manager.Project.Course.Domain.Validation;
+﻿using University.Manager.Project.Course.Domain.Interfaces;
+using University.Manager.Project.Course.Domain.Validation;
 
 namespace University.Manager.Project.Course.Domain.Entities
 {
@@ -19,6 +20,14 @@ namespace University.Manager.Project.Course.Domain.Entities
             DomainExceptionValidation.When(id < 0, "Invalid Id value!");
             Id = id;
             ValidationDomain(name, description, workload, totalValue);
+        }
+        public override void UpdateDomain(IBaseEntity entity)
+        {
+            if (entity is CourseEntity course)
+            {
+                ValidationDomain(course.Name, course.Description, course.Workload, course.TotalValue);
+            }
+            entity.UpdatedData = DateTime.Now;
         }
         public void UpdateDomain(string name, string description, float workload, decimal totalValue)
         {

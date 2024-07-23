@@ -8,7 +8,7 @@ namespace University.Manager.Project.Web.Blazor.Models
         public long StudentId { get; set; }
         public decimal InstallmentPrice { get; set; }
         public DateTime? PaymentDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public string DueDate { get; set; }
         public EInstallmentStatus InstallmentStatus { get; set; }
         public EPaymentMethod PaymentMethod { get; set; }
     }

@@ -76,7 +76,7 @@ namespace University.Manager.Project.Financial.Infra.Ioc
                     }
                 });
             });
-            DbContextOptionsBuilder<ApplicationContext> builderSql = new DbContextOptionsBuilder<ApplicationContext>();
+            DbContextOptionsBuilder<ApplicationContext> builderSql = new();
 
             services.AddDbContext<ApplicationContext>(options =>
                options.UseSqlServer(

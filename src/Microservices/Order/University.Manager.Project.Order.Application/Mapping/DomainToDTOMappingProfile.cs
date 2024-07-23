@@ -12,7 +12,7 @@ namespace University.Manager.Project.Order.Application.Mapping
         {
             CreateMap<OrderEntity, OrderEntityDTO>().ReverseMap();
             CreateMap<OrderEntity, OrderEntityRequestDTO>().ReverseMap();
-            CreateMap<OrderEntityRequestDTO,OrderEntity>().ReverseMap();
+            CreateMap<OrderEntityRequestDTO, OrderEntity>().ReverseMap();
             CreateMap<OrderEntityRequestDTO, OrderEntityDTO>().ReverseMap();
 
         }

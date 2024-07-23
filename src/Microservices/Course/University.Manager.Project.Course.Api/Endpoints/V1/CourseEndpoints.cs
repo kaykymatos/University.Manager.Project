@@ -106,7 +106,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
                 return Results.Ok(ids);
             }).RequireAuthorization();
             return app;
-        
+
         }
     }
 }

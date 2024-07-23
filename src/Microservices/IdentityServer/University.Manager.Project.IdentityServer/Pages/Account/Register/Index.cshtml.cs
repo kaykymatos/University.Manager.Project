@@ -65,7 +65,7 @@ namespace University.Manager.Project.IdentityServer.Pages.Account.Register
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser
+                ApplicationUser user = new()
                 {
                     UserName = Input.Email,
                     Email = Input.Email,

@@ -16,8 +16,9 @@
 
             <MudForm @ref="form">
                 <MudTextField T="long" @bind-Value="courseInstallment.Id" hidden />
-                <MudTextField InputType="InputType.Date" T="DateTime" @bind-Value="courseInstallment.DueDate" Label="Due Date" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "DueDate"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
+                <MudTextField InputType="InputType.Date" T="string" @bind-Value="courseInstallment.DueDate" Label="Due Date" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "DueDate"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
                 <MudTextField T="decimal" @bind-Value="courseInstallment.InstallmentPrice" Label="Installment Price" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "InstallmentPrice"))" ErrorText="@(ErrorService.GetFieldErrors("InstallmentPrice",errorViewModels))" />
+
 
                 <div class="mud-input-control mud-input-required mud-input-input-control">
                     <div class="mud-input-control-input-container">
@@ -39,38 +40,14 @@
                                 }
                             </InputSelect>
                         </div>
-                        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">Categories</label>
+                        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">Student</label>
                     </div>
+
                     <div class="mud-input-control-helper-container">
                         <span class="mud-input-helper-text mud-input-error">
                             <div class="d-flex">
                                 <div class="me-auto">
-                                    @ErrorService.GetFieldErrors("CourseId", errorViewModels)
-                                </div>
-                            </div>
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="mud-input-control mud-input-required mud-input-input-control">
-                    <div class="mud-input-control-input-container">
-                        <div class="mud-input mud-input-text mud-input-text-with-label mud-input-underline mud-shrink mud-typography-input">
-
-                            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="courseInstallment.InstallmentStatus">
-
-                                @foreach (EInstallmentStatus item in Enum.GetValues(typeof(EInstallmentStatus)))
-                                    {
-                                        <option value="@item">@item</option>
-                                    }
-                            </InputSelect>
-                        </div>
-                        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">Status</label>
-                    </div>
-                    <div class="mud-input-control-helper-container">
-                        <span class="mud-input-helper-text mud-input-error">
-                            <div class="d-flex">
-                                <div class="me-auto">
-                                    @ErrorService.GetFieldErrors("InstallmentStatus", errorViewModels)
+                                    @ErrorService.GetFieldErrors("StudentId", errorViewModels)
                                 </div>
                             </div>
                         </span>
@@ -78,30 +55,27 @@
                 </div>
 
 
-                <div class="mud-input-control mud-input-required mud-input-input-control">
-                    <div class="mud-input-control-input-container">
-                        <div class="mud-input mud-input-text mud-input-text-with-label mud-input-underline mud-shrink mud-typography-input">
+                <CustomSelect T="EInstallmentStatus"
+                              U="EInstallmentStatus"
+                              Label="Status"
+                              @bind-SelectedValue="courseInstallment.InstallmentStatus"
+                              Options="Enum.GetValues(typeof(EInstallmentStatus)).Cast<EInstallmentStatus>()"
+                              GetValue="status => status"
+                              GetDisplayText="status => status.ToString()"
+                              ErrorService="ErrorService"
+                              ErrorFieldName="InstallmentStatus"
+                              ErrorViewModels="errorViewModels" />
 
-                            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="courseInstallment.PaymentMethod">
-
-                                @foreach (EPaymentMethod item in Enum.GetValues(typeof(EPaymentMethod)))
-                                {
-                                    <option value="@item">@item</option>
-                                }
-                            </InputSelect>
-                        </div>
-                        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">Payment method</label>
-                    </div>
-                    <div class="mud-input-control-helper-container">
-                        <span class="mud-input-helper-text mud-input-error">
-                            <div class="d-flex">
-                                <div class="me-auto">
-                                    @ErrorService.GetFieldErrors("PaymentMethod", errorViewModels)
-                                </div>
-                            </div>
-                        </span>
-                    </div>
-                </div>
+                <CustomSelect T="EPaymentMethod"
+                              U="EPaymentMethod"
+                              Label="Payment method"
+                              @bind-SelectedValue="courseInstallment.PaymentMethod"
+                              Options="Enum.GetValues(typeof(EPaymentMethod)).Cast<EPaymentMethod>()"
+                              GetValue="method => method"
+                              GetDisplayText="method => method.ToString()"
+                              ErrorService="ErrorService"
+                              ErrorFieldName="PaymentMethod"
+                              ErrorViewModels="errorViewModels" />
 
                 <div class="d-flex align-center justify-space-between mt-3">
                     <div class="ms-auto">

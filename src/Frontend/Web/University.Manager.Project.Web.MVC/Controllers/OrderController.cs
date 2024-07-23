@@ -55,7 +55,7 @@ namespace University.Manager.Project.Web.MVC.Controllers
             {
                 if (Attachment.Length > 0)
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    using (MemoryStream memoryStream = new())
                     {
                         Attachment.CopyTo(memoryStream);
                         byte[] bytes = memoryStream.ToArray();

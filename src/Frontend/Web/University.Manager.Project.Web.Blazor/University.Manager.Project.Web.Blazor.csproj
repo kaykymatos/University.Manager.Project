@@ -24,7 +24,6 @@
 
   
   <ItemGroup>
-    <Folder Include="Components\Inputs\" />
     <Folder Include="Pages\CourseCategory\" />
     <Folder Include="Pages\CourseInstallment\" />
     <Folder Include="Pages\Order\" />
@@ -68,6 +67,11 @@
     <Content Update="Pages\Order\Index.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <None Include="Components\CustomInputs\CustomSelect.razor" />
   </ItemGroup>
   
 </Project>

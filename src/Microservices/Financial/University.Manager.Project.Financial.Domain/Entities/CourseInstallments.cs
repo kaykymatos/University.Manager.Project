@@ -1,4 +1,5 @@
 ﻿using University.Manager.Project.Financial.Domain.Entities.Enums;
+using University.Manager.Project.Financial.Domain.Interfaces;
 using University.Manager.Project.Financial.Domain.Validation;
 
 namespace University.Manager.Project.Financial.Domain.Entities
@@ -23,12 +24,15 @@ namespace University.Manager.Project.Financial.Domain.Entities
             Id = id;
             ValidationDomain(studentId, installmentPrice, paymentDate, dueDate, installmentStatus, paymentMethod);
         }
-
-        public void UpdateDomain(long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
+        public override void UpdateDomain(IBaseEntity entity)
         {
-            ValidationDomain(studentId, installmentPrice, paymentDate, dueDate, installmentStatus, paymentMethod);
-            UpdatedData = DateTime.Now;
+            if (entity is CourseInstallments instalment)
+            {
+                ValidationDomain(instalment.StudentId, instalment.InstallmentPrice, instalment.PaymentDate, instalment.DueDate, instalment.InstallmentStatus, instalment.PaymentMethod);
+            }
+            entity.UpdatedData = DateTime.Now;
         }
+
         public void ValidationDomain(long studentId, decimal installmentPrice, DateTime? paymentDate, DateTime dueDate, EInstallmentStatus installmentStatus, EPaymentMethod paymentMethod)
         {
             DomainExceptionValidation.When(studentId <= 0,

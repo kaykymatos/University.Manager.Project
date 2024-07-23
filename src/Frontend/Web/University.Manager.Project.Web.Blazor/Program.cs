@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using MudBlazor.Services;
+using System.Globalization;
 using University.Manager.Project.Web.Blazor;
 using University.Manager.Project.Web.Blazor.Extensions;
 using University.Manager.Project.Web.Blazor.Pages;
@@ -14,6 +15,8 @@ builder.Services.AddRazorComponents(options =>
     options.DetailedErrors = builder.Environment.IsDevelopment())
     .AddInteractiveServerComponents();
 
+//CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+//CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenService>();

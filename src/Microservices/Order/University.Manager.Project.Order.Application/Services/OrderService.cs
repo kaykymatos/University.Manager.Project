@@ -4,7 +4,6 @@ using University.Manager.Project.Order.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Order.Application.Interfaces;
 using University.Manager.Project.Order.Application.Mapping;
 using University.Manager.Project.Order.Domain.Entities;
-using University.Manager.Project.Order.Domain.Entities.Enum;
 using University.Manager.Project.Order.Domain.Interfaces;
 
 namespace University.Manager.Project.Order.Application.Services
@@ -60,12 +59,12 @@ namespace University.Manager.Project.Order.Application.Services
         public async Task UpdateModelAsync(OrderEntityRequestDTO entity)
         {
             OrderEntity model = DomainToDTOMappingProfile.MapOrderEntityRequestDTOToOrderEntity(entity);
-           
+
             OrderEntity createModel = await _orderRepository.UpdateModelAsync(model);
             if (createModel == null)
                 throw new ApplicationException("Error on delete a Order");
 
         }
-      
+
     }
 }

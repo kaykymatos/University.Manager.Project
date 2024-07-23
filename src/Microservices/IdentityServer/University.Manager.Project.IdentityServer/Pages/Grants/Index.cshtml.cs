@@ -45,7 +45,7 @@ public class Index : PageModel
             {
                 Duende.IdentityServer.Models.Resources resources = await _resources.FindResourcesByScopeAsync(grant.Scopes);
 
-                GrantViewModel item = new GrantViewModel()
+                GrantViewModel item = new()
                 {
                     ClientId = client.ClientId,
                     ClientName = client.ClientName ?? client.ClientId,
