@@ -1,22 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MudBlazor.Services;
-using System.Globalization;
 using University.Manager.Project.Web.Blazor;
 using University.Manager.Project.Web.Blazor.Extensions;
 using University.Manager.Project.Web.Blazor.Pages;
-using University.Manager.Project.Web.Blazor.Services;
+using University.Manager.Project.Web.Blazor.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddQuickGridEntityFrameworkAdapter(); ;
 
-// Add services to the container.
 builder.Services.AddRazorComponents(options =>
     options.DetailedErrors = builder.Environment.IsDevelopment())
     .AddInteractiveServerComponents();
-
-//CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
-//CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenService>();
@@ -24,6 +22,8 @@ builder.Services.AddScoped<TokenService>();
 
 builder.ConfigHttpServices();
 builder.Services.AddMudServices();
+
+builder.Services.AddScoped<SignOutSessionStateManager>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -45,16 +45,16 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters.RoleClaimType = "role";
         options.Scope.Add("universityBlazor");
         options.SaveTokens = true;
+
+        options.SignedOutCallbackPath = new PathString("/signout-callback-oidc");
+        options.SignedOutRedirectUri = "/";
     });
-builder.Services.AddSingleton<ErrorService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -64,38 +64,13 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAntiforgery();
-//app.Use(async (context, next) =>
-//{
-//    // Verificar se o usuário está autenticado e se a rota requer uma role específica
-//    if (context.User.Identity.IsAuthenticated)
-//    {
-//        Endpoint endpoint = context.GetEndpoint();
-//        if (endpoint != null)
-//        {
-//            AuthorizeAttribute authorizeAttribute = endpoint.Metadata.GetMetadata<AuthorizeAttribute>();
-//            if (authorizeAttribute != null && authorizeAttribute.Roles != null)
-//            {
-//                string[] roles = authorizeAttribute.Roles.Split(',');
-//                bool userHasRequiredRole = roles.Any(role => context.User.IsInRole(role));
-
-//                if (!userHasRequiredRole)
-//                {
-//                    HttpRequest requestVariable = context.Request;
-//                    string returnUrl = $"{requestVariable.Scheme}://{requestVariable.Host.Host}:{requestVariable.Host.Port}";
-//                    string accessDeniedUrl = $"{builder.Configuration["ServiceUrls:IdentityServer"]}/Account/AccessDenied?returnUrl={Uri.EscapeDataString(returnUrl)}";
-//                    context.Response.Redirect(accessDeniedUrl);
-//                    return;
-//                }
-//            }
-//        }
-//    }
-
-//    await next();
-//});
-
 app.UseAuthorization();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
+app.MapPost("/account/logout", async (HttpContext context) =>
+{
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    await context.SignOutAsync("oidc");
+});
 app.Run();

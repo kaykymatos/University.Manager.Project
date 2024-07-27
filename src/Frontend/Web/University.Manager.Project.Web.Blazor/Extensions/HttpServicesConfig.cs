@@ -1,4 +1,5 @@
-﻿using University.Manager.Project.Web.Blazor.Services;
+﻿using University.Manager.Project.Web.Blazor.Services.Implementation;
+using University.Manager.Project.Web.Blazor.Services.Interfaces;
 
 namespace University.Manager.Project.Web.Blazor.Extensions
 {

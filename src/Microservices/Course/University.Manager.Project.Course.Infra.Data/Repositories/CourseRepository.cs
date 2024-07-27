@@ -16,7 +16,7 @@ namespace University.Manager.Project.Course.Infra.Data.Repositories
         }
         public override async Task<CourseEntity> GetByIdAsync(long id) => await _context.Courses.Include(x => x.CourseCategory).FirstOrDefaultAsync(x => x.Id == id);
 
-        public override async Task<IEnumerable<CourseEntity>> GetAllAsync()=> await _context.Courses.Include(x => x.CourseCategory).ToListAsync();
-        
+        public override async Task<IEnumerable<CourseEntity>> GetAllAsync() => await _context.Courses.Include(x => x.CourseCategory).ToListAsync();
+
     }
 }

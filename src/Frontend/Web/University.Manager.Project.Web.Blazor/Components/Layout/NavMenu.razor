@@ -1,9 +1,33 @@
-﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="courses" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddCircle">Courses</MudNavLink>
-    <MudNavLink Href="courseCategories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Course Categories</MudNavLink>
-    <MudNavLink Href="students" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.School">Student</MudNavLink>
-    <MudNavLink Href="courseInstallments" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AttachMoney">Installments</MudNavLink>
-    <MudNavLink Href="orders" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ReportProblem">Orders</MudNavLink>
-  
+﻿﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@rendermode InteractiveServer
+
+
+
+<MudNavMenu>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+            <MudNavLink Href="courses" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddCircle">Courses</MudNavLink>
+            <MudNavLink Href="courseCategories" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Category">Course Categories</MudNavLink>
+            <MudNavLink Href="students" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.School">Student</MudNavLink>
+            <MudNavLink Href="courseInstallments" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AttachMoney">Installments</MudNavLink>
+            <MudNavLink Href="orders" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ReportProblem">Orders</MudNavLink>
+
+            <form action="Account/Logout" method="post">
+                <AntiforgeryToken />
+                <MudIconButton ButtonType="ButtonType.Submit" Icon="@Icons.Material.Filled.Logout" />Logout
+            </form>
+        </Authorized>
+        <NotAuthorized>
+            <form action="courses" method="post">
+                <AntiforgeryToken />
+                <MudIconButton ButtonType="ButtonType.Submit" Icon="@Icons.Material.Filled.Login" />Login
+            </form>
+        </NotAuthorized>
+    </AuthorizeView>
+
 </MudNavMenu>
+
+@code {
+}

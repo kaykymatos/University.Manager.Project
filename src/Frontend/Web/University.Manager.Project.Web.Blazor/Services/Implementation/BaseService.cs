@@ -2,7 +2,7 @@
 using University.Manager.Project.Web.Blazor.Models;
 using University.Manager.Project.Web.Blazor.Util;
 
-namespace University.Manager.Project.Web.Blazor.Services
+namespace University.Manager.Project.Web.Blazor.Services.Implementation
 {
     public class BaseService<T> where T : class
     {
