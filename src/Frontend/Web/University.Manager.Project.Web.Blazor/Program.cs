@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MudBlazor.Services;
 using University.Manager.Project.Web.Blazor;
 using University.Manager.Project.Web.Blazor.Extensions;
@@ -10,7 +8,7 @@ using University.Manager.Project.Web.Blazor.Services.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddQuickGridEntityFrameworkAdapter(); ;
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 builder.Services.AddRazorComponents(options =>
     options.DetailedErrors = builder.Environment.IsDevelopment())
@@ -23,7 +21,8 @@ builder.Services.AddScoped<TokenService>();
 builder.ConfigHttpServices();
 builder.Services.AddMudServices();
 
-builder.Services.AddScoped<SignOutSessionStateManager>();
+//builder.Services.AddScoped<SignOutSessionStateManager>();
+//builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>(); // Use o seu provedor de estado de autenticação
 
 builder.Services.AddAuthentication(options =>
 {
@@ -49,6 +48,8 @@ builder.Services.AddAuthentication(options =>
         options.SignedOutCallbackPath = new PathString("/signout-callback-oidc");
         options.SignedOutRedirectUri = "/";
     });
+
+builder.Services.AddSingleton<ErrorService>();
 
 var app = builder.Build();
 

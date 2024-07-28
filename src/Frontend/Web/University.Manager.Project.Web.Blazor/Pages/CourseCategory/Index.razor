@@ -96,22 +96,7 @@
         var token = await TokenService.GetTokenAsync();
 
         var deleteStudents = selectedItens.Select(x => x.Id).ToList();
-        var allCourses = await courseService.FindAll(token);
-        var findCoursesWithCategories = allCourses.Where(x => deleteStudents.Contains(x.CourseCategoryId));
-
-        if (findCoursesWithCategories.Any())
-        {
-            var categorias = string.Join(",", findCoursesWithCategories
-                                                .Select(x => Elements.FirstOrDefault(e => e.Id == x.CourseCategoryId)?.Name)
-                                                .Where(name => !string.IsNullOrEmpty(name))
-                                                .Distinct());
-
-            if (!string.IsNullOrEmpty(categorias))
-            {
-                ServerError = $"Existem cursos que teem relação com as categorias: {categorias}";
-                return;
-            }
-        }
+        
         var deletMulti = await service.DeletMultiple(deleteStudents, token);
         if (!deletMulti)
         {

@@ -53,7 +53,7 @@ public static class Config
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = {new Secret(Environment.GetEnvironmentVariable("SecretIdentityBlazor").Sha256())},
                     RedirectUris = {"https://localhost:7252/signin-oidc"},
-                    
+
                     PostLogoutRedirectUris = {"https://localhost:7252/signout-callback-oidc"},
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,

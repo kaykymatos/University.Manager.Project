@@ -9,8 +9,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 WebApplication app = builder.Build();
 
-app.MapCourseCategoryEndpoints();
-app.MapCourseEndpoints();
+new CourseCategoryEndpoints().MapEndpoints(app);
+new CourseEndpoints().MapEndpoints(app);
 
 
 if (app.Environment.IsDevelopment())

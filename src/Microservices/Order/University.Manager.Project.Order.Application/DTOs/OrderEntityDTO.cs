@@ -1,8 +1,9 @@
 ﻿using University.Manager.Project.Order.Application.DTOs.Enum;
+using University.Manager.Project.Order.Application.Interfaces;
 
 namespace University.Manager.Project.Order.Application.DTOs
 {
-    public class OrderEntityDTO
+    public class OrderEntityDTO : IBaseModel
     {
         public long Id { get; set; }
         public DateTime CreationData { get; set; }

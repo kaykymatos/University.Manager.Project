@@ -8,7 +8,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 WebApplication app = builder.Build();
 
-app.MapStudentEndpoints();
+new StudentEndpoints().MapEndpoints(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
