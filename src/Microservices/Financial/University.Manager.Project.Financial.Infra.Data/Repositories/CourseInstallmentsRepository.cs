@@ -14,9 +14,17 @@ namespace University.Manager.Project.Financial.Infra.Data.Repositories
         }
         public async Task<IEnumerable<CourseInstallments>> CreateMany(List<CourseInstallments> listModels)
         {
-            _context.CourseInstallments.AddRange(listModels);
-            await _context.SaveChangesAsync();
-            return listModels;
+            try
+            {
+                _context.CourseInstallments.AddRange(listModels);
+                await _context.SaveChangesAsync();
+                return listModels;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
     }
 }

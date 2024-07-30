@@ -6,6 +6,7 @@
 @attribute [Authorize]
 
 <PageTitle>Students</PageTitle>
+<ErrorAlert ServerError="@ServerError" />
 
 <h1>Delete</h1>
 
@@ -72,9 +73,9 @@
     public async Task DeleteStudentViewModel()
     {
         var response = await service.DeleteById(Id, token);
-        if (!response)
+        if (response != null)
         {
-            ServerError = "Erro ao tentar excluir curso";
+            ServerError = $"Erro ao tentar excluir estudante: {response.ErrorMessage}";
         }
         else
         {

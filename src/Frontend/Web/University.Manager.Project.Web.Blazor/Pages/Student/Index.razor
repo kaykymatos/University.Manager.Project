@@ -96,9 +96,9 @@
 
         var deleteStudents = selectedItens.Select(x => x.Id).ToList();
         var deletMulti = await service.DeletMultiple(deleteStudents, token);
-        if (!deletMulti)
+        if (deletMulti!=null)
         {
-            ServerError = "Erro al tentar deletar vários registros";
+            ServerError = $"Erro al tentar deletar vários registros: {deletMulti.ErrorMessage}";
         }
         else
         {

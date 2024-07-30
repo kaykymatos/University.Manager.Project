@@ -72,11 +72,11 @@ namespace University.Manager.Project.Course.Api.Endpoints
             app.MapDelete($"{BaseRoute}/{{id:long}}", async ([FromRoute] long id, [FromServices] TService _service) =>
             {
                 if (id <= 0)
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
 
                 TModel modelFound = await _service.GetByIdAsync(id);
                 if (modelFound == null)
-                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!").ToList());
+                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!"));
 
                 await _service.DeleteModelAsync(modelFound);
                 return Results.Ok(modelFound);
@@ -87,7 +87,7 @@ namespace University.Manager.Project.Course.Api.Endpoints
             app.MapDelete(BaseRoute, async ([FromBody] IEnumerable<long> ids, [FromServices] TService _service) =>
             {
                 if (!ids.Any())
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
 
                 await _service.DeleteMultipleAsync(ids);
                 return Results.Ok(ids);

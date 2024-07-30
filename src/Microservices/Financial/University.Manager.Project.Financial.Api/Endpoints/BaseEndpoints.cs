@@ -13,19 +13,19 @@ namespace University.Manager.Project.Financial.Api.Endpoints
     {
         protected abstract string BaseRoute { get; }
 
-        public virtual void MapEndpoints(WebApplication app)
+        public virtual void MapGetAll(WebApplication app)
         {
-            var group = app.MapGroup(BaseRoute).RequireAuthorization();
-
-            group.MapGet("", async ([FromServices] TService _service) =>
+            app.MapGet(BaseRoute, async ([FromServices] TService _service) =>
             {
                 IEnumerable<TModel> listModel = await _service.GetAllAsync();
                 if (listModel != null && listModel.Any())
                     return Results.Ok(listModel);
                 return Results.NoContent();
-            });
-
-            group.MapGet("/{id:long}", async ([FromRoute] long id, [FromServices] TService _service) =>
+            }).RequireAuthorization();
+        }
+        public virtual void MapGetById(WebApplication app)
+        {
+            app.MapGet($"{BaseRoute}/{{id:long}}", async ([FromRoute] long id, [FromServices] TService _service) =>
             {
                 if (id <= 0)
                     return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
@@ -34,9 +34,11 @@ namespace University.Manager.Project.Financial.Api.Endpoints
                 if (modelFound != null)
                     return Results.Ok(modelFound);
                 return Results.NotFound();
-            });
-
-            group.MapPost("", async ([FromBody] TRequestDTO model, [FromServices] TService _service, [FromServices] TValidator _validator) =>
+            }).RequireAuthorization();
+        }
+        public virtual void MapPost(WebApplication app)
+        {
+            app.MapPost(BaseRoute, async ([FromBody] TRequestDTO model, [FromServices] TService _service, [FromServices] TValidator _validator) =>
             {
                 if (model == null)
                     return Results.BadRequest("Invalid Data!");
@@ -47,9 +49,11 @@ namespace University.Manager.Project.Financial.Api.Endpoints
 
                 await _service.CreateModelAsync(model);
                 return Results.Created($"{BaseRoute}/{model.Id}", model);
-            });
-
-            group.MapPut("", async ([FromBody] TRequestDTO model, [FromServices] TService _service, [FromServices] TValidator _validator) =>
+            }).RequireAuthorization();
+        }
+        public virtual void MapPut(WebApplication app)
+        {
+            app.MapPut(BaseRoute, async ([FromBody] TRequestDTO model, [FromServices] TService _service, [FromServices] TValidator _validator) =>
             {
                 TModel modelFound = await _service.GetByIdAsync(model.Id);
                 if (modelFound == null)
@@ -61,29 +65,42 @@ namespace University.Manager.Project.Financial.Api.Endpoints
 
                 await _service.UpdateModelAsync(model);
                 return Results.NoContent();
-            });
-
-            group.MapDelete("/{id:long}", async ([FromRoute] long id, [FromServices] TService _service) =>
+            }).RequireAuthorization();
+        }
+        public virtual void MapDelete(WebApplication app)
+        {
+            app.MapDelete($"{BaseRoute}/{{id:long}}", async ([FromRoute] long id, [FromServices] TService _service) =>
             {
                 if (id <= 0)
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
 
                 TModel modelFound = await _service.GetByIdAsync(id);
                 if (modelFound == null)
-                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!").ToList());
+                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!"));
 
                 await _service.DeleteModelAsync(modelFound);
                 return Results.Ok(modelFound);
-            });
-
-            group.MapDelete("", async ([FromBody] IEnumerable<long> ids, [FromServices] TService _service) =>
+            }).RequireAuthorization();
+        }
+        public virtual void MapDeleteMultiply(WebApplication app)
+        {
+            app.MapDelete(BaseRoute, async ([FromBody] IEnumerable<long> ids, [FromServices] TService _service) =>
             {
                 if (!ids.Any())
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
 
                 await _service.DeleteMultipleAsync(ids);
                 return Results.Ok(ids);
-            });
+            }).RequireAuthorization();
+        }
+        public virtual void MapEndpoints(WebApplication app)
+        {
+            MapGetAll(app);
+            MapGetById(app);
+            MapPost(app);
+            MapPut(app);
+            MapDelete(app);
+            MapDeleteMultiply(app);
         }
     }
 

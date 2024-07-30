@@ -52,18 +52,18 @@ namespace University.Manager.Project.Web.Blazor.Services.Implementation
             else
                 throw new Exception("Something wen wrong when calling API");
         }
-        public virtual async Task<bool> DeleteById(long id, string token)
+        public virtual async Task<ApiErrorViewModel> DeleteById(long id, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.DeleteAsync($"{BasePath}/{id}");
             if (response.IsSuccessStatusCode)
-                return true;
+                return null;
             else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                return false;
+                return await response.ReadContentAs<ApiErrorViewModel>();
             else
                 throw new Exception("Something wen wrong when calling API");
         }
-        public virtual async Task<bool> DeletMultiple(IEnumerable<long> ids, string token)
+        public virtual async Task<ApiErrorViewModel> DeletMultiple(IEnumerable<long> ids, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -74,9 +74,9 @@ namespace University.Manager.Project.Web.Blazor.Services.Implementation
             var response = await _client.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
-                return true;
+                return null;
             else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                return false;
+                return await response.ReadContentAs<ApiErrorViewModel>();
             else
                 throw new Exception("Something wen wrong when calling API");
         }

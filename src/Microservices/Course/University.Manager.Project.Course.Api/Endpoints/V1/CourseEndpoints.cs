@@ -16,9 +16,7 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
             app.MapGet("api/v1/course/category/{id:long}", async ([FromRoute] long id, [FromServices] ICourseService _service) =>
             {
                 if (id <= 0)
-                    return Results.BadRequest(
-                        new CustomValidationFailure("Id", "Invalid Id").ToList()
-                               );
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id").ToList());
 
                 IEnumerable<CourseEntityDTO> modelFound = await _service.GetCourseByCategoryId(id);
                 if (modelFound.Any())

@@ -10,10 +10,6 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
     public class CourseCategoryEndpoints : BaseEndpoints<CourseCategoryDTO, CourseCategoryRequestDTO, ICourseCategoryService, IValidator<CourseCategoryRequestDTO>>
     {
 
-        public CourseCategoryEndpoints()
-        {
-            
-        }
         protected override string BaseRoute => "api/v1/courseCategory";
         public override void MapEndpoints(WebApplication app)
         {
@@ -28,15 +24,15 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
             app.MapDelete($"{BaseRoute}/{{id:long}}", async ([FromRoute] long id) =>
             {
                 if (id <= 0)
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
 
                 var modelFound = await service.GetByIdAsync(id);
                 if (modelFound == null)
-                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!").ToList());
+                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!"));
 
                 var vinculedCourse = await courseService.GetCourseByCategoryId(id);
-                if (vinculedCourse.Count()>0)
-                    return Results.BadRequest(new CustomValidationFailure("Name", "There are courses linked in this category!").ToList());
+                if (vinculedCourse.Count() > 0)
+                    return Results.BadRequest(new CustomValidationFailure("Category", "There are courses linked in this category!"));
 
 
                 await service.DeleteModelAsync(modelFound);
@@ -46,19 +42,20 @@ namespace University.Manager.Project.Course.Api.Endpoints.V1
             app.MapDelete(BaseRoute, async ([FromBody] IEnumerable<long> ids) =>
             {
                 if (!ids.Any())
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
-              
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
+
                 bool hasVinculedCourse = false;
                 foreach (var item in ids)
                 {
                     var vinculedCourse = await courseService.GetCourseByCategoryId(item);
-                    if (vinculedCourse.Any()){
+                    if (vinculedCourse.Any())
+                    {
                         hasVinculedCourse = true;
                         break;
                     }
                 }
-                if(hasVinculedCourse)
-                    return Results.BadRequest(new CustomValidationFailure("Name", "There are courses linked in this category!").ToList());
+                if (hasVinculedCourse)
+                    return Results.BadRequest(new CustomValidationFailure("Category", "There are courses linked in this category!"));
 
 
                 await service.DeleteMultipleAsync(ids);

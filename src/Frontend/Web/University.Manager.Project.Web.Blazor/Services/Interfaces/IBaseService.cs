@@ -8,7 +8,7 @@ namespace University.Manager.Project.Web.Blazor.Services.Interfaces
         Task<T> FindById(long id, string token);
         Task<IEnumerable<ApiErrorViewModel>> Create(T model, string token);
         Task<IEnumerable<ApiErrorViewModel>> Update(T model, string token);
-        Task<bool> DeleteById(long id, string token);
-        Task<bool> DeletMultiple(IEnumerable<long> ids, string token);
+        Task<ApiErrorViewModel> DeleteById(long id, string token);
+        Task<ApiErrorViewModel> DeletMultiple(IEnumerable<long> ids, string token);
     }
 }
