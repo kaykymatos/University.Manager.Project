@@ -1,5 +1,4 @@
-﻿using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity
 {
