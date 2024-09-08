@@ -3,8 +3,13 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             
             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Home.HomePage">
-    <Label Text="Home" 
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"/>
+    <VerticalStackLayout Padding="50,0,50,0" VerticalOptions="Center" 
+              HorizontalOptions="Center">
+        <Label Text="Welcome"
+              FontAttributes="Bold"
+              FontSize="40" 
+              HorizontalOptions="Center"
+              VerticalOptions="Center" />
+    </VerticalStackLayout>
 
 </ContentPage>

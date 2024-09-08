@@ -3,8 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.ActionsListPage"
              Title="ActionsListPage">
-    <Label 
-            Text="Lista!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+
+    <VerticalStackLayout Padding="20">
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <HorizontalStackLayout>
+                <Image Source="plus.png" WidthRequest="50" HeightRequest="50"  />
+                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <HorizontalStackLayout>
+                <Image Source="categories.png" WidthRequest="50" HeightRequest="50"  />
+                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <HorizontalStackLayout>
+                <Image Source="student.png" WidthRequest="50" HeightRequest="50"  />
+                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <HorizontalStackLayout>
+                <Image Source="price.png" WidthRequest="50" HeightRequest="50"  />
+                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <HorizontalStackLayout>
+                <Image Source="order.png" WidthRequest="50" HeightRequest="50"  />
+                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+            </HorizontalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
 </ContentPage>

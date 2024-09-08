@@ -59,6 +59,11 @@
 	  <None Remove="Resources\Images\config.png" />
 	  <None Remove="Resources\Images\house.png" />
 	  <None Remove="Resources\Images\plus.png" />
+		
+	  <None Remove="Resources\Images\categories.png" />
+	  <None Remove="Resources\Images\order.png" />
+	  <None Remove="Resources\Images\price.png" />
+	  <None Remove="Resources\Images\student.png" />
 	</ItemGroup>
 
 	<ItemGroup>
