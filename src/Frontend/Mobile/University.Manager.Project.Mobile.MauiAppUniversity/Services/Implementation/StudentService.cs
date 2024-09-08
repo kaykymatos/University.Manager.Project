@@ -1,11 +1,13 @@
 ﻿using University.Manager.Project.Mobile.MauiAppUniversity.Models;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
+using University.Manager.Project.Web.Blazor.Repositories.Implementation;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implementation
 {
-    public class StudentService(HttpClient client, ICourseService courseService, string basePath = "api/v1/student") : BaseService<StudentViewModel>(client, basePath), IStudentService
+    public class StudentService(HttpClient client, ICourseService courseService, IStudentRepository repo, string basePath = "api/v1/student") : BaseService<StudentViewModel, IStudentRepository>(client, basePath,repo), IStudentService
     {
         private readonly ICourseService _courseService = courseService;
+        private readonly IStudentRepository _repo = repo;
         public override async Task<IEnumerable<ApiErrorViewModel>> Create(StudentViewModel model, string token)
         {
             CourseViewModel getCursePrice = await _courseService.FindById(model.CourseId, token);

@@ -3,5 +3,6 @@
     public interface IBaseModel
     {
         Dictionary<string, object> ToDictionary();
+        long Id { get; set; }
     }
 }

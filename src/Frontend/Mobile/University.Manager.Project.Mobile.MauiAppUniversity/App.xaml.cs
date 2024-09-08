@@ -1,14 +1,15 @@
-﻿using University.Manager.Project.Mobile.MauiAppUniversity.Views.Home;
+﻿using University.Manager.Project.Mobile.MauiAppUniversity.Views;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Home;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity
 {
     public partial class App : Application
     {
-        public App()
+        public App( )
         {
             InitializeComponent();
 
-            MainPage = new Home();
+            MainPage = new MainPage();
         }
     }
 }

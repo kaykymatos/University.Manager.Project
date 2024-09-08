@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.MainPage"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:actions="clr-namespace:University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions"
+             xmlns:info="clr-namespace:University.Manager.Project.Mobile.MauiAppUniversity.Views.Info"
+             xmlns:home="clr-namespace:University.Manager.Project.Mobile.MauiAppUniversity.Views.Home"
+             android:TabbedPage.ToolbarPlacement="Bottom"
+             Title="MainPage">
+
+    <info:InfoPage Title="Info" IconImageSource="config.png" />
+    <home:HomePage Title="Home" IconImageSource="house.png" />
+    <actions:ActionsListPage Title="Actions" IconImageSource="plus.png" />
+</TabbedPage>
