@@ -21,7 +21,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>University.Manager.Project.Mobile.MauiAppUniversity</ApplicationTitle>
+		<ApplicationTitle>University Manager</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.university.manager.project.mobile.mauiappuniversity</ApplicationId>

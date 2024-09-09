@@ -9,9 +9,9 @@ public partial class InfoPage : ContentPage
     public InfoPage()
     {
         InitializeComponent();
-
-        var version = AppInfo.VersionString;
-        VersionLabel.Text = version;
+        
+        VersionLabel.Text = AppInfo.VersionString;
+        NameLabel.Text = AppInfo.Name;
     }
     public void NavigateToHome(object sender, TappedEventArgs e)
     {

@@ -4,35 +4,126 @@
              x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.ActionsListPage"
              Title="ActionsListPage">
 
-    <VerticalStackLayout Padding="20">
+    <VerticalStackLayout Padding="20" Spacing="20" >
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <Frame.Shadow>
+                <Shadow Brush="Black" 
+                        Radius="10" 
+                        Opacity="0.7" 
+                        Offset="30,30" />
+            </Frame.Shadow>
             <HorizontalStackLayout>
                 <Image Source="plus.png" WidthRequest="50" HeightRequest="50"  />
-                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Courses" 
+                           FontSize="20" 
+                           Margin="10,0,0,0" 
+                           VerticalOptions="Center" 
+                           FontAttributes="Bold" />
+
+                    <Label Text="Create new courses" 
+                           FontSize="16" 
+                           Margin="10,0,0,0" 
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Start" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
+
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <Frame.Shadow>
+                <Shadow Brush="Black" 
+            Radius="10" 
+            Opacity="0.7" 
+            Offset="30,30" />
+            </Frame.Shadow>
             <HorizontalStackLayout>
                 <Image Source="categories.png" WidthRequest="50" HeightRequest="50"  />
-                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Categories" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Create new categories for new courses" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <Frame.Shadow>
+                <Shadow Brush="Black" 
+            Radius="10" 
+            Opacity="0.7" 
+            Offset="30,30" />
+            </Frame.Shadow>
             <HorizontalStackLayout>
                 <Image Source="student.png" WidthRequest="50" HeightRequest="50"  />
-                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Students" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Create and view students" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <Frame.Shadow>
+                <Shadow Brush="Black" 
+            Radius="10" 
+            Opacity="0.7" 
+            Offset="30,30" />
+            </Frame.Shadow>
             <HorizontalStackLayout>
                 <Image Source="price.png" WidthRequest="50" HeightRequest="50"  />
-                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Installments" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Installments from students" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+            <Frame.Shadow>
+                <Shadow Brush="Black" 
+            Radius="10" 
+            Opacity="0.7" 
+            Offset="30,30" />
+            </Frame.Shadow>
             <HorizontalStackLayout>
                 <Image Source="order.png" WidthRequest="50" HeightRequest="50"  />
-                <Label Text="Título do Card" FontSize="20" Margin="10,0,0,0" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Orders" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Orders from students" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
             </HorizontalStackLayout>
         </Frame>
     </VerticalStackLayout>

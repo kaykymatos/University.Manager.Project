@@ -10,7 +10,7 @@
                FontSize="35" 
                HorizontalOptions="Center"
                VerticalOptions="Center" />
-        <Label Text="University Manager"
+        <Label  x:Name="NameLabel"
                FontSize="20"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
