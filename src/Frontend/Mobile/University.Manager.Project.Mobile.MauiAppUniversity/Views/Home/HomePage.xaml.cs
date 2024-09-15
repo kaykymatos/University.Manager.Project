@@ -11,15 +11,5 @@ public partial class HomePage : ContentPage
        
     }
 
-    private void NavigateToInfo(object sender, EventArgs e)
-    {
-        var modal = Handler.MauiContext.Services.GetService<InfoPage>();
-        Navigation.PushModalAsync(modal);
-    }
-    private void NavigateToAtions(object sender, EventArgs e)
-    {
-        var modal = Handler.MauiContext.Services.GetService<ActionsListPage>();
-        Navigation.PushModalAsync(modal);
-    }
-
+   
 }

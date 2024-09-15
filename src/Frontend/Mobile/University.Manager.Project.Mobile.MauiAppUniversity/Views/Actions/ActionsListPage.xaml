@@ -4,15 +4,14 @@
              x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.ActionsListPage"
              Title="ActionsListPage">
 
-    <VerticalStackLayout Padding="20" Spacing="20" >
+    <VerticalStackLayout Padding="20" Spacing="20"  >
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
-            <Frame.Shadow>
-                <Shadow Brush="Black" 
-                        Radius="10" 
-                        Opacity="0.7" 
-                        Offset="30,30" />
-            </Frame.Shadow>
-            <HorizontalStackLayout>
+
+            <Frame.GestureRecognizers >
+                <TapGestureRecognizer Tapped="OnCoursesTapped" />
+            </Frame.GestureRecognizers>
+
+            <HorizontalStackLayout >
                 <Image Source="plus.png" WidthRequest="50" HeightRequest="50"  />
                 <VerticalStackLayout VerticalOptions="Center">
                     <Label Text="Courses" 
@@ -31,12 +30,10 @@
 
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
-            <Frame.Shadow>
-                <Shadow Brush="Black" 
-            Radius="10" 
-            Opacity="0.7" 
-            Offset="30,30" />
-            </Frame.Shadow>
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCourseCategoriesTapped" />
+            </Frame.GestureRecognizers>
             <HorizontalStackLayout>
                 <Image Source="categories.png" WidthRequest="50" HeightRequest="50"  />
                 <VerticalStackLayout VerticalOptions="Center">
@@ -55,12 +52,10 @@
             </HorizontalStackLayout>
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
-            <Frame.Shadow>
-                <Shadow Brush="Black" 
-            Radius="10" 
-            Opacity="0.7" 
-            Offset="30,30" />
-            </Frame.Shadow>
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnStudentsTapped" />
+            </Frame.GestureRecognizers>
             <HorizontalStackLayout>
                 <Image Source="student.png" WidthRequest="50" HeightRequest="50"  />
                 <VerticalStackLayout VerticalOptions="Center">
@@ -79,12 +74,10 @@
             </HorizontalStackLayout>
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
-            <Frame.Shadow>
-                <Shadow Brush="Black" 
-            Radius="10" 
-            Opacity="0.7" 
-            Offset="30,30" />
-            </Frame.Shadow>
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnInstallmentsTapped" />
+            </Frame.GestureRecognizers>
             <HorizontalStackLayout>
                 <Image Source="price.png" WidthRequest="50" HeightRequest="50"  />
                 <VerticalStackLayout VerticalOptions="Center">
@@ -103,12 +96,10 @@
             </HorizontalStackLayout>
         </Frame>
         <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
-            <Frame.Shadow>
-                <Shadow Brush="Black" 
-            Radius="10" 
-            Opacity="0.7" 
-            Offset="30,30" />
-            </Frame.Shadow>
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOrdersTapped" />
+            </Frame.GestureRecognizers>
             <HorizontalStackLayout>
                 <Image Source="order.png" WidthRequest="50" HeightRequest="50"  />
                 <VerticalStackLayout VerticalOptions="Center">

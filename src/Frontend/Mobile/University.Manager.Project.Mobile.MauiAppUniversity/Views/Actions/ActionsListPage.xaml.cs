@@ -9,14 +9,30 @@ public partial class ActionsListPage : ContentPage
 	{
 		InitializeComponent();
 	}
-    public void NavigateToInfo(object sender, TappedEventArgs e)
+    private void OnCoursesTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<InfoPage>();
+        var modal = Handler.MauiContext.Services.GetService<Courses>();
         Navigation.PushModalAsync(modal);
     }
-    public void NavigateToHome(object sender, TappedEventArgs e)
+    private void OnCourseCategoriesTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<HomePage>();
+        var modal = Handler.MauiContext.Services.GetService<CourseCategory>();
         Navigation.PushModalAsync(modal);
     }
+    private void OnStudentsTapped(object sender, TappedEventArgs e)
+    {
+        var modal = Handler.MauiContext.Services.GetService<Student>();
+        Navigation.PushModalAsync(modal);
+    }
+    private void OnInstallmentsTapped(object sender, TappedEventArgs e)
+    {
+        var modal = Handler.MauiContext.Services.GetService<Installments>();
+        Navigation.PushModalAsync(modal);
+    }
+    private void OnOrdersTapped(object sender, TappedEventArgs e)
+    {
+        var modal = Handler.MauiContext.Services.GetService<Orders>();
+        Navigation.PushModalAsync(modal);
+    }
+
 }

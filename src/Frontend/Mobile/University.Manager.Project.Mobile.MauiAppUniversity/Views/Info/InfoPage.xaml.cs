@@ -13,14 +13,5 @@ public partial class InfoPage : ContentPage
         VersionLabel.Text = AppInfo.VersionString;
         NameLabel.Text = AppInfo.Name;
     }
-    public void NavigateToHome(object sender, TappedEventArgs e)
-    {
-        var modal = Handler.MauiContext.Services.GetService<HomePage>();
-        Navigation.PushModalAsync(modal);
-    }
-    public void NavigateToAtions(object sender, TappedEventArgs e)
-    {
-        var modal = Handler.MauiContext.Services.GetService<ActionsListPage>();
-        Navigation.PushModalAsync(modal);
-    }
+ 
 }
