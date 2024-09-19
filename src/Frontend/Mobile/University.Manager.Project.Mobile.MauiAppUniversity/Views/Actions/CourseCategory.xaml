@@ -2,11 +2,47 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.CourseCategory"
-             Title="CourseCategory">
+             Title="Course Categories">
+
+
     <VerticalStackLayout>
         <Label 
-            Text="Category!"
+            Text="Categories"
+            FontAttributes="Bold"
+            FontSize="Large"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <ListView x:Name="listView"  Margin="20">
+            <ListView.ItemTemplate>
+                <DataTemplate   >
+                    <ViewCell >
+                        <FlexLayout>
+                            <Label Text="{Binding Name}"/>
+                            <Label Text=" - "/>
+                            <Label Text="{Binding Description}"/>
+
+                            <ImageButton HeightRequest="20" Margin="2,0,2,0" WidthRequest="20">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="FAS" Glyph="&#xf05a;"  Color="Blue"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                            <ImageButton HeightRequest="20" Margin="2,0,2,0" WidthRequest="20">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="FAS" Glyph="&#xf044;"  Color="Blue"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                            <ImageButton HeightRequest="20" Margin="2,0,2,0" WidthRequest="20">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="FAS" Glyph="&#xf1f8;"  Color="Blue"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+
+                        </FlexLayout>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </VerticalStackLayout>
 </ContentPage>
