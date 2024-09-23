@@ -5,11 +5,12 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
 {
     public partial class App : Application
     {
-        public App( )
+        public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            // Use o serviço para resolver a MainPage com dependências injetadas
+            MainPage = serviceProvider.GetRequiredService<MainPage>();
         }
     }
 }

@@ -1,44 +1,27 @@
 using University.Manager.Project.Mobile.MauiAppUniversity.Models;
+using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions;
 
 public partial class Courses : ContentPage
 {
-    public Courses()
+    private readonly ICourseService _service;
+    public Courses(ICourseService service)
     {
-        InitializeComponent();
-        var list = new List<CourseViewModel>
-        {
-            new CourseViewModel
-            {
-                Name="aa",
-                Description="teste",
-                CourseCategoryId=1,
-                CreationData=DateTime.Now,
-                CourseCategory=new CourseCategoryViewModel
-                {
-                    Name="teste"
-                },
-                TotalValue=1000,
-                UpdatedData=DateTime.Now,
-                Workload=100
-            },
-            new CourseViewModel
-            {
-                 Name="aa2",
-                Description="teste2",
-                CourseCategoryId=1,
-                CreationData=DateTime.Now,
-                CourseCategory=new CourseCategoryViewModel
-                {
-                    Name="teste"
-                },
-                TotalValue=1000,
-                UpdatedData=DateTime.Now,
-                Workload=100
-            },
-        };
+        _service = service;
 
+        InitializeComponent();
+
+    }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        var list = await _service.FindAll("");
         listView.ItemsSource = list;
     }
 }

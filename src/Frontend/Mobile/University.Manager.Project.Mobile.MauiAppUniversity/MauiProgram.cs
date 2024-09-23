@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using University.Manager.Project.Mobile.MauiAppUniversity.Repositories.Implementation;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Implementation;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Home;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Info;
@@ -38,6 +39,8 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
         }
         public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
         {
+            mauiAppBuilder.Services.AddTransient<MainPage>();
+
             mauiAppBuilder.Services.AddTransient<CourseCategory>();
             mauiAppBuilder.Services.AddTransient<Courses>();
             mauiAppBuilder.Services.AddTransient<Installments>();
@@ -53,8 +56,8 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
         {
             mauiAppBuilder.Services.AddSingleton(options => { return new LiteDatabase($"Filename={AppSettings.DatabasePath};Connection=Shared"); });
 
-            mauiAppBuilder.Services.AddTransient<ICourseCategoryRepository, CourseCategoryRepository>();
             mauiAppBuilder.Services.AddTransient<ICourseRepository, CourseRepository>();
+            mauiAppBuilder.Services.AddTransient<ICourseCategoryRepository, CourseCategoryRepository>();
             mauiAppBuilder.Services.AddTransient<ICourseInstallmentRepository, CourseInstallmentRepository>();
             mauiAppBuilder.Services.AddTransient<IOrderRepository, OrderRepository>();
             mauiAppBuilder.Services.AddTransient<IStudentRepository, StudentRepository>();
@@ -64,6 +67,28 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
             mauiAppBuilder.Services.AddTransient<ICourseInstallmentService, CourseInstallmentService>();
             mauiAppBuilder.Services.AddTransient<IOrderService, OrderService>();
             mauiAppBuilder.Services.AddTransient<IStudentService, StudentService>();
+
+
+            mauiAppBuilder.Services.AddHttpClient<ICourseCategoryService, CourseCategoryService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            mauiAppBuilder.Services.AddHttpClient<ICourseService, CourseService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            mauiAppBuilder.Services.AddHttpClient<ICourseInstallmentService, CourseInstallmentService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            mauiAppBuilder.Services.AddHttpClient<IOrderService, OrderService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            mauiAppBuilder.Services.AddHttpClient<IStudentService, StudentService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
 
             return mauiAppBuilder;
         }

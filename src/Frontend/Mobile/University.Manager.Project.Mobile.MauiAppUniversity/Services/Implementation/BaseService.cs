@@ -23,6 +23,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         }
         public virtual async Task<IEnumerable<T>> FindAll(string token)
         {
+
             var internet = ConnectionVerify.GetInternetConnection();
             if (internet == NetworkAccess.Internet)
             {

@@ -9,8 +9,6 @@
              xmlns:home="clr-namespace:University.Manager.Project.Mobile.MauiAppUniversity.Views.Home"
              android:TabbedPage.ToolbarPlacement="Bottom"
              Title="MainPage">
-
-    <info:InfoPage Title="Info" IconImageSource="config.png" />
-    <home:HomePage Title="Home" IconImageSource="house.png" />
-    <actions:ActionsListPage Title="Actions" IconImageSource="plus.png" />
+   
+   
 </TabbedPage>

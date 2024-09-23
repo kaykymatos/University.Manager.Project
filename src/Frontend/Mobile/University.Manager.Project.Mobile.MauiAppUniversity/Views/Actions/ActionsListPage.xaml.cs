@@ -5,33 +5,37 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions;
 
 public partial class ActionsListPage : ContentPage
 {
-	public ActionsListPage()
-	{
-		InitializeComponent();
-	}
+
+    private readonly IServiceProvider _serviceProvider;
+
+    public ActionsListPage(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+        InitializeComponent();
+    }
     private void OnCoursesTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<Courses>();
+        var modal = _serviceProvider.GetRequiredService<Courses>();
         Navigation.PushModalAsync(modal);
     }
     private void OnCourseCategoriesTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<CourseCategory>();
+        var modal = _serviceProvider.GetRequiredService<CourseCategory>();
         Navigation.PushModalAsync(modal);
     }
     private void OnStudentsTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<Student>();
+        var modal = _serviceProvider.GetRequiredService<Student>();
         Navigation.PushModalAsync(modal);
     }
     private void OnInstallmentsTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<Installments>();
+        var modal = _serviceProvider.GetRequiredService<Installments>();
         Navigation.PushModalAsync(modal);
     }
     private void OnOrdersTapped(object sender, TappedEventArgs e)
     {
-        var modal = Handler.MauiContext.Services.GetService<Orders>();
+        var modal = _serviceProvider.GetRequiredService<Orders>();
         Navigation.PushModalAsync(modal);
     }
 

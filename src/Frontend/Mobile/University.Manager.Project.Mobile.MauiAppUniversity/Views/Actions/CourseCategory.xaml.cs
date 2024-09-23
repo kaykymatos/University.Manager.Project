@@ -1,29 +1,28 @@
 
 using University.Manager.Project.Mobile.MauiAppUniversity.Models;
+using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions;
 
 public partial class CourseCategory : ContentPage
 {
-    public CourseCategory()
+    private readonly ICourseCategoryService _service;
+    public CourseCategory(ICourseCategoryService service)
     {
+        _service = service;
 
         InitializeComponent();
+       
+    }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await LoadDataAsync();
+    }
 
-        var list = new List<CourseCategoryViewModel>
-        {
-            new CourseCategoryViewModel
-            {
-                Name="aa",
-                Description="teste"
-            },
-            new CourseCategoryViewModel
-            {
-                Name="aa",
-                Description="teste"
-            },
-        };
-
+    private async Task LoadDataAsync()
+    {
+        var list = await _service.FindAll(""); 
         listView.ItemsSource = list;
     }
 }
