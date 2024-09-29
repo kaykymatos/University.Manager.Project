@@ -25,7 +25,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         {
 
             var internet = ConnectionVerify.GetInternetConnection();
-            if (internet == NetworkAccess.Internet)
+            if (internet == NetworkAccess.Internet && !AppSettings.OfflineTest)
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await _client.GetAsync(BasePath);
@@ -58,7 +58,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         public virtual async Task<T> FindById(long id, string token)
         {
             var internet = ConnectionVerify.GetInternetConnection();
-            if (internet == NetworkAccess.Internet)
+            if (internet == NetworkAccess.Internet && !AppSettings.OfflineTest)
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await _client.GetAsync($"{BasePath}/{id}");
@@ -75,7 +75,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         public virtual async Task<IEnumerable<ApiErrorViewModel>> Create(T model, string token)
         {
             var internet = ConnectionVerify.GetInternetConnection();
-            if (internet == NetworkAccess.Internet)
+            if (internet == NetworkAccess.Internet && !AppSettings.OfflineTest)
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await _client.PostAsJson(BasePath, model);
@@ -97,7 +97,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         public virtual async Task<IEnumerable<ApiErrorViewModel>> Update(T model, string token)
         {
             var internet = ConnectionVerify.GetInternetConnection();
-            if (internet == NetworkAccess.Internet)
+            if (internet == NetworkAccess.Internet && !AppSettings.OfflineTest)
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await _client.PutAsJson(BasePath, model);
@@ -120,7 +120,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         public virtual async Task<ApiErrorViewModel> DeleteById(long id, string token)
         {
             var internet = ConnectionVerify.GetInternetConnection();
-            if (internet == NetworkAccess.Internet)
+            if (internet == NetworkAccess.Internet && !AppSettings.OfflineTest)
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await _client.DeleteAsync($"{BasePath}/{id}");
@@ -144,7 +144,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
         public virtual async Task<ApiErrorViewModel> DeletMultiple(IEnumerable<long> ids, string token)
         {
             var internet = ConnectionVerify.GetInternetConnection();
-            if (internet == NetworkAccess.Internet)
+            if (internet == NetworkAccess.Internet && !AppSettings.OfflineTest)
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

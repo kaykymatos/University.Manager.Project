@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Courses"
-             Title="Courses">
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Student.StudentsList"
+             Title="Student">
     <VerticalStackLayout>
         <Label 
-         Text="Categories"
-         FontAttributes="Bold"
-         FontSize="Large"
-         VerticalOptions="Center" 
-         HorizontalOptions="Center" />
+            Text="Students" 
+            FontAttributes="Bold"
+            FontSize="Large"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Label  Margin="20,0,20,0"
+        Text="Create"
+        TextColor="Blue"
+        HorizontalOptions="Start" >
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="CreateNew"/>
+            </Label.GestureRecognizers>
+
+        </Label>
+
         <Grid ColumnDefinitions="*,*,*,*,*" Margin="20,0,20,0" BackgroundColor="LightGray">
-            <Label Grid.Column="0" Text="Name" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center" />
-            <Label Grid.Column="1" Text="Description" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
-            <Label Grid.Column="2" Text="Category" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
-            <Label Grid.Column="3" Text="Total Value" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
-            <Label Grid.Column="4" Text="Actions" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="0" Text="Name" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" Text="Email" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center" />
+            <Label Grid.Column="2" Text="CourseId" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center" />
+            <Label Grid.Column="3" Text="Register Code" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+            <Label Grid.Column="6" Text="Actions" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
         <ListView x:Name="listView" Margin="20,0,20,0">
             <ListView.ItemTemplate>
@@ -25,11 +35,11 @@
 
                             <Label Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Name}" />
 
-                            <Label Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Description}" />
-                            <Label Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding CourseCategory.Name}" />
-                            <Label Grid.Column="3"  HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding TotalValue}" />
-                            
-                            <StackLayout Grid.Column="4"  HorizontalOptions="Center" VerticalOptions="Center"  Orientation="Horizontal" Spacing="5">
+                            <Label Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Email}" />
+                            <Label Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding CourseId}" />
+                            <Label Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding RegisterCode}" />
+
+                            <StackLayout Grid.Column="6"  HorizontalOptions="Center" VerticalOptions="Center"  Orientation="Horizontal" Spacing="5">
                                 <ImageButton HeightRequest="20" WidthRequest="15" Margin="2,0,2,0">
                                     <ImageButton.Source>
                                         <FontImageSource FontFamily="FAS" Glyph="&#xf05a;" Color="Blue"/>

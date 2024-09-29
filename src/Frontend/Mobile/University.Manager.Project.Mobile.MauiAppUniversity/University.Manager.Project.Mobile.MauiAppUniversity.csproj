@@ -81,19 +81,79 @@
 	  <MauiXaml Update="Views\Actions\ActionsListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\CourseCategory.xaml">
+	  <MauiXaml Update="Views\Actions\CourseCategory\CourseCategoriesList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Courses.xaml">
+	  <MauiXaml Update="Views\Actions\CourseCategory\CreateCourseCategory.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Installments.xaml">
+	  <MauiXaml Update="Views\Actions\CourseCategory\DeleteCourseCategory.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Orders.xaml">
+	  <MauiXaml Update="Views\Actions\CourseCategory\DetailsCourseCategory.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Student.xaml">
+	  <MauiXaml Update="Views\Actions\CourseCategory\EditCourseCategory.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Courses\CoursesList.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Courses\CreateCourse.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Courses\DetailsCourse.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Courses\DeleteCourse.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Courses\EditCourse.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Installments\CreateInstallment.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Installments\DeleteInstallment.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Installments\DetaislInstallment.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Installments\EditInstallment.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Installments\InstallmentsList.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Orders\CreateOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Orders\DeleteOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Orders\DetailsOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Orders\EditOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Orders\OrdersList.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Student\CreateOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Student\DeleteOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Student\DetailsOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Student\EditOrder.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Actions\Student\StudentsList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Home\HomePage.xaml">
@@ -108,6 +168,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\Actions\CourseCategory\CourseCategoriesList.xaml.cs">
+	    <DependentUpon>CourseCategoriesList.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Courses\CoursesList.xaml.cs">
+	    <DependentUpon>CoursesList.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Courses\CreateCourse.xaml.cs">
+	    <DependentUpon>CreateCourse.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Courses\DetailsCourse.xaml.cs">
+	    <DependentUpon>DetailsCourse.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Courses\EditCourse.xaml.cs">
+	    <DependentUpon>EditCourse.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Installments\InstallmentsList.xaml.cs">
+	    <DependentUpon>InstallmentsList.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Orders\OrdersList.xaml.cs">
+	    <DependentUpon>OrdersList.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Student\StudentsList.xaml.cs">
+	    <DependentUpon>StudentsList.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Home\HomePage.xaml.cs">
 	    <DependentUpon>HomePage.xaml</DependentUpon>
 	  </Compile>

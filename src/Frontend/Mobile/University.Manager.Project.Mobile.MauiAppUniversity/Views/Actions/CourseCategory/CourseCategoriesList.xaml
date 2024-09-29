@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.CourseCategory"
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.CourseCategory.CourseCategoriesList"
              Title="Course Categories">
 
     <VerticalStackLayout>
+
         <Label 
             Text="Course Categories"
             FontAttributes="Bold"
             FontSize="Large"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        
+        <Label  Margin="20,0,20,0"
+                Text="Create"
+                TextColor="Blue"
+                HorizontalOptions="Start" >
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="CreateNew"/>
+            </Label.GestureRecognizers>
+
+        </Label>
         <Grid ColumnDefinitions="*,*,*,*,*" Margin="20,0,20,0"  BackgroundColor="LightGray">
+
+
             <Label Grid.Column="0" Text="Name" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
             <Label Grid.Column="1" Text="Description" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center" />
             <Label Grid.Column="2" Text="Creation" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />

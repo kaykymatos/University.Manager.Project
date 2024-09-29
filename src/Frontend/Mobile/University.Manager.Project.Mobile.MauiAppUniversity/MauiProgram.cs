@@ -5,8 +5,17 @@ using University.Manager.Project.Mobile.MauiAppUniversity.Services.Implementatio
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.CourseCategory;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Courses;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Installments;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Orders;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.CourseCategory;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Courses;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Home;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Info;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Installments;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Orders;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Student;
 using University.Manager.Project.Web.Blazor.Repositories.Implementation;
 
 
@@ -41,11 +50,42 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
         {
             mauiAppBuilder.Services.AddTransient<MainPage>();
 
-            mauiAppBuilder.Services.AddTransient<CourseCategory>();
-            mauiAppBuilder.Services.AddTransient<Courses>();
-            mauiAppBuilder.Services.AddTransient<Installments>();
-            mauiAppBuilder.Services.AddTransient<Orders>();
-            mauiAppBuilder.Services.AddTransient<Student>();
+            //Course category pages
+            mauiAppBuilder.Services.AddTransient<CourseCategoriesList>();
+            mauiAppBuilder.Services.AddTransient<CreateCourseCategory>();
+            mauiAppBuilder.Services.AddTransient<DeleteCourseCategory>();
+            mauiAppBuilder.Services.AddTransient<DetailsCourseCategory>();
+            mauiAppBuilder.Services.AddTransient<EditCourseCategory>();
+
+            //Course page
+            mauiAppBuilder.Services.AddTransient<CoursesList>();
+            mauiAppBuilder.Services.AddTransient<CreateCourse>();
+            mauiAppBuilder.Services.AddTransient<DeleteCourse>();
+            mauiAppBuilder.Services.AddTransient<DetailsCourse>();
+            mauiAppBuilder.Services.AddTransient<EditCourse>();
+
+            //Installment pages
+            mauiAppBuilder.Services.AddTransient<InstallmentsList>();
+            mauiAppBuilder.Services.AddTransient<CreateInstallment>();
+            mauiAppBuilder.Services.AddTransient<DeleteInstallment>();
+            mauiAppBuilder.Services.AddTransient<DetaislInstallment>();
+            mauiAppBuilder.Services.AddTransient<EditInstallment>();
+
+            //Order Pages
+            mauiAppBuilder.Services.AddTransient<OrdersList>();
+            mauiAppBuilder.Services.AddTransient<CreateOrder>();
+            mauiAppBuilder.Services.AddTransient<DeleteOrder>();
+            mauiAppBuilder.Services.AddTransient<DetailsOrder>();
+            mauiAppBuilder.Services.AddTransient<EditOrder>();
+
+            //Student Pages
+            mauiAppBuilder.Services.AddTransient<StudentsList>();
+            mauiAppBuilder.Services.AddTransient<CreateOrder>();
+            mauiAppBuilder.Services.AddTransient<DeleteOrder>();
+            mauiAppBuilder.Services.AddTransient<DetailsOrder>();
+            mauiAppBuilder.Services.AddTransient<EditOrder>();
+
+
             mauiAppBuilder.Services.AddTransient<HomePage>();
             mauiAppBuilder.Services.AddTransient<InfoPage>();
             mauiAppBuilder.Services.AddTransient<ActionsListPage>();
