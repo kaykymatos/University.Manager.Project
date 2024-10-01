@@ -9,7 +9,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Models
         public long StudentId { get; set; }
         public decimal InstallmentPrice { get; set; }
         public DateTime? PaymentDate { get; set; }
-        public string DueDate { get; set; }
+        public DateTime DueDate { get; set; }
         public EInstallmentStatus InstallmentStatus { get; set; }
         public EPaymentMethod PaymentMethod { get; set; }
         public Dictionary<string, object> ToDictionary()
