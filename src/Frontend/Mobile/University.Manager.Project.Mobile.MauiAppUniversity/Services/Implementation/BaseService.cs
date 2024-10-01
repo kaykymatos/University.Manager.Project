@@ -31,7 +31,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
                 HttpResponseMessage response = await _client.GetAsync(BasePath);
                 List<T> res = await response.ReadContentAs<List<T>>();
                 if (res == null)
-                    return [];
+                   return Enumerable.Empty<T>().ToList();
 
                 var result = await response.ReadContentAs<List<T>>();
                 UpdateLocalDb(result);
@@ -81,7 +81,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
                 HttpResponseMessage response = await _client.PostAsJson(BasePath, model);
                 if (response.IsSuccessStatusCode)
                 {
-                    return [];
+                   return Enumerable.Empty<ApiErrorViewModel>().ToList();
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     return await response.ReadContentAs<List<ApiErrorViewModel>>();
@@ -91,7 +91,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
             else
             {
                 _repository.Create(model);
-                return [];
+                return Enumerable.Empty<ApiErrorViewModel>().ToList();
             }
         }
         public virtual async Task<IEnumerable<ApiErrorViewModel>> Update(T model, string token)
@@ -104,7 +104,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
                 if (response.IsSuccessStatusCode)
                 {
                     _repository.Update(model);
-                    return [];
+                   return Enumerable.Empty<ApiErrorViewModel>().ToList();
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     return await response.ReadContentAs<List<ApiErrorViewModel>>();
@@ -114,7 +114,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
             else
             {
                 _repository.Update(model);
-                return [];
+               return Enumerable.Empty<ApiErrorViewModel>().ToList();
             }
         }
         public virtual async Task<ApiErrorViewModel> DeleteById(long id, string token)
@@ -127,7 +127,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
                 if (response.IsSuccessStatusCode)
                 {
                     _repository.DeleteById(id);
-                    return null;
+                    return new ApiErrorViewModel();
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     return await response.ReadContentAs<ApiErrorViewModel>();
@@ -138,7 +138,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
             {
 
                 _repository.DeleteById(id);
-                return null;
+                return new ApiErrorViewModel();
             }
         }
         public virtual async Task<ApiErrorViewModel> DeletMultiple(IEnumerable<long> ids, string token)
@@ -156,7 +156,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return null;
+                    return new ApiErrorViewModel();
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     return await response.ReadContentAs<ApiErrorViewModel>();
@@ -166,7 +166,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity.Services.Implement
             else
             {
                 _repository.DeletMultiple(ids);
-                return null;
+                return new ApiErrorViewModel();
             }
         }
     }

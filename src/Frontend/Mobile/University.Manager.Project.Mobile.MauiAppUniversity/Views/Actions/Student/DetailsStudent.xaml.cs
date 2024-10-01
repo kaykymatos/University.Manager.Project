@@ -1,8 +1,8 @@
 namespace University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Student;
 
-public partial class EditOrder : ContentPage
+public partial class DetailsStudent : ContentPage
 {
-	public EditOrder()
+	public DetailsStudent()
 	{
 		InitializeComponent();
 	}

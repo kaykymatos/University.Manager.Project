@@ -9,6 +9,7 @@ using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.CourseCa
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Courses;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Installments;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Orders;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Student;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.CourseCategory;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Courses;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Home;
@@ -80,10 +81,10 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
 
             //Student Pages
             mauiAppBuilder.Services.AddTransient<StudentsList>();
-            mauiAppBuilder.Services.AddTransient<CreateOrder>();
-            mauiAppBuilder.Services.AddTransient<DeleteOrder>();
-            mauiAppBuilder.Services.AddTransient<DetailsOrder>();
-            mauiAppBuilder.Services.AddTransient<EditOrder>();
+            mauiAppBuilder.Services.AddTransient<CreateStudent>();
+            mauiAppBuilder.Services.AddTransient<DeleteStudent>();
+            mauiAppBuilder.Services.AddTransient<DetailsStudent>();
+            mauiAppBuilder.Services.AddTransient<EditStudent>();
 
 
             mauiAppBuilder.Services.AddTransient<HomePage>();

@@ -39,7 +39,7 @@
                         <Picker x:Name="CategoryPicker" ItemDisplayBinding="{Binding Name}" Title="Selecione um item" WidthRequest="500" TextColor="Black"/>
                     </StackLayout>
                 </Frame>
-                <Button Text="Enviar" Margin="0,10,0,0" Clicked="OnEnviarClicked"/>
+                <Button Text="Send" Margin="0,10,0,0" Clicked="OnEnviarClicked"/>
             </StackLayout>
 
         </Grid>

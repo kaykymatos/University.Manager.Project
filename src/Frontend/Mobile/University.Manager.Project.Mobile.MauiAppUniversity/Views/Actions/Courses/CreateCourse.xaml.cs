@@ -2,17 +2,20 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using University.Manager.Project.Mobile.MauiAppUniversity.Models;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Courses;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Courses;
 
 public partial class CreateCourse : ContentPage
 {
-    private readonly ICourseService _courseService;
+    private readonly ICourseService _service;
     private readonly ICourseCategoryService _courseCategoryService;
-    public CreateCourse(ICourseService courseService, ICourseCategoryService courseCategoryService)
+    private readonly IServiceProvider _serviceProvider;
+    public CreateCourse(ICourseService service, ICourseCategoryService courseCategoryService, IServiceProvider serviceProvider)
     {
-        _courseService = courseService;
+        _service = service;
         _courseCategoryService = courseCategoryService;
+        _serviceProvider = serviceProvider;
 
         InitializeComponent();
     }
@@ -23,10 +26,10 @@ public partial class CreateCourse : ContentPage
 
         CategoryPicker.ItemsSource = itens.ToList();
     }
-    private void OnEnviarClicked(object sender, EventArgs e)
+    private async void OnEnviarClicked(object sender, EventArgs e)
     {
         var category = (CourseCategoryViewModel)CategoryPicker.SelectedItem;
-        var pessoa = new CourseViewModel
+        var model = new CourseViewModel
         {
             Name = Name.Text,
             Description = Description.Text,
@@ -35,5 +38,15 @@ public partial class CreateCourse : ContentPage
             TotalValue = long.Parse(TotalValue.Text),
             Workload = long.Parse(Workload.Text)
         };
+        var response = await _service.Create(model, "");
+        if (response.Count() <= 0)
+        {
+            var modal = _serviceProvider.GetRequiredService<CoursesList>();
+            await Navigation.PushModalAsync(modal);
+        }
+        else
+        {
+            await DisplayAlert("Error", "Error", "Ok");
+        }
     }
 }

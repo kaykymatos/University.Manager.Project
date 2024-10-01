@@ -1,6 +1,5 @@
-using University.Manager.Project.Mobile.MauiAppUniversity.Models;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
-using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Orders;
+using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Student;
 
 namespace University.Manager.Project.Mobile.MauiAppUniversity.Views.Student;
 
@@ -22,7 +21,7 @@ public partial class StudentsList : ContentPage
     }
     private void CreateNew(object sender, TappedEventArgs e)
     {
-        var modal = _serviceProvider.GetRequiredService<CreateOrder>();
+        var modal = _serviceProvider.GetRequiredService<CreateStudent>();
         Navigation.PushModalAsync(modal);
     }
     private async Task LoadDataAsync()

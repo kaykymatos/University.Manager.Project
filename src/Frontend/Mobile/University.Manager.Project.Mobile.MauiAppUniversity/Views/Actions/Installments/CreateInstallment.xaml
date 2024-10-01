@@ -52,7 +52,7 @@
 
                     </StackLayout>
                 </Frame>
-                <Button Text="Enviar" Margin="0,10,0,0" Clicked="OnEnviarClicked"/>
+                <Button Text="Send" Margin="0,10,0,0" Clicked="OnEnviarClicked"/>
             </StackLayout>
 
         </Grid>

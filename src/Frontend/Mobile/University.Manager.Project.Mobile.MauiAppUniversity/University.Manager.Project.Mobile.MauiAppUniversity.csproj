@@ -141,16 +141,16 @@
 	  <MauiXaml Update="Views\Actions\Orders\OrdersList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Student\CreateOrder.xaml">
+	  <MauiXaml Update="Views\Actions\Student\CreateStudent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Student\DeleteOrder.xaml">
+	  <MauiXaml Update="Views\Actions\Student\DeleteStudent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Student\DetailsOrder.xaml">
+	  <MauiXaml Update="Views\Actions\Student\DetailsStudent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Actions\Student\EditOrder.xaml">
+	  <MauiXaml Update="Views\Actions\Student\EditStudent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Actions\Student\StudentsList.xaml">
@@ -188,6 +188,18 @@
 	  </Compile>
 	  <Compile Update="Views\Actions\Orders\OrdersList.xaml.cs">
 	    <DependentUpon>OrdersList.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Student\CreateStudent.xaml.cs">
+	    <DependentUpon>CreateStudent.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Student\DeleteStudent.xaml.cs">
+	    <DependentUpon>DeleteStudent.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Student\DetailsStudent.xaml.cs">
+	    <DependentUpon>DetailsStudent.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Actions\Student\EditStudent.xaml.cs">
+	    <DependentUpon>EditStudent.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\Actions\Student\StudentsList.xaml.cs">
 	    <DependentUpon>StudentsList.xaml</DependentUpon>
