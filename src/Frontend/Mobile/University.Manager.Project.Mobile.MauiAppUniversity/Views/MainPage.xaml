@@ -9,6 +9,6 @@
              xmlns:home="clr-namespace:University.Manager.Project.Mobile.MauiAppUniversity.Views.Home"
              android:TabbedPage.ToolbarPlacement="Bottom"
              Title="MainPage">
-   
-   
+
+
 </TabbedPage>

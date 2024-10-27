@@ -1,5 +1,8 @@
-﻿using LiteDB;
+﻿using IdentityModel;
+using IdentityModel.OidcClient;
+using LiteDB;
 using Microsoft.Extensions.Logging;
+using System.Net.Security;
 using University.Manager.Project.Mobile.MauiAppUniversity.Repositories.Implementation;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Implementation;
 using University.Manager.Project.Mobile.MauiAppUniversity.Services.Interfaces;
@@ -26,7 +29,7 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
     {
         public static MauiApp CreateMauiApp()
         {
-            var builder = MauiApp.CreateBuilder();
+            MauiAppBuilder builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -40,6 +43,27 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
                 })
                 .RegisterViews()
                 .RegisterRepositoriesAndServices();
+
+
+
+            builder.Services.AddSingleton<MauiAuthenticationBrowser>();
+
+            builder.Services.AddSingleton(new OidcClient(
+                new OidcClientOptions
+            {
+                Authority = "https://10.0.2.2:4435",
+                ClientId = "universityMaui",
+                Scope = "universityMaui",
+                ClientSecret = "MySuperSecret",
+                    RedirectUri = "university.manager.project.mobile.mauiappuniversity://callback",
+                    Browser = new MauiAuthenticationBrowser(),
+                HttpClientFactory = (options) =>
+                                    {
+                                        var handler = new HttpsClientHandlerService();
+                                        
+                                        return new HttpClient(handler.GetPlatformMessageHandler());
+                                    }
+            }));
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -109,26 +133,37 @@ namespace University.Manager.Project.Mobile.MauiAppUniversity
             mauiAppBuilder.Services.AddTransient<IOrderService, OrderService>();
             mauiAppBuilder.Services.AddTransient<IStudentService, StudentService>();
 
+            var url = DeviceInfo.Platform == DevicePlatform.Android ? "https://127.0.0.1:4480" : "https://localhost:4480";
 
             mauiAppBuilder.Services.AddHttpClient<ICourseCategoryService, CourseCategoryService>(x =>
             {
                 x.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
-            mauiAppBuilder.Services.AddHttpClient<ICourseService, CourseService>(x =>
-            {
-                x.DefaultRequestHeaders.Add("Accept", "application/json");
+                x.BaseAddress = new Uri(url);
             });
             mauiAppBuilder.Services.AddHttpClient<ICourseInstallmentService, CourseInstallmentService>(x =>
             {
                 x.DefaultRequestHeaders.Add("Accept", "application/json");
+                x.BaseAddress = new Uri(url);
             });
-            mauiAppBuilder.Services.AddHttpClient<IOrderService, OrderService>(x =>
+            mauiAppBuilder.Services.AddHttpClient<ICourseService, CourseService>(x =>
             {
                 x.DefaultRequestHeaders.Add("Accept", "application/json");
+                x.BaseAddress = new Uri(url);
             });
             mauiAppBuilder.Services.AddHttpClient<IStudentService, StudentService>(x =>
             {
                 x.DefaultRequestHeaders.Add("Accept", "application/json");
+                x.BaseAddress = new Uri(url);
+            });
+            mauiAppBuilder.Services.AddHttpClient<IStudentService, StudentService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+                x.BaseAddress = new Uri(url);
+            });
+            mauiAppBuilder.Services.AddHttpClient<IOrderService, OrderService>(x =>
+            {
+                x.DefaultRequestHeaders.Add("Accept", "application/json");
+                x.BaseAddress = new Uri(url);
             });
 
             return mauiAppBuilder;

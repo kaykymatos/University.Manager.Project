@@ -1,3 +1,4 @@
+using IdentityModel.OidcClient;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Home;
 using University.Manager.Project.Mobile.MauiAppUniversity.Views.Info;
@@ -14,6 +15,6 @@ public partial class MainPage : TabbedPage
         Children.Add(new NavigationPage(homePage) { Title = "Home", IconImageSource = "house.png" });
         Children.Add(new NavigationPage(actionsPage) { Title = "Actions", IconImageSource = "plus.png" });
 
-        this.CurrentPage = this.Children[1];  
+        this.CurrentPage = this.Children[1];
     }
 }

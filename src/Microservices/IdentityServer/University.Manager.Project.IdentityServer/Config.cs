@@ -17,6 +17,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
     [
             new ApiScope("universityBlazor", "UniversityBlazor"),
+            new ApiScope("universityMaui", "UniversityMaui"),
             new ApiScope("university", "University"),
             new ApiScope("read", "Reade data"),
             new ApiScope("write", "Write data"),
@@ -60,6 +61,18 @@ public static class Config
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "universityBlazor" }
+                },
+                new Client
+                {
+                    ClientId = "universityMaui",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = { "university.manager.project.mobile.mauiappuniversity://callback" },
+                    PostLogoutRedirectUris = { "university.manager.project.mobile.mauiappuniversity://callback" },
+                    ClientSecrets = {new Secret(Environment.GetEnvironmentVariable("SecretIdentityMaui").Sha256())},
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "universityMaui" }
                 },
             ];
 }
