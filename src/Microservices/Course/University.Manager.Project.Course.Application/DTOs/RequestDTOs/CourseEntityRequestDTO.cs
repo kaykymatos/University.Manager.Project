@@ -1,6 +1,8 @@
-﻿namespace University.Manager.Project.Course.Application.DTOs.RequestDTOs
+﻿using University.Manager.Project.Course.Application.Interfaces;
+
+namespace University.Manager.Project.Course.Application.DTOs.RequestDTOs
 {
-    public class CourseEntityRequestDTO
+    public class CourseEntityRequestDTO : IBaseModel
     {
         public CourseEntityRequestDTO(long id, string name, string description, float workload, decimal totalValue, long categoryId)
         {
@@ -21,5 +23,7 @@
         public float Workload { get; set; }
         public decimal TotalValue { get; set; }
         public long CourseCategoryId { get; set; }
+        public DateTime CreationData { get; set; }
+        public DateTime UpdatedData { get; set; }
     }
 }

@@ -1,0 +1,132 @@
+﻿@page "/courseCategories"
+@inject ICourseCategoryService service
+@inject ICourseService courseService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<PageTitle>Course categories</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="courses/create">Create New</a>
+</p>
+<ErrorAlert ServerError="@ServerError" />
+
+<MudDataGrid T="CourseCategoryViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+             Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Course Categories<br>
+            @if (selectedItens.Any())
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Error"
+                           ButtonType="ButtonType.Submit" Class="ml-auto" OnClick="DeteleMultiple">Delete</MudButton>
+            }
+        </MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <SelectColumn T="CourseCategoryViewModel" />
+        <MudBlazor.PropertyColumn Property="x => x.Id" Title="Id" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Description" Title="Description" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.CreationData" Title="Creation Date" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.UpdatedData" Title="Updated Date" Sortable="true" />
+
+        <MudBlazor.TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"courseCategories/edit/{context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"courseCategories/delete?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"courseCategories/details?id={context.Item.Id}")" />
+            </CellTemplate>
+        </MudBlazor.TemplateColumn>
+
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="CourseCategoryViewModel" />
+    </PagerContent>
+
+</MudDataGrid>
+<MudBlazor.MudButton Href="courseCategories/create"
+                     Variant="Variant.Filled"
+                     EndIcon="@Icons.Material.Outlined.Create"
+                     Color="Color.Primary">
+    Create
+</MudBlazor.MudButton>
+
+@code {
+
+    private IEnumerable<CourseCategoryViewModel> Elements = new List<CourseCategoryViewModel>();
+    private string _searchString;
+    private List<string> _events = new();
+
+    private Func<CourseCategoryViewModel, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+
+        return false;
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await TokenService.GetTokenAsync();
+
+        Elements = await service.FindAll(token);
+    }
+
+    private string ServerError { get; set; }
+    public HashSet<CourseCategoryViewModel> selectedItens = new HashSet<CourseCategoryViewModel>();
+
+    async Task DeteleMultiple()
+    {
+        var token = await TokenService.GetTokenAsync();
+
+        var deleteStudents = selectedItens.Select(x => x.Id).ToList();
+        
+        var deletMulti = await service.DeletMultiple(deleteStudents, token);
+        if (deletMulti != null)
+        {
+            ServerError = $"Erro al tentar deletar vários registros: {deletMulti.ErrorMessage}";
+        }
+        else
+        {
+            ServerError = null;
+            Elements = Elements.Where(x => !deleteStudents.Any(y => y == x.Id)).ToList();
+        }
+    }
+    
+    void RowClicked(DataGridRowClickEventArgs<CourseCategoryViewModel> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void RowRightClicked(DataGridRowClickEventArgs<CourseCategoryViewModel> args)
+    {
+        _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<CourseCategoryViewModel> items)
+    {
+        selectedItens = new HashSet<CourseCategoryViewModel>();
+
+        foreach (var item in items)
+        {
+            selectedItens.Add(item);
+        }
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
+    }
+}

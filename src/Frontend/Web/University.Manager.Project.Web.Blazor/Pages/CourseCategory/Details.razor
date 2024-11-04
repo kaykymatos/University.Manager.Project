@@ -1,0 +1,56 @@
+﻿ @page "/courseCategories/details"
+@inject ICourseCategoryService service
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<PageTitle>Course categories</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>course</h4>
+    <hr />
+    @if (course is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@course.Name</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@course.Description</dd>
+            <dt class="col-sm-2">Creation Date</dt>
+            <dd class="col-sm-10">@course.CreationData</dd>
+            <dt class="col-sm-2">Updated Date</dt>
+            <dd class="col-sm-10">@course.UpdatedData</dd>
+        </dl>
+        <div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       ButtonType="ButtonType.Button" Href="@($"/courseCategories/edit/{course.Id}")" Class="ml-auto">Edit</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                       ButtonType="ButtonType.Button" Href="/courseCategories" Class="ml-auto">Back to List</MudButton>
+
+        </div>
+    }
+</div>
+
+@code {
+    CourseCategoryViewModel? course;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+    private string token;
+    protected override async Task OnInitializedAsync()
+    {
+        token = await TokenService.GetTokenAsync();
+
+        course = await service.FindById(Id,token);
+
+        if (course is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using University.Manager.Project.Order.Domain.Entities.Enum;
+using University.Manager.Project.Order.Domain.Interfaces;
 using University.Manager.Project.Order.Domain.Validation;
 
 namespace University.Manager.Project.Order.Domain.Entities
@@ -23,11 +24,15 @@ namespace University.Manager.Project.Order.Domain.Entities
 
             ValidationDomain(title, message, attachment, orderType, userId);
         }
-        public void UpdateDomain(string title, string message, string? attachment, ETypeOrder orderType, long userId)
+        public override void UpdateDomain(IBaseEntity entity)
         {
-            ValidationDomain(title, message, attachment, orderType, userId);
-            UpdatedData = DateTime.Now;
+            if (entity is OrderEntity order)
+            {
+                ValidationDomain(order.Title, order.Message, order.Attachment, order.OrderType, order.UserId);
+            }
+            entity.UpdatedData = DateTime.Now;
         }
+
         private void ValidationDomain(string title, string message, string? attachment, ETypeOrder orderType, long userId)
         {
             DomainExceptionValidation.When(string.IsNullOrWhiteSpace(title),

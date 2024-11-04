@@ -2,13 +2,41 @@
   "profiles": {
     "SelfHost": {
       "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SecretIdentity": "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh",
+        "SecretIdentityBlazor": "lçkmkknbhbjjknçj53nio45094u9830098237972302yhdiwhoeuhdouwehdwe",
+        "SecretIdentityMaui": "MySuperSecret"
+      },
+      "applicationUrl": "https://localhost:4435;http://localhost:4436"
+    },
+    "EmuladorAndroid": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SecretIdentity": "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh",
+        "SecretIdentityBlazor": "lçkmkknbhbjjknçj53nio45094u9830098237972302yhdiwhoeuhdouwehdwe",
+        "SecretIdentityMaui": "MySuperSecret"
+      },
+      "applicationUrl": "https://0.0.0.0:4435;http://0.0.0.0:4436"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SecretIdentity": "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh"
-
-      },
-      "applicationUrl": "https://localhost:4435;http://localhost:4436"
+        "SecretIdentity": "ui2i3uniudw982387hd87wh87h8o7weh87d2h8hwd8h8o3hd87h823h7d8weh7doh",
+        "SecretIdentityBlazor": "lçkmkknbhbjjknçj53nio45094u9830098237972302yhdiwhoeuhdouwehdwe",
+        "SecretIdentityMaui": "MySuperSecret"
+      }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:55179/",
+      "sslPort": 44337
     }
   }
 }

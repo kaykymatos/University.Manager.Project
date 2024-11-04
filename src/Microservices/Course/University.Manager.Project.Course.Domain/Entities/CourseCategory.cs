@@ -1,4 +1,5 @@
-﻿using University.Manager.Project.Course.Domain.Validation;
+﻿using University.Manager.Project.Course.Domain.Interfaces;
+using University.Manager.Project.Course.Domain.Validation;
 
 namespace University.Manager.Project.Course.Domain.Entities
 {
@@ -21,6 +22,15 @@ namespace University.Manager.Project.Course.Domain.Entities
         {
             ValidationDomain(name, description);
         }
+        public override void UpdateDomain(IBaseEntity entity)
+        {
+            if (entity is CourseCategory category)
+            {
+                ValidationDomain(category.Name, category.Description);
+            }
+            entity.UpdatedData = DateTime.Now;
+        }
+
         public void UpdateCourseCategory(string name, string description)
         {
             ValidationDomain(name, description);

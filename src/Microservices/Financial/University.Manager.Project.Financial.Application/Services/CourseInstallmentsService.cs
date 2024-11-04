@@ -22,7 +22,12 @@ namespace University.Manager.Project.Financial.Application.Services
         {
             return await _courseInstallmentRepository.CreateMany(listModels);
         }
-
+        public async Task DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            var deleteModel = await _courseInstallmentRepository.DeleteMultipleAsync(ids);
+            if (!deleteModel)
+                throw new ApplicationException("Error on delete a Course installment");
+        }
         public async Task CreateModelAsync(CourseInstallmentsRequestDTO entity)
         {
             CourseInstallments model = _mapper.Map<CourseInstallments>(entity);

@@ -1,4 +1,5 @@
-﻿using University.Manager.Project.Student.Domain.Validation;
+﻿using University.Manager.Project.Student.Domain.Interfaces;
+using University.Manager.Project.Student.Domain.Validation;
 
 namespace University.Manager.Project.Student.Domain.Entities
 {
@@ -23,11 +24,6 @@ namespace University.Manager.Project.Student.Domain.Entities
             ValidationDomain(registerCode, courseId, name, email);
         }
 
-        public void UpdateDomain(string registerCode, long courseId, string name, string email)
-        {
-            ValidationDomain(registerCode, courseId, name, email);
-            UpdatedData = DateTime.Now;
-        }
         private void ValidationDomain(string registerCode, long courseId, string name, string email)
         {
             DomainExceptionValidation.When(registerCode.Length < 3,
@@ -55,5 +51,13 @@ namespace University.Manager.Project.Student.Domain.Entities
             Email = email;
         }
 
+        public override void UpdateDomain(IBaseEntity entity)
+        {
+            if (entity is StudentEntity studentEntity)
+            {
+                ValidationDomain(studentEntity.RegisterCode, studentEntity.CourseId, studentEntity.Name, studentEntity.Email);
+            }
+            entity.UpdatedData = DateTime.Now;
+        }
     }
 }

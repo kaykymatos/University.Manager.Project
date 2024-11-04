@@ -140,7 +140,7 @@ public class Consent : PageModel
 
     private ViewModel CreateConsentViewModel(BackchannelUserLoginRequest request)
     {
-        ViewModel vm = new ViewModel
+        ViewModel vm = new()
         {
             ClientName = request.Client.ClientName ?? request.Client.ClientId,
             ClientUrl = request.Client.ClientUri,

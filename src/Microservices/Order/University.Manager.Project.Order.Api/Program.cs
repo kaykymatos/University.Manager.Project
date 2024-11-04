@@ -7,7 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 WebApplication app = builder.Build();
-app.MapOrderEndpoints();
+new OrderEndpoints().MapEndpoints(app);
 
 if (app.Environment.IsDevelopment())
 {

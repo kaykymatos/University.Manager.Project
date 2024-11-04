@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.CourseCategory.CourseCategoriesList"
+             Title="Course Categories">
+
+    <VerticalStackLayout>
+
+        <Label 
+            Text="Course Categories"
+            FontAttributes="Bold"
+            FontSize="Large"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        
+        <Label  Margin="20,0,20,0"
+                Text="Create"
+                TextColor="Blue"
+                HorizontalOptions="Start" >
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="CreateNew"/>
+            </Label.GestureRecognizers>
+
+        </Label>
+        <Grid ColumnDefinitions="*,*,*,*,*" Margin="20,0,20,0"  BackgroundColor="LightGray">
+
+
+            <Label Grid.Column="0" Text="Name" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
+            <Label Grid.Column="1" Text="Description" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center" />
+            <Label Grid.Column="2" Text="Creation" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
+            <Label Grid.Column="3" Text="Updated" FontAttributes="Bold"  HorizontalOptions="Center" VerticalOptions="Center"  />
+            <Label Grid.Column="4" Text="Actions" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </Grid>
+        <ListView x:Name="listView" Margin="20,0,20,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid ColumnDefinitions="*,*,*,*,*" Padding="10">
+
+                            <Label Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"  Text="{Binding Name}" />
+
+                            <Label Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"  Text="{Binding Description}" />
+
+                            <Label Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center"  Text="{Binding CreationData}" />
+
+                            <Label Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center"  Text="{Binding UpdatedData}" />
+
+                            <StackLayout Grid.Column="4" HorizontalOptions="Center" VerticalOptions="Center"  Orientation="Horizontal" Spacing="5">
+                                <ImageButton HeightRequest="20" WidthRequest="15" Margin="1,0,1,0">
+                                    <ImageButton.Source>
+                                        <FontImageSource FontFamily="FAS" Glyph="&#xf05a;" Color="Blue"/>
+                                    </ImageButton.Source>
+                                </ImageButton>
+
+                                <ImageButton HeightRequest="20" WidthRequest="15" Margin="1,0,1,0">
+                                    <ImageButton.Source>
+                                        <FontImageSource FontFamily="FAS" Glyph="&#xf044;" Color="Blue"/>
+                                    </ImageButton.Source>
+                                </ImageButton>
+
+                                <ImageButton HeightRequest="20" WidthRequest="15" Margin="1,0,1,0">
+                                    <ImageButton.Source>
+                                        <FontImageSource FontFamily="FAS" Glyph="&#xf1f8;" Color="Blue"/>
+                                    </ImageButton.Source>
+                                </ImageButton>
+                            </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,101 @@
+﻿@page "/orders/delete"
+@inject IOrderService service
+@inject IStudentService studentService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<PageTitle>Orders</PageTitle>
+<ErrorAlert ServerError="@ServerError" />
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>courseViewModel</h4>
+    <hr />
+    @if (order is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-2">Id</dt>
+            <dd class="col-sm-10">@order.Id</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Title</dt>
+            <dd class="col-sm-10">@order.Title</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Message</dt>
+            <dd class="col-sm-10">@order.Message</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Order Type</dt>
+            <dd class="col-sm-10">@order.OrderType</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">User</dt>
+            <dd class="col-sm-10">@students.FirstOrDefault(y => y.Id == order.UserId).Name</dd>
+        </dl>
+       
+        <dl class="row">
+            <dt class="col-sm-2">Attachment</dt>
+            <dd class="col-sm-10">@order.Attachment</dd>
+        </dl>
+       
+        <dl class="row">
+            <dt class="col-sm-2">Creation Date</dt>
+            <dd class="col-sm-10">@order.CreationData</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Updated Date</dt>
+            <dd class="col-sm-10">@order.UpdatedData</dd>
+        </dl>
+        <EditForm method="post" Model="order" OnValidSubmit="DeleteStudentViewModel" FormName="deleteStudent" Enhance>
+            <MudButton Variant="Variant.Filled" Color="Color.Error"
+                       ButtonType="ButtonType.Submit" Class="ml-auto">Delete</MudButton>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                       ButtonType="ButtonType.Button" Href="/orders" Class="ml-auto">Back to List</MudButton>
+
+        </EditForm>
+    }
+</div>
+
+@code {
+    private string ServerError { get; set; }
+    OrderViewModel? order;
+    IEnumerable<StudentViewModel>? students;
+    private string token;
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        token = await TokenService.GetTokenAsync();
+        order = await service.FindById(Id, token);
+
+        if (order is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+        students = await studentService.FindAll(token);
+    }
+
+    public async Task DeleteStudentViewModel()
+    {
+        var response = await service.DeleteById(Id, token);
+        if (response != null)
+        {
+            ServerError = $"Erro ao tentar excluir ordem: {response.ErrorMessage}";
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/orders");
+        }
+
+    }
+}

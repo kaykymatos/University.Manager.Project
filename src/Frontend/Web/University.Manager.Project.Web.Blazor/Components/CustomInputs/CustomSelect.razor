@@ -1,0 +1,45 @@
+﻿@typeparam T
+@typeparam U
+
+<div class="mud-input-control mud-input-required mud-input-input-control">
+    <div class="mud-input-control-input-container">
+        <div class="mud-input mud-input-text mud-input-text-with-label mud-input-underline mud-shrink mud-typography-input">
+            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="SelectedValue">
+                @if (Options is not null)
+                {
+                    <option value="0" selected>Select</option>
+                    @foreach (var item in Options)
+                    {
+                        <option value="@GetValue(item)">@GetDisplayText(item)</option>
+                    }
+                }
+                else
+                {
+                    <option value="">Loading...</option>
+                }
+            </InputSelect>
+        </div>
+        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">@Label</label>
+    </div>
+    <div class="mud-input-control-helper-container">
+        <span class="mud-input-helper-text mud-input-error">
+            <div class="d-flex">
+                <div class="me-auto">
+                    @ErrorService?.GetFieldErrors(ErrorFieldName, ErrorViewModels)
+                </div>
+            </div>
+        </span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public T SelectedValue { get; set; }
+    [Parameter] public EventCallback<T> SelectedValueChanged { get; set; }
+    [Parameter] public IEnumerable<U> Options { get; set; }
+    [Parameter] public Func<U, T> GetValue { get; set; }
+    [Parameter] public Func<U, string> GetDisplayText { get; set; }
+    [Parameter] public ErrorService ErrorService { get; set; }
+    [Parameter] public string ErrorFieldName { get; set; }
+    [Parameter] public IEnumerable<ApiErrorViewModel> ErrorViewModels { get; set; }
+}

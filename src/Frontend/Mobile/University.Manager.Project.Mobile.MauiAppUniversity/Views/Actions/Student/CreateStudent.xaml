@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.Student.CreateStudent"
+             Title="CreateStudent">
+    <VerticalStackLayout>
+        <Grid RowSpacing="10" Grid.Row="1" Margin="20,0,20,0">
+
+            <StackLayout Grid.Row="3" Orientation="Vertical" Margin="0,0,0,0" HorizontalOptions="CenterAndExpand">
+                <Label Text="Student Registration"  FontAttributes="Bold" TextColor="Black" FontSize="30" HorizontalOptions="Center" Margin="0,0,0,10" VerticalOptions="Center"/>
+
+                <Label Text="Name" TextColor="Black" FontSize="20" FontAttributes="Bold"/>
+                <Frame Padding="0" >
+                    <StackLayout Orientation="Horizontal">
+                        <Entry  x:Name="NameInput" Keyboard="Text" WidthRequest="500"  Placeholder="Name" TextColor="Black"/>
+                    </StackLayout>
+                </Frame>
+                <Label Text="Email" TextColor="Black" FontSize="20" FontAttributes="Bold"/>
+                <Frame Padding="0" >
+                    <StackLayout Orientation="Horizontal">
+                        <Entry  x:Name="EmailInput" Keyboard="Email" WidthRequest="500"  Placeholder="Email" TextColor="Black"/>
+                    </StackLayout>
+                </Frame>
+                <Label Text="Register Code" TextColor="Black" FontSize="20" FontAttributes="Bold"/>
+                <Frame Padding="0" >
+                    <StackLayout Orientation="Horizontal">
+                        <Entry  x:Name="RegisterCodeInput" Keyboard="Text" WidthRequest="500"  Placeholder="Register Code" TextColor="Black"/>
+                    </StackLayout>
+                </Frame> 
+                <Label Text="Course" TextColor="Black" FontSize="20" FontAttributes="Bold"/>
+                <Frame Padding="0" Margin="0,0,0,0" >
+                    <StackLayout Orientation="Horizontal">
+                        <Picker x:Name="CoursePicker" ItemDisplayBinding="{Binding Name}" Title="Selecione um item" WidthRequest="500" TextColor="Black"/>
+                    </StackLayout>
+                </Frame>
+                <Button Text="Send" Margin="0,10,0,0" Clicked="OnEnviarClicked"/>
+            </StackLayout>
+
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

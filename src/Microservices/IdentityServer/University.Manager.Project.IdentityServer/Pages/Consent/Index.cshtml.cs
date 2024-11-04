@@ -148,7 +148,7 @@ public class Index : PageModel
 
     private ViewModel CreateConsentViewModel(AuthorizationRequest request)
     {
-        ViewModel vm = new ViewModel
+        ViewModel vm = new()
         {
             ClientName = request.Client.ClientName ?? request.Client.ClientId,
             ClientUrl = request.Client.ClientUri,

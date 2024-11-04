@@ -1,0 +1,152 @@
+﻿@page "/courseInstallments/create"
+@page "/courseInstallments/edit/{Id:int}"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject ICourseInstallmentService service
+@inject IStudentService studentService
+@inject ErrorService ErrorService
+@attribute [Authorize]
+
+<PageTitle>Course installments</PageTitle>
+<ErrorAlert ServerError="@ServerError" />
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+
+            <MudForm @ref="form">
+                <MudTextField T="long" @bind-Value="courseInstallment.Id" hidden />
+                <MudTextField InputType="InputType.Date" T="string" @bind-Value="courseInstallment.DueDate" Label="Due Date" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "DueDate"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
+                <MudTextField T="decimal" @bind-Value="courseInstallment.InstallmentPrice" Label="Installment Price" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "InstallmentPrice"))" ErrorText="@(ErrorService.GetFieldErrors("InstallmentPrice",errorViewModels))" />
+
+
+                <div class="mud-input-control mud-input-required mud-input-input-control">
+                    <div class="mud-input-control-input-container">
+                        <div class="mud-input mud-input-text mud-input-text-with-label mud-input-underline mud-shrink mud-typography-input">
+
+                            <InputSelect class="mud-input-slot mud-input-root mud-input-root-text" style="width:100%;height:2em !important" @bind-Value="courseInstallment.StudentId">
+                                @if (students is not null)
+                                {
+                                    <option value="0" selected>Select</option>
+
+                                    foreach (var item in students)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">Loading...</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <label class="mud-input-label mud-input-label-animated mud-input-label-text mud-input-label-inputcontrol">Student</label>
+                    </div>
+
+                    <div class="mud-input-control-helper-container">
+                        <span class="mud-input-helper-text mud-input-error">
+                            <div class="d-flex">
+                                <div class="me-auto">
+                                    @ErrorService.GetFieldErrors("StudentId", errorViewModels)
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+
+                <CustomSelect T="EInstallmentStatus"
+                              U="EInstallmentStatus"
+                              Label="Status"
+                              @bind-SelectedValue="courseInstallment.InstallmentStatus"
+                              Options="Enum.GetValues(typeof(EInstallmentStatus)).Cast<EInstallmentStatus>()"
+                              GetValue="status => status"
+                              GetDisplayText="status => status.ToString()"
+                              ErrorService="ErrorService"
+                              ErrorFieldName="InstallmentStatus"
+                              ErrorViewModels="errorViewModels" />
+
+                <CustomSelect T="EPaymentMethod"
+                              U="EPaymentMethod"
+                              Label="Payment method"
+                              @bind-SelectedValue="courseInstallment.PaymentMethod"
+                              Options="Enum.GetValues(typeof(EPaymentMethod)).Cast<EPaymentMethod>()"
+                              GetValue="method => method"
+                              GetDisplayText="method => method.ToString()"
+                              ErrorService="ErrorService"
+                              ErrorFieldName="PaymentMethod"
+                              ErrorViewModels="errorViewModels" />
+
+                <div class="d-flex align-center justify-space-between mt-3">
+                    <div class="ms-auto">
+                        <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                                   ButtonType="ButtonType.Button" Href="/courseInstallments" Class="ml-auto">Back to List</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   ButtonType="ButtonType.Button" OnClick="UpdateOrCreateStudent" Class="ml-auto">@(Id > 0 ? "Update" : "Create")</MudButton>
+                    </div>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private string ServerError { get; set; }
+    private MudForm form;
+    private bool formIsValid;
+    public CourseInstallmentViewModel courseInstallment { get; set; } = new();
+    public string token;
+
+    private IEnumerable<ApiErrorViewModel> errorViewModels = new List<ApiErrorViewModel>();
+    private IEnumerable<StudentViewModel> students;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        ServerError = null;
+        token = await TokenService.GetTokenAsync();
+
+        students = await studentService.FindAll(token);
+
+    }
+
+    private async Task UpdateOrCreateStudent()
+    {
+
+        ServerError = null;
+
+        IEnumerable<ApiErrorViewModel> response;
+        if (courseInstallment.Id == 0)
+            response = await service.Create(courseInstallment, token);
+        else
+            response = await service.Update(courseInstallment, token);
+
+        if (response == null)
+        {
+            ServerError = "Erro interno no servidor";
+        }
+        else if (!response.Any())
+        {
+            ErrorService.ClearErrors();
+            NavigationManager.NavigateTo("/courseInstallments");
+        }
+        else
+        {
+            errorViewModels = response;
+        }
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            courseInstallment = await service.FindById(Id, token);
+            if (courseInstallment.InstallmentPrice <= 0)
+                NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

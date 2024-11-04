@@ -1,77 +1,66 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using University.Manager.Project.Course.Application.DTOs;
 using University.Manager.Project.Course.Application.DTOs.RequestDTOs;
 using University.Manager.Project.Course.Application.Interfaces;
 using University.Manager.Project.Course.Application.Models.Error;
 
 namespace University.Manager.Project.Course.Api.Endpoints.V1
 {
-    public static class CourseCategoryEndpoints
+    public class CourseCategoryEndpoints : BaseEndpoints<CourseCategoryDTO, CourseCategoryRequestDTO, ICourseCategoryService, IValidator<CourseCategoryRequestDTO>>
     {
-        public static WebApplication MapCourseCategoryEndpoints(this WebApplication app)
+
+        protected override string BaseRoute => "api/v1/courseCategory";
+        public override void MapEndpoints(WebApplication app)
         {
-            app.MapGet("api/v1/courseCategory", async ([FromServices] ICourseCategoryService _service) =>
-            {
-                IEnumerable<Application.DTOs.CourseCategoryDTO> listModel = await _service.GetAllAsync();
-                if (listModel.Any())
-                    return Results.Ok(listModel);
-                return Results.NoContent();
-            }).RequireAuthorization();
-            app.MapGet("api/v1/courseCategory/{id:long}", async ([FromRoute] long id, [FromServices] ICourseCategoryService _service) =>
-            {
-                if (id <= 0)
-                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!").ToList());
+            base.MapGetAll(app);
+            base.MapGetById(app);
+            base.MapPost(app);
+            base.MapPut(app);
+            var service = app.Services.CreateScope().ServiceProvider.GetService<ICourseCategoryService>();
+            var courseService = app.Services.CreateScope().ServiceProvider.GetService<ICourseService>();
 
-                Application.DTOs.CourseCategoryDTO modelFound = await _service.GetByIdAsync(id);
-                if (modelFound != null)
-                    return Results.Ok(modelFound);
-                return Results.NotFound();
-            }).RequireAuthorization().WithName("courseCategory");
 
-            app.MapPost("api/v1/courseCategory", async ([FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service, [FromServices] IValidator<CourseCategoryRequestDTO> _validator) =>
-            {
-                if (model == null)
-                    return Results.BadRequest("Invalid Data!");
-
-                FluentValidation.Results.ValidationResult validationModel = _validator.Validate(model);
-                if (!validationModel.IsValid)
-                    return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
-
-                await _service.CreateModelAsync(model);
-                return Results.CreatedAtRoute("courseCategory", new { id = model.Id }, model);
-            }).RequireAuthorization();
-
-            app.MapPut("api/v1/courseCategory", async ([FromBody] CourseCategoryRequestDTO model, [FromServices] ICourseCategoryService _service, [FromServices] IValidator<CourseCategoryRequestDTO> _validator) =>
-            {
-
-                Application.DTOs.CourseCategoryDTO modelFound = await _service.GetByIdAsync(model.Id);
-                if (modelFound == null)
-                    return Results.NotFound(
-                        new CustomValidationFailure("Id", "Id not found!").ToList());
-
-                FluentValidation.Results.ValidationResult validationModel = _validator.Validate(model);
-                if (!validationModel.IsValid)
-                    return Results.BadRequest(validationModel.Errors.ToCustomValidationFailure());
-
-                await _service.UpdateModelAsync(model);
-                return Results.NoContent();
-            }).RequireAuthorization();
-            app.MapDelete("api/v1/courseCategory/{id:long}", async ([FromRoute] long id, [FromServices] ICourseCategoryService _service) =>
+            app.MapDelete($"{BaseRoute}/{{id:long}}", async ([FromRoute] long id) =>
             {
                 if (id <= 0)
-                    return Results.BadRequest(
-                        new CustomValidationFailure("Id", "Invalid Id!").ToList());
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
 
-                Application.DTOs.CourseCategoryDTO modelFound = await _service.GetByIdAsync(id);
+                var modelFound = await service.GetByIdAsync(id);
                 if (modelFound == null)
-                    return Results.NotFound(
-                        new CustomValidationFailure("Id", "Id not found!").ToList());
+                    return Results.NotFound(new CustomValidationFailure("Id", "Id not found!"));
 
-                await _service.DeleteModelAsync(modelFound);
+                var vinculedCourse = await courseService.GetCourseByCategoryId(id);
+                if (vinculedCourse.Count() > 0)
+                    return Results.BadRequest(new CustomValidationFailure("Category", "There are courses linked in this category!"));
 
+
+                await service.DeleteModelAsync(modelFound);
                 return Results.Ok(modelFound);
             }).RequireAuthorization();
-            return app;
+
+            app.MapDelete(BaseRoute, async ([FromBody] IEnumerable<long> ids) =>
+            {
+                if (!ids.Any())
+                    return Results.BadRequest(new CustomValidationFailure("Id", "Invalid Id!"));
+
+                bool hasVinculedCourse = false;
+                foreach (var item in ids)
+                {
+                    var vinculedCourse = await courseService.GetCourseByCategoryId(item);
+                    if (vinculedCourse.Any())
+                    {
+                        hasVinculedCourse = true;
+                        break;
+                    }
+                }
+                if (hasVinculedCourse)
+                    return Results.BadRequest(new CustomValidationFailure("Category", "There are courses linked in this category!"));
+
+
+                await service.DeleteMultipleAsync(ids);
+                return Results.Ok(ids);
+            }).RequireAuthorization();
         }
     }
 }

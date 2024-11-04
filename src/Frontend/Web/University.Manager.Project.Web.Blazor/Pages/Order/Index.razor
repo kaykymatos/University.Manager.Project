@@ -1,0 +1,218 @@
+﻿@page "/orders"
+@using System.Text
+@inject IOrderService service
+@inject IStudentService studentService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+@attribute [Authorize]
+
+<PageTitle>Orders</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="orders/create">Create New</a>
+</p>
+<ErrorAlert ServerError="@ServerError" />
+
+<MudDataGrid T="OrderViewModel" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+             Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Orders
+            <br>
+            @if (selectedItens.Any())
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Error"
+                           ButtonType="ButtonType.Submit" Class="ml-auto" OnClick="DeteleMultiple">Delete</MudButton>
+            }
+        </MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <Columns>
+        <SelectColumn T="OrderViewModel" />
+        <MudBlazor.PropertyColumn Property="x => x.Id" Title="Id" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Title" Title="Title" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.Message" Title="Message" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.OrderType" Title="Order Type" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x=>GetStudentNameFromId(x.UserId)" Title="User" />
+
+
+        <MudBlazor.TemplateColumn>
+            <CellTemplate>
+                <MudStack Row>
+                    @if (!string.IsNullOrWhiteSpace(context.Item.Attachment))
+                    {
+                        @if (IsImage(context.Item.Attachment))
+                        {
+                            <img width="100" height="100" src="data:@GetMimeTypeFromBase64(context.Item.Attachment);base64,@context.Item.Attachment" alt="Attachment" style="max-width: 100px; max-height: 100px;" />
+                        }
+                        else
+                        {
+                            <MudIconButton Size="@Size.Small" OnClick="async ()=>await DownloadPdfFile(context.Item.Attachment)" Icon="@Icons.Material.Outlined.FileDownload" />
+
+                        }
+                    }
+
+
+                </MudStack>
+            </CellTemplate>
+        </MudBlazor.TemplateColumn>
+
+        <MudBlazor.PropertyColumn Property="x => x.UpdatedData" Title="UpdatedData" Sortable="true" />
+        <MudBlazor.PropertyColumn Property="x => x.CreationData" Title="CreationData" Sortable="true" />
+
+        <MudBlazor.TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Href="@($"orders/edit/{context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Href="@($"orders/delete?id={context.Item.Id}")" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Info" Href="@($"orders/details?id={context.Item.Id}")" />
+            </CellTemplate>
+        </MudBlazor.TemplateColumn>
+
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="OrderViewModel" />
+    </PagerContent>
+
+</MudDataGrid>
+<MudBlazor.MudButton Href="orders/create"
+                     Variant="Variant.Filled"
+                     EndIcon="@Icons.Material.Outlined.Create"
+                     Color="Color.Primary">
+    Create
+</MudBlazor.MudButton>
+<script>
+    function downloadPdf(pdfBytes, fileName) {
+        // Converta o array de bytes para uma string base64
+        const base64String = btoa(String.fromCharCode.apply(null, pdfBytes));
+
+        // Crie um link temporário
+        const link = document.createElement('a');
+        link.href = 'data:application/pdf;base64,' + base64String;
+        link.download = fileName;
+
+        // Clique no link para iniciar o download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+@code {
+    private async Task DownloadPdfFile(string base64Pdf)
+    {
+        // Converta base64 para byte array
+        var pdfBytes = Convert.FromBase64String(base64Pdf);
+
+        await JS.InvokeVoidAsync("downloadPdf", pdfBytes, "arquivo.pdf");
+    }
+    private string GetStudentNameFromId(long id)
+    {
+
+        var student = students.FirstOrDefault(y => y.Id == id);
+        if (student == null)
+            return string.Empty;
+        return student.Name;
+    }
+    private IEnumerable<OrderViewModel> Elements = new List<OrderViewModel>();
+    private string _searchString;
+    private List<string> _events = new();
+    private IEnumerable<StudentViewModel> students;
+    private Func<OrderViewModel, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+
+        return false;
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await TokenService.GetTokenAsync();
+        students = await studentService.FindAll(token);
+        Elements = await service.FindAll(token);
+    }
+    private string ServerError { get; set; }
+    public HashSet<OrderViewModel> selectedItens = new HashSet<OrderViewModel>();
+    private string GetMimeTypeFromBase64(string base64)
+    {
+        if (string.IsNullOrWhiteSpace(base64))
+            return string.Empty;
+
+        var data = base64.Substring(0, 5);
+
+        switch (data.ToUpper())
+        {
+            case "IVBOR":
+                return "image/png";
+            case "/9J/4":
+                return "image/jpeg";
+            case "JVBER":
+                return "application/pdf";
+            default:
+                return "application/octet-stream";
+        }
+    }
+    private bool IsImage(string base64)
+    {
+        if (string.IsNullOrWhiteSpace(base64))
+            return true;
+
+        var data = base64.Substring(0, 5);
+
+        switch (data.ToUpper())
+        {
+            case "IVBOR":
+                return true;
+            case "/9J/4":
+                return true;
+            case "JVBER":
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    async Task DeteleMultiple()
+    {
+        var token = await TokenService.GetTokenAsync();
+
+        var deleteOrders = selectedItens.Select(x => x.Id).ToList();
+        var deletMulti = await service.DeletMultiple(deleteOrders, token);
+        if (deletMulti != null)
+        {
+            ServerError = $"Erro al tentar deletar vários registros: {deletMulti.ErrorMessage}";
+        }
+        else
+        {
+            Elements = Elements.Where(x => !deleteOrders.Any(y => y == x.Id)).ToList();
+        }
+    }
+
+    void RowClicked(DataGridRowClickEventArgs<OrderViewModel> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void RowRightClicked(DataGridRowClickEventArgs<OrderViewModel> args)
+    {
+        _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<OrderViewModel> items)
+    {
+        selectedItens = new HashSet<OrderViewModel>();
+
+        foreach (var item in items)
+        {
+            selectedItens.Add(item);
+        }
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
+    }
+}

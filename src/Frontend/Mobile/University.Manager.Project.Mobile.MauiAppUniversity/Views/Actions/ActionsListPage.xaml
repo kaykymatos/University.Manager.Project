@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Actions.ActionsListPage"
+             Title="ActionsListPage" >
+
+    <VerticalStackLayout Padding="20" Spacing="20"  >
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+
+            <Frame.GestureRecognizers >
+                <TapGestureRecognizer Tapped="OnCoursesTapped" />
+            </Frame.GestureRecognizers>
+
+            <HorizontalStackLayout >
+                <Image Source="plus.png" WidthRequest="50" HeightRequest="50"  />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Courses" 
+                           FontSize="20" 
+                           Margin="10,0,0,0" 
+                           VerticalOptions="Center" 
+                           FontAttributes="Bold" />
+
+                    <Label Text="Create new courses" 
+                           FontSize="16" 
+                           Margin="10,0,0,0" 
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCourseCategoriesTapped" />
+            </Frame.GestureRecognizers>
+            <HorizontalStackLayout>
+                <Image Source="categories.png" WidthRequest="50" HeightRequest="50"  />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Categories" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Create new categories for new courses" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnStudentsTapped" />
+            </Frame.GestureRecognizers>
+            <HorizontalStackLayout>
+                <Image Source="student.png" WidthRequest="50" HeightRequest="50"  />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Students" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Create and view students" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnInstallmentsTapped" />
+            </Frame.GestureRecognizers>
+            <HorizontalStackLayout>
+                <Image Source="price.png" WidthRequest="50" HeightRequest="50"  />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Installments" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Installments from students" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+        <Frame BackgroundColor="White" CornerRadius="10" HasShadow="True" >
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOrdersTapped" />
+            </Frame.GestureRecognizers>
+            <HorizontalStackLayout>
+                <Image Source="order.png" WidthRequest="50" HeightRequest="50"  />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Orders" 
+                            FontSize="20" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            FontAttributes="Bold" />
+
+                    <Label Text="Orders from students" 
+                            FontSize="16" 
+                            Margin="10,0,0,0" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

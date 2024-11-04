@@ -1,8 +1,9 @@
 ﻿using University.Manager.Project.Order.Application.DTOs.Enum;
+using University.Manager.Project.Order.Application.Interfaces;
 
 namespace University.Manager.Project.Order.Application.DTOs.RequestDTOs
 {
-    public class OrderEntityRequestDTO
+    public class OrderEntityRequestDTO : IBaseModel
     {
         public OrderEntityRequestDTO(long id, string title, string message, string? attachment, ETypeOrder orderType, long userId)
         {
@@ -24,6 +25,7 @@ namespace University.Manager.Project.Order.Application.DTOs.RequestDTOs
 
         public ETypeOrder OrderType { get; set; }
         public long UserId { get; set; }
-
+        public DateTime CreationData { get; set; }
+        public DateTime UpdatedData { get; set; }
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="University.Manager.Project.Mobile.MauiAppUniversity.Views.Info.InfoPage"
+             Title="Info">
+    <VerticalStackLayout Padding="50,0,50,0" VerticalOptions="Center" 
+               HorizontalOptions="Center">
+        <Label Text="Application Name"
+               FontAttributes="Bold"
+               FontSize="35" 
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        <Label  x:Name="NameLabel"
+               FontSize="20"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+        <Label Text="Description"
+               FontAttributes="Bold"
+               FontSize="35"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        <Label Text="University Manager is an app to
+ manage students, courses and other things
+ from an university"
+       FontSize="20" 
+       HorizontalOptions="Center"
+       VerticalOptions="Center" />
+
+        <Label Text="Developer"
+               FontAttributes="Bold"
+               FontSize="35"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        <Label Text="Kayky Matos Santana"
+      FontSize="20"
+      HorizontalOptions="Center"
+      VerticalOptions="Center" />
+        <Label Text="Version"
+               FontAttributes="Bold"
+               FontSize="35"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        <Label 
+            x:Name="VersionLabel"
+              FontSize="20"
+              HorizontalOptions="Center"
+              VerticalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

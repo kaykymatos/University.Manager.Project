@@ -16,6 +16,12 @@ namespace University.Manager.Project.Student.Application.Services
             _studentRepository = studentRepository;
             _mapper = mapper;
         }
+        public async Task DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            var deleteModel = await _studentRepository.DeleteMultipleAsync(ids);
+            if (!deleteModel)
+                throw new ApplicationException("Error on delete a Students");
+        }
         public async Task CreateModelAsync(StudentEntityRequestDTO entity)
         {
             StudentEntity model = _mapper.Map<StudentEntity>(entity);

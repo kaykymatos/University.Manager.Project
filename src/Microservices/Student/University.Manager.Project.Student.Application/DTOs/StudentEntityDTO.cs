@@ -1,6 +1,8 @@
-﻿namespace University.Manager.Project.Student.Application.DTOs
+﻿using University.Manager.Project.Student.Application.Interfaces;
+
+namespace University.Manager.Project.Student.Application.DTOs
 {
-    public class StudentEntityDTO
+    public class StudentEntityDTO : IBaseModel
     {
         public long Id { get; set; }
         public string RegisterCode { get; set; } = string.Empty;

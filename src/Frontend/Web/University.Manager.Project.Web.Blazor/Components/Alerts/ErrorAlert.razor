@@ -1,0 +1,8 @@
+﻿@if (!string.IsNullOrWhiteSpace(ServerError))
+{
+    <MudAlert Severity="Severity.Error" Class="w-100">@ServerError</MudAlert>
+}
+@code {
+    [Parameter]
+    public string ServerError { get; set; }
+}

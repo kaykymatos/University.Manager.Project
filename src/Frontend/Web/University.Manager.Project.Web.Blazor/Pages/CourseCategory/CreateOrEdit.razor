@@ -1,0 +1,89 @@
+﻿@page "/courseCategories/create"
+@page "/courseCategories/edit/{Id:int}"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject ICourseCategoryService service
+@inject ErrorService ErrorService
+@attribute [Authorize]
+
+<PageTitle>Course categories</PageTitle>
+<ErrorAlert ServerError="@ServerError" />
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+
+            <MudForm @ref="form">
+                <MudTextField T="long" @bind-Value="courseCategory.Id" hidden />
+                <MudTextField T="string" @bind-Value="courseCategory.Name" Label="Name" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Name"))" ErrorText="@(ErrorService.GetFieldErrors("Name",errorViewModels))" />
+                <MudTextField T="string" @bind-Value="courseCategory.Description" Label="Description" Required="true" Error="@(errorViewModels.Any(e => e.PropertyName == "Description"))" ErrorText="@(ErrorService.GetFieldErrors("Description",errorViewModels))" />
+
+                <div class="d-flex align-center justify-space-between mt-3">
+                    <div class="ms-auto">
+                        <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                                   ButtonType="ButtonType.Button" Href="/courseCategories" Class="ml-auto">Back to List</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   ButtonType="ButtonType.Button" OnClick="UpdateOrCreateCourseCategory" Class="ml-auto">@(Id > 0 ? "Update" : "Create")</MudButton>
+                    </div>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private string ServerError { get; set; }
+    private MudForm form;
+    private bool formIsValid;
+    public CourseCategoryViewModel courseCategory { get; set; } = new();
+    public string token;
+
+    private IEnumerable<ApiErrorViewModel> errorViewModels = new List<ApiErrorViewModel>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        ServerError = null;
+        token = await TokenService.GetTokenAsync();
+
+    }
+
+    private async Task UpdateOrCreateCourseCategory()
+    {
+
+        ServerError = null;
+
+        IEnumerable<ApiErrorViewModel> response;
+        if (courseCategory.Id == 0)
+            response = await service.Create(courseCategory, token);
+        else
+            response = await service.Update(courseCategory, token);
+
+        if (response == null)
+        {
+            ServerError = "Erro interno no servidor";
+        }
+        else if (!response.Any())
+        {
+            ErrorService.ClearErrors();
+            NavigationManager.NavigateTo("/courseCategories");
+        }
+        else
+        {
+            errorViewModels = response;
+        }
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            courseCategory = await service.FindById(Id, token);
+            if (string.IsNullOrWhiteSpace(courseCategory.Description))
+                NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

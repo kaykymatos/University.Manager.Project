@@ -1,6 +1,8 @@
-﻿namespace University.Manager.Project.Course.Application.DTOs
+﻿using University.Manager.Project.Course.Application.Interfaces;
+
+namespace University.Manager.Project.Course.Application.DTOs
 {
-    public class CourseEntityDTO
+    public class CourseEntityDTO : IBaseModel
     {
         public long Id { get; set; }
         public DateTime CreationData { get; set; }

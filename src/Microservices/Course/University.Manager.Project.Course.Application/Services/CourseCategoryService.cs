@@ -58,5 +58,11 @@ namespace University.Manager.Project.Course.Application.Services
                 throw new ApplicationException("Error on delete a Course");
 
         }
+        public async Task DeleteMultipleAsync(IEnumerable<long> ids)
+        {
+            var deleteModel = await _courseCategoryRepository.DeleteMultipleAsync(ids);
+            if (!deleteModel)
+                throw new ApplicationException("Error on delete a Course Category");
+        }
     }
 }

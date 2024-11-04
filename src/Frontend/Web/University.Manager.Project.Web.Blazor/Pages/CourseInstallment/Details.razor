@@ -1,0 +1,76 @@
+﻿ @page "/courseInstallments/details"
+@inject ICourseInstallmentService service
+@inject IStudentService studentService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+<PageTitle>Course installments</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>course</h4>
+    <hr />
+    @if (courseInstallment is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">PaymentMethod</dt>
+            <dd class="col-sm-10">@courseInstallment.PaymentMethod</dd>
+            <dt class="col-sm-2">InstallmentPrice</dt>
+            <dd class="col-sm-10">@courseInstallment.InstallmentPrice</dd>
+            <dt class="col-sm-2">Student</dt>
+            @{
+                var foudStudent = students.FirstOrDefault(x => x.Id == courseInstallment.StudentId);
+                    if (foudStudent is null)
+                    {
+                    <dd class="col-sm-10"></dd>
+                    }
+                    else
+                    {
+                    <dd class="col-sm-10">@foudStudent.Name</dd>
+                    }
+                }
+
+            <dt class="col-sm-2">DueDate</dt>
+            <dd class="col-sm-10">@courseInstallment.DueDate</dd>
+
+            <dt class="col-sm-2">PaymentDate</dt>
+            <dd class="col-sm-10">@courseInstallment.PaymentDate</dd>
+
+
+        </dl>
+        <div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       ButtonType="ButtonType.Button" Href="@($"/courseInstallments/edit/{courseInstallment.Id}")" Class="ml-auto">Edit</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Transparent"
+                       ButtonType="ButtonType.Button" Href="/courseInstallments" Class="ml-auto">Back to List</MudButton>
+
+        </div>
+    }
+</div>
+
+@code {
+    CourseInstallmentViewModel? courseInstallment;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+    private string token;
+    private IEnumerable<StudentViewModel> students;
+
+    protected override async Task OnInitializedAsync()
+    {
+        token = await TokenService.GetTokenAsync();
+
+        students = await studentService.FindAll(token);
+        courseInstallment = await service.FindById(Id, token);
+
+        if (courseInstallment is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
